@@ -1,1 +1,32 @@
-<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Sunnyh's Blog</title><link>https://sunnyh1220.github.io/posts/</link><description>一个关于计算机软硬件学习的博客.关键词:CloudNative,Kubernetes,Golang...</description><generator>Hugo 0.89.4 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>ifanre@163.com (sunnyh)</managingEditor><webMaster>ifanre@163.com (sunnyh)</webMaster><copyright>在保留本文作者及本文链接的前提下，非商业用途随意转载分享。</copyright><lastBuildDate>Wed, 08 Dec 2021 05:44:17 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://sunnyh1220.github.io/posts/rss.xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8"?><rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Sunnyh's Blog</title><link>https://sunnyh1220.github.io/posts/</link><description>一个关于计算机软硬件学习的博客.关键词:CloudNative,Kubernetes,Golang...</description><generator>Hugo 0.89.4 https://gohugo.io/</generator><language>zh-CN</language><managingEditor>ifanre@163.com (sunnyh)</managingEditor><webMaster>ifanre@163.com (sunnyh)</webMaster><copyright>在保留本文作者及本文链接的前提下，非商业用途随意转载分享。</copyright><lastBuildDate>Wed, 08 Dec 2021 05:50:33 +0000</lastBuildDate><atom:link rel="self" type="application/rss+xml" href="https://sunnyh1220.github.io/posts/rss.xml"/><item><title>Github Action</title><link>https://sunnyh1220.github.io/posts/posts/tools/github-action/</link><guid isPermaLink="true">https://sunnyh1220.github.io/posts/posts/tools/github-action/</guid><pubDate>Sat, 28 Nov 2020 00:00:00 +0000</pubDate><author>ifanre@163.com (sunnyh)</author><copyright>在保留本文作者及本文链接的前提下，非商业用途随意转载分享。</copyright><description>&lt;p>开发部署使用不同仓库(可用同一仓库)&lt;/p>
+&lt;blockquote>
+&lt;p>dev repo: docsgo&lt;/p>
+&lt;p>deploy repo: posts (可选github.io 或 github.io/xxx )&lt;/p>
+&lt;/blockquote>
+&lt;p>hugo配置&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-toml" data-lang="toml">&lt;span class="err">//&lt;/span> &lt;span class="nx">config&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">toml&lt;/span>
+&lt;span class="nx">baseURL&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s2">&amp;#34;https://xxx.github.io/posts&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Deploy keys &amp;amp;&amp;amp; Secrets&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">ssh-keygen -t rsa -b &lt;span class="m">4096&lt;/span> -C &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="k">$(&lt;/span>git config user.email&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -f gh-pages -N &lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;span class="c1"># You will get 2 files:&lt;/span>
+&lt;span class="c1"># gh-pages.pub (public key)&lt;/span>
+&lt;span class="c1"># gh-pages (private key)&lt;/span>
+&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>
