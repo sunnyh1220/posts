@@ -1,0 +1,540 @@
+<!doctype html><html lang=zh-cn>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<title class=pjax-title>Kubernetes安装 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="Kubernetes安装">
+<meta property="og:description" content>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sunnyh1220.github.io/posts/kubernetes_install/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2019-11-28T00:00:00+00:00">
+<meta property="article:modified_time" content="2019-11-28T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
+<meta name=twitter:title content="Kubernetes安装">
+<meta name=twitter:description content>
+<meta name=application-name content="Sunnyh's Blog">
+<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
+<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/kubernetes_install/><link rel=prev href=https://sunnyh1220.github.io/posts/docker_storage_driver/><link rel=next href=https://sunnyh1220.github.io/posts/isaac_sdk/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Kubernetes安装","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/kubernetes_install\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Kubernetes","wordcount":805,"url":"https:\/\/sunnyh1220.github.io\/posts\/kubernetes_install\/","datePublished":"2019-11-28T00:00:00+00:00","dateModified":"2019-11-28T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
+<div id=back-to-top></div>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/kubernetes_install/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
+</a></div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
+取消
+</a>
+</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
+</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/kubernetes_install/ selected>简体中文</option></select>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>目录</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Kubernetes安装</h1><div class=post-meta>
+<div class=post-meta-line>
+<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/cloudnative/><i class="far fa-folder fa-fw"></i>CloudNative</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-28>2019-11-28</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-28>2019-11-28</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 805 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#kubeadm-安装>Kubeadm 安装</a>
+<ul>
+<li><a href=#1-docker-install>1. docker install</a></li>
+<li><a href=#2-k8s-install-by-kubeadm>2. k8s install by kubeadm</a>
+<ul>
+<li><a href=#21-k8s-download>2.1 k8s download</a></li>
+<li><a href=#22-master-init>2.2 master init</a></li>
+<li><a href=#23-node-init>2.3 node init</a></li>
+<li><a href=#24-cni网络插件>2.4 cni网络插件</a></li>
+<li><a href=#25-gpu-插件>2.5 gpu 插件</a></li>
+<li><a href=#26-单机>2.6 单机</a></li>
+<li><a href=#27-常用cli>2.7 常用cli</a>
+<ul>
+<li><a href=#设置master节点参与不参与pod负载>设置master节点参与/不参与Pod负载</a></li>
+<li><a href=#node节点token失效>node节点token失效</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><div class="details admonition warning open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>
+本文最后更新于 <span class=timeago datetime=2019-11-28T00:00:00 title="November 28, 2019">2019-11-28</span>，文中内容可能已过时。</div>
+</div>
+</div><h2 id=kubeadm-安装>Kubeadm 安装</h2>
+<h3 id=1-docker-install>1. docker install</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt-get install  apt-transport-https  ca-certificates curl  software-properties-common
+
+curl -fsSL  https://download.docker.com/linux/ubuntu/gpg <span class=p>|</span> sudo apt-key add
+
+sudo add-apt-repository <span class=s2>&#34;deb [arch=amd64]  https://download.docker.com/linux/ubuntu </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> stable&#34;</span> 
+
+apt-cache madison docker-ce
+
+apt-cache madison docker-ce-cli
+
+sudo apt-get install docker-ce<span class=o>=</span>5:18.09.5~3-0~ubuntu-bionic docker-ce-cli<span class=o>=</span>5:18.09.5~3-0~ubuntu-bionic containerd.io
+
+sudo tee /etc/docker/daemon.json <span class=s>&lt;&lt;-&#39;EOF&#39;
+</span><span class=s>{
+</span><span class=s>  &#34;registry-mirrors&#34;: [&#34;https://registry.docker-cn.com&#34;]
+</span><span class=s>}
+</span><span class=s>EOF</span>
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+
+开机自启:
+systemctl <span class=nb>enable</span> docker <span class=o>&amp;&amp;</span> systemctl start docker
+<span class=c1># systemctl enable kubelet &amp;&amp; systemctl start kubelet</span>
+
+
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=2-k8s-install-by-kubeadm>2. k8s install by kubeadm</h3>
+<h4 id=21-k8s-download>2.1 k8s download</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>sudo swapoff -a
+
+sudo apt-get update <span class=o>&amp;&amp;</span> sudo apt-get install -y apt-transport-https
+
+curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg <span class=p>|</span> apt-key add - 
+cat <span class=s>&lt;&lt;EOF &gt;/etc/apt/sources.list.d/kubernetes.list
+</span><span class=s>deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main
+</span><span class=s>EOF</span>
+
+sudo apt-get update
+
+sudo apt-get install -y kubelet kubeadm kubectl
+
+<span class=c1># export KUBECONFIG=/etc/kubernetes/admin.conf</span>
+
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+</code></pre></td></tr></table>
+</div>
+</div><p>卸载之前的版本</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>sudo apt-get remove -y kubelet kubeadm kubectl
+sudo apt autoremove
+
+<span class=c1># </span>
+rm -rf ~/.kube
+</code></pre></td></tr></table>
+</div>
+</div><p>安装指定版本</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=c1># 比如 1.13.12</span>
+sudo apt-get install -y <span class=nv>kubelet</span><span class=o>=</span>1.13.12-00 <span class=nv>kubeadm</span><span class=o>=</span>1.13.12-00 <span class=nv>kubectl</span><span class=o>=</span>1.13.12-00
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=22-master-init>2.2 master init</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=c1># -------- master --------</span>
+
+
+*** init-config.yaml ***
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: ClusterConfiguration
+imageRepository: registry.aliyuncs.com/google_containers
+kubernetesVersion: v1.16.1
+controlPlaneEndpoint: <span class=s2>&#34;192.168.1.37:6443&#34;</span>
+networking:
+  serviceSubnet: <span class=s2>&#34;192.168.0.0/16&#34;</span>
+  podSubnet: <span class=s2>&#34;192.168.0.0/16&#34;</span>
+***
+
+kubeadm config images pull --config<span class=o>=</span>init-config.yaml
+
+kubeadm init --config<span class=o>=</span>init-config.yaml
+
+<span class=c1># 不使用配置文件init</span>
+kubeadm init <span class=se>\
+</span><span class=se></span>--apiserver-advertise-address<span class=o>=</span>192.168.1.37 <span class=se>\
+</span><span class=se></span>--image-repository registry.aliyuncs.com/google_containers <span class=se>\
+</span><span class=se></span>--kubernetes-version v1.17.4 <span class=se>\
+</span><span class=se></span>--service-cidr<span class=o>=</span>10.1.0.0/16 <span class=se>\
+</span><span class=se></span>--pod-network-cidr<span class=o>=</span>10.244.0.0/16
+
+
+<span class=c1># kubeadm join 49.233.168.186:6443 --token cpnxfg.2as9a59xch4pt4a7 \</span>
+<span class=c1>#    --discovery-token-ca-cert-hash sha256:33c8a4bcf84de94ae46ba33fb603e7366a58d6c4e8b6a71287f3f4040eaab33d</span>
+
+
+mkdir -p <span class=nv>$HOME</span>/.kube
+sudo cp -i /etc/kubernetes/admin.conf <span class=nv>$HOME</span>/.kube/config
+sudo chown <span class=k>$(</span>id -u<span class=k>)</span>:<span class=k>$(</span>id -g<span class=k>)</span> <span class=nv>$HOME</span>/.kube/config
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=23-node-init>2.3 node init</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>-------- node --------
+sudo apt-get install -y kubelet kubeadm --disableexcludes<span class=o>=</span>kubernetes
+
+
+*** join-config.yaml ***
+apiVersion: kubeadm.k8s.io/v1beta1
+kind: JoinConfiguration
+discovery:
+  bootstrapToken:
+	apiServerEndpoint: 49.233.168.186:6443
+	token: 4fbe4n.lkqwktq81wdi42ga
+	unsafeSkipCAVerification: <span class=nb>true</span>
+  tlsBootstrapToken: 4fbe4n.lkqwktq81wdi42ga
+***
+
+kubeadm join --config<span class=o>=</span>join-config.yaml 
+  
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=24-cni网络插件>2.4 cni网络插件</h4>
+<p>CNI网络插件选择参考:https://kubernetes.io/docs/setup/independent/createcluster-kubeadm/#pod-network</p>
+<p>Subnet选择<code>192.168.0.0/16</code>,使用calico</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>kubectl apply -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>Subnet选择<code>10.244.0.0/16</code>,使用flannel</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=25-gpu-插件>2.5 gpu 插件</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/1.0.0-beta/nvidia-device-plugin.yml
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=26-单机>2.6 单机</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># 单机All-In-One Kubernetes环境</span>
+kubectl taint nodes --all node-role.kubernetes.io/master-
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=27-常用cli>2.7 常用cli</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># pod状态</span>
+kubectl get pods --all-namespaces
+kubectl get pods --all-namespaces -o wide
+kubectl --namespace<span class=o>=</span>kube-system describe pod &lt;pod_name&gt;
+
+</code></pre></td></tr></table>
+</div>
+</div><h5 id=设置master节点参与不参与pod负载>设置master节点参与/不参与Pod负载</h5>
+<ul>
+<li>
+<p>master节点参与pod负载</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>kubectl taint nodes --all node-role.kubernetes.io/master-
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>master节点恢复不参与POD负载</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>kubectl taint nodes &lt;node-name&gt; node-role.kubernetes.io/master=:NoSchedule
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>master节点恢复不参与POD负载，并将Node上已经存在的Pod驱逐出去</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>kubectl taint nodes &lt;node-name&gt; node-role.kubernetes.io/master=:NoExecute
+</code></pre></td></tr></table>
+</div>
+</div></li>
+</ul>
+<h5 id=node节点token失效>node节点token失效</h5>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>kubeadm token list
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt <span class=p>|</span> openssl rsa -pubin -outform der 2&gt;/dev/null <span class=p>|</span> openssl dgst -sha256 -hex <span class=p>|</span> sed <span class=s1>&#39;s/^.* //&#39;</span>
+
+<span class=c1># 替换上面生成的相应字段</span>
+kubeadm join 10.167.11.153:6443 --token o4avtg.65ji6b778nyacw68 --discovery-token-ca-cert-hash sha256:2cc3029123db737f234186636330e87b5510c173c669f513a9c0e0da395515b0
+
+</code></pre></td></tr></table>
+</div>
+</div></div>
+<div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>更新于 2019-11-28</span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/posts/kubernetes_install/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/运维&测试/Kubernetes/kubernetes_install.md target=_blank rel="noopener noreferrer">编辑此页</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/kubernetes/>Kubernetes</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/posts/docker_storage_driver/ class=prev rel=prev title="Docker Storage Driver"><i class="fas fa-angle-left fa-fw"></i>Docker Storage Driver</a>
+<a href=/posts/isaac_sdk/ class=next rel=next title="NVIDIA Isaac SDK">NVIDIA Isaac SDK<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id=comments><div id=gitalk class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
+<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论>
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
+<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-28T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"Kubernetes安装"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
+</body>
+</html>

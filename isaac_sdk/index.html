@@ -1,0 +1,487 @@
+<!doctype html><html lang=zh-cn>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<title class=pjax-title>NVIDIA Isaac SDK - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="NVIDIA Isaac SDK">
+<meta property="og:description" content>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sunnyh1220.github.io/posts/isaac_sdk/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-04-15T00:00:00+00:00">
+<meta property="article:modified_time" content="2020-04-15T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
+<meta name=twitter:title content="NVIDIA Isaac SDK">
+<meta name=twitter:description content>
+<meta name=application-name content="Sunnyh's Blog">
+<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
+<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/isaac_sdk/><link rel=prev href=https://sunnyh1220.github.io/posts/kubernetes_install/><link rel=next href=https://sunnyh1220.github.io/posts/horovod_basics/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"NVIDIA Isaac SDK","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/isaac_sdk\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Isaac","wordcount":1100,"url":"https:\/\/sunnyh1220.github.io\/posts\/isaac_sdk\/","datePublished":"2020-04-15T00:00:00+00:00","dateModified":"2020-04-15T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
+<div id=back-to-top></div>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/isaac_sdk/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
+</a></div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
+取消
+</a>
+</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
+</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/isaac_sdk/ selected>简体中文</option></select>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>目录</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">NVIDIA Isaac SDK</h1><div class=post-meta>
+<div class=post-meta-line>
+<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/nvidia/><i class="far fa-folder fa-fw"></i>NVIDIA</a>&nbsp;<a href=/posts/categories/gpu/><i class="far fa-folder fa-fw"></i>GPU</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-04-15>2020-04-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2020-04-15>2020-04-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1100 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#1-isaac-engine>1. Isaac Engine</a></li>
+<li><a href=#2-isaac-gems>2. Isaac GEMs</a></li>
+<li><a href=#3-isaac-apps>3. Isaac Apps</a></li>
+<li><a href=#4-isaac-sim>4. Isaac Sim</a></li>
+<li><a href=#5-dev>5. Dev</a>
+<ul>
+<li><a href=#51-setup>5.1 Setup</a>
+<ul>
+<li><a href=#installing-dependencies-on-the-desktop>Installing Dependencies on the Desktop</a></li>
+<li><a href=#installing-bazelhttpsdocsbazelbuildversionsmasterinstall-ubuntuhtml><a href=https://docs.bazel.build/versions/master/install-ubuntu.html>Installing Bazel</a></a></li>
+<li><a href=#installing-nvidia-gpu-driver>Installing NVIDIA GPU Driver</a></li>
+<li><a href=#installing-cuda100httpsdevelopernvidiacomcuda-100-download-archivetarget_oslinuxtarget_archx86_64target_distroubuntutarget_version1804target_typerunfilelocal>Installing <a href="https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1804&target_type=runfilelocal">CUDA10.0</a></a></li>
+<li><a href=#install-unity-editor-for-editor-mode>Install Unity Editor for Editor Mode</a></li>
+</ul>
+</li>
+<li><a href=#52-运行isaac-sdk示例app>5.2 运行Isaac SDK示例App</a>
+<ul>
+<li><a href=#521--stereo_dummy-sample-application>5.2.1 stereo_dummy sample application</a></li>
+<li><a href=#522--v4l2_camera-sample-application>5.2.2 v4l2_camera sample application</a></li>
+</ul>
+</li>
+<li><a href=#53-运行isaac-sim示例app>5.3 运行Isaac Sim示例App</a>
+<ul>
+<li><a href=#531-play-mode>5.3.1 Play Mode</a>
+<ul>
+<li><a href=#5311-warehouse-navigation>5.3.1.1 Warehouse Navigation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><div class="details admonition warning open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>
+本文最后更新于 <span class=timeago datetime=2020-04-15T00:00:00 title="April 15, 2020">2020-04-15</span>，文中内容可能已过时。</div>
+</div>
+</div><blockquote>
+<p>参考:</p>
+<p><a href=https://docs.nvidia.com/isaac/isaac/doc/overview.html target=_blank rel="noopener noreffer">https://docs.nvidia.com/isaac/isaac/doc/overview.html</a></p>
+<p><a href=https://developer.nvidia.com/isaac-sdk target=_blank rel="noopener noreffer">https://developer.nvidia.com/isaac-sdk</a></p>
+</blockquote>
+<p><img class=lazyload data-src=./assets/Isaac.assets/isaac_main.png data-srcset="./assets/Isaac.assets/isaac_main.png, ./assets/Isaac.assets/isaac_main.png 1.5x, ./assets/Isaac.assets/isaac_main.png 2x" data-sizes=auto alt=./assets/Isaac.assets/isaac_main.png title=img></p>
+<h2 id=1-isaac-engine>1. Isaac Engine</h2>
+<p>application framework</p>
+<p>Isaac Engine是一个<strong>软件框架</strong>，可轻松构建模块化机器人应用程序。它为智能机器人提供了高性能的数据处理和深度学习。在Isaac机器人引擎上开发的机器人应用程序可以在NVIDIA®Jetson AGX Xavier™和NVIDIA®Jetson Nano™等边缘设备以及具有离散NVIDIA®GPU的工作站（例如T4）上无缝运行。</p>
+<h2 id=2-isaac-gems>2. Isaac GEMs</h2>
+<p>packages with high-performance robotics algorithms</p>
+<p>GEMs是用于感应，规划或驱动的模块化功能，可以轻松插入机器人应用程序中。例如，开发人员可以添加障碍物检测，立体声深度估计或人类语音识别，以丰富其机器人用例。</p>
+<h2 id=3-isaac-apps>3. Isaac Apps</h2>
+<p>reference applications</p>
+<h2 id=4-isaac-sim>4. Isaac Sim</h2>
+<p>a powerful simulation platform</p>
+<p>Isaac Sim是虚拟机器人实验室和高保真3D世界模拟器，可通过降低成本和风险来加速研究，设计和开发。</p>
+<h2 id=5-dev>5. Dev</h2>
+<h3 id=51-setup>5.1 Setup</h3>
+<blockquote>
+<p>Env:</p>
+<p>Ubuntu18.04.1 (Nvidia Driver 440, cuda10.0, GPU算力 >= 3.5)</p>
+<p>Nano: Jetpack4.3</p>
+</blockquote>
+<p><a href=https://developer.nvidia.com/isaac/downloads target=_blank rel="noopener noreffer">下载</a>Isaac SDK和Isaac Sim, 分别解压到 <code>~/isaac_sdk</code> 和 <code>~/isaac_sim_unity3d</code></p>
+<p>添加镜像源:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo vi /etc/apt/sources.list
+</code></pre></td></tr></table>
+</div>
+</div><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-updates main restricted universe multiverse
+ideb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-backports main restricted universe multiverse
+deb https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+# deb-src https://mirrors.tuna.tsinghua.edu.cn/ubuntu/ bionic-security main restricted universe multiverse
+</code></pre></td></tr></table>
+</div>
+</div><p>安装pip3</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+python3 get-pip.py
+
+<span class=c1># 修改为豆瓣源</span>
+sudo pip3 config <span class=nb>set</span> global.index-url https://pypi.doubanio.com/simple/
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=installing-dependencies-on-the-desktop>Installing Dependencies on the Desktop</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> ~/isaac_sdk
+engine/build/scripts/install_dependencies.sh
+</code></pre></td></tr></table>
+</div>
+</div><p>Installing Dependencies on Robots:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> ~/isaac_sdk
+<span class=c1># engine/build/scripts/install_dependencies_jetson.sh -u &lt;jetson_username&gt; -h &lt;jetson_ip&gt;</span>
+engine/build/scripts/install_dependencies_jetson.sh -u nona -h 192.168.20.155
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=installing-bazelhttpsdocsbazelbuildversionsmasterinstall-ubuntuhtml><a href=https://docs.bazel.build/versions/master/install-ubuntu.html target=_blank rel="noopener noreffer">Installing Bazel</a></h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt install curl gnupg
+curl https://bazel.build/bazel-release.pub.gpg <span class=p>|</span> sudo apt-key add -
+<span class=nb>echo</span> <span class=s2>&#34;deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8&#34;</span> <span class=p>|</span> sudo tee /etc/apt/sources.list.d/bazel.list
+
+sudo apt update <span class=o>&amp;&amp;</span> sudo apt install bazel
+
+<span class=c1># Ubuntu 18.04 (LTS) uses OpenJDK 11 by default:</span>
+sudo apt install openjdk-11-jdk
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=installing-nvidia-gpu-driver>Installing NVIDIA GPU Driver</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo add-apt-repository ppa:graphics-drivers/ppa
+sudo apt-get update
+sudo apt-get install nvidia-driver-440
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=installing-cuda100httpsdevelopernvidiacomcuda-100-download-archivetarget_oslinuxtarget_archx86_64target_distroubuntutarget_version1804target_typerunfilelocal>Installing <a href="https://developer.nvidia.com/cuda-10.0-download-archive?target_os=Linux&target_arch=x86_64&target_distro=Ubuntu&target_version=1804&target_type=runfilelocal" target=_blank rel="noopener noreffer">CUDA10.0</a></h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># 下载.run脚本并运行, 注: 只安装cuda tool kit, 不安装driver</span>
+wget https://developer.download.nvidia.cn/compute/cuda/10.0/secure/Prod/local_installers/cuda_10.0.130_410.48_linux.run
+
+sudo sh cuda_10.0.130_410.48_linux.run
+</code></pre></td></tr></table>
+</div>
+</div><p>在<code>vim ~/.bashrc</code>的最后加上以下配置信息</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>export CUDA_HOME=/usr/local/cuda-10.0
+export LD_LIBRARY_PATH=${CUDA_HOME}/lib64
+export PATH=${CUDA_HOME}/bin:${PATH}
+</code></pre></td></tr></table>
+</div>
+</div><p>使用命令<code>source ~/.bashrc</code>使配置生效</p>
+<h4 id=install-unity-editor-for-editor-mode>Install Unity Editor for Editor Mode</h4>
+<blockquote>
+<p><a href=https://forum.unity.com/threads/unity-hub-v-1-3-2-is-now-available.594139/ target=_blank rel="noopener noreffer">https://forum.unity.com/threads/unity-hub-v-1-3-2-is-now-available.594139/</a></p>
+</blockquote>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>wget https://public-cdn.cloud.unity3d.com/hub/prod/UnityHub.AppImage
+chmod +x UnityHub.AppImage
+./UnityHub.AppImage
+</code></pre></td></tr></table>
+</div>
+</div><p>When the Unity Hub application opens, follow these steps to install the Unity Editor:</p>
+<ol>
+<li>Click the person icon in the upper right and select <strong>Sign in</strong>. Sign in with your Unity ID.</li>
+<li>Select <strong>Installs</strong> on the left, then select <strong>Add</strong>.</li>
+<li>In the <strong>Add Unity Version</strong> popup window, install 2019.3.x (no modules are required). The sample project for IsaacSim Unity3D is created with 2019.3.0f6, so any newer 2019.3 version can be used.</li>
+</ol>
+<h3 id=52-运行isaac-sdk示例app>5.2 运行Isaac SDK示例App</h3>
+<h4 id=521--stereo_dummy-sample-application>5.2.1 stereo_dummy sample application</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> ~/isaac_sdk
+bazel build //apps/samples/stereo_dummy
+bazel run //apps/samples/stereo_dummy
+</code></pre></td></tr></table>
+</div>
+</div><p>应用运行后,可在浏览器打开<code>http://localhost:3000</code></p>
+<p>将应用部署运行在Jetson上:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># 配置desktop免密登录Jetson</span>
+ssh-keygen
+ssh-copy-id -i ~/.ssh/id_rsa.pub  nona@192.168.20.155
+
+<span class=c1># deploy the package to the robot</span>
+<span class=nb>cd</span> ~/isaac_sdk
+<span class=c1># ./engine/build/deploy.sh --remote_user &lt;username_on_robot&gt; -p //apps/samples/stereo_dummy:stereo_dummy-pkg -d jetpack43 -h &lt;robot_ip&gt;</span>
+./engine/build/deploy.sh --remote_user nona -p //apps/samples/stereo_dummy:stereo_dummy-pkg -d jetpack43 -h 192.168.20.155
+</code></pre></td></tr></table>
+</div>
+</div><p>在Jetson上运行 :</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># ssh ROBOTUSER@ROBOTIP</span>
+ssh nona@192.168.20.155
+
+<span class=c1># deep为desktop的用户名</span>
+<span class=nb>cd</span> deploy/deep/stereo_dummy-pkg
+./apps/samples/stereo_dummy/stereo_dummy
+<span class=c1># 应用运行后浏览器打开192.168.20.155:3000</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>也可以部署到Jetson同时运行App,加 <code>--run</code></p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>./engine/build/deploy.sh --remote_user nona -p //apps/samples/stereo_dummy:stereo_dummy-pkg -d jetpack43 -h 192.168.20.155 --run
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=522--v4l2_camera-sample-application>5.2.2 v4l2_camera sample application</h4>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>bazel build //apps/samples/v4l2_camera
+bazel run //apps/samples/v4l2_camera
+
+./engine/build/deploy.sh --remote_user nona -p //apps/samples/v4l2_camera:v4l2_camera-pkg -d jetpack43 -h 192.168.20.155 --run
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=53-运行isaac-sim示例app>5.3 运行Isaac Sim示例App</h3>
+<h4 id=531-play-mode>5.3.1 Play Mode</h4>
+<h5 id=5311-warehouse-navigation>5.3.1.1 Warehouse Navigation</h5>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># start the simulator with the “small_warehouse” scene</span>
+<span class=nb>cd</span> ~/isaac_sim_unity3d/builds
+./sample.x86_64 --scene small_warehouse -logFile -
+</code></pre></td></tr></table>
+</div>
+</div><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># run the Isaac SDK application with the Carter navigation stack</span>
+<span class=nb>cd</span> ~/isaac_sdk
+bazel run //apps/navsim:navsim_navigate
+</code></pre></td></tr></table>
+</div>
+</div></div>
+<div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>更新于 2020-04-15</span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/posts/isaac_sdk/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/AI&大数据/NVIDIA/Isaac_SDK/index.zh-cn.md target=_blank rel="noopener noreferrer">编辑此页</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/isaac/>Isaac</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/posts/kubernetes_install/ class=prev rel=prev title=Kubernetes安装><i class="fas fa-angle-left fa-fw"></i>Kubernetes安装</a>
+<a href=/posts/horovod_basics/ class=next rel=next title=Horovod基本原理与使用>Horovod基本原理与使用<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id=comments><div id=gitalk class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
+<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论>
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
+<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2020-04-15T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"NVIDIA Isaac SDK"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
+</body>
+</html>

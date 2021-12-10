@@ -1,0 +1,330 @@
+<!doctype html><html lang=zh-cn>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<title class=pjax-title>GPFS API文档 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="GPFS API文档">
+<meta property="og:description" content>
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sunnyh1220.github.io/posts/gpfs_api/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2019-11-20T00:00:00+00:00">
+<meta property="article:modified_time" content="2019-11-20T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
+<meta name=twitter:title content="GPFS API文档">
+<meta name=twitter:description content>
+<meta name=application-name content="Sunnyh's Blog">
+<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
+<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/gpfs_api/><link rel=prev href=https://sunnyh1220.github.io/posts/gpfs_basics/><link rel=next href=https://sunnyh1220.github.io/posts/docker_examples/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"GPFS API文档","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/gpfs_api\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"GPFS","wordcount":580,"url":"https:\/\/sunnyh1220.github.io\/posts\/gpfs_api\/","datePublished":"2019-11-20T00:00:00+00:00","dateModified":"2019-11-20T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
+<div id=back-to-top></div>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/gpfs_api/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
+</a></div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
+取消
+</a>
+</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
+</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/gpfs_api/ selected>简体中文</option></select>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>目录</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">GPFS API文档</h1><div class=post-meta>
+<div class=post-meta-line>
+<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/fs/><i class="far fa-folder fa-fw"></i>FS</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 580 字&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 2 分钟&nbsp;</div>
+</div><div class="details toc" id=toc-static kept>
+<div class="details-summary toc-title">
+<span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#创建文件集>创建文件集</a></li>
+<li><a href=#设置文件集配额>设置文件集配额</a></li>
+<li><a href=#删除文件集>删除文件集</a></li>
+<li><a href=#获取指定文件集信息>获取指定文件集信息</a></li>
+<li><a href=#获取简略的所有文件集信息>获取简略的所有文件集信息</a></li>
+<li><a href=#获取指定文件集配额信息>获取指定文件集配额信息</a></li>
+<li><a href=#获取配额使用信息----所有的文件集>获取配额使用信息 (所有的文件集)</a></li>
+<li><a href=#注意事项>注意事项</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><div class="details admonition warning open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>
+本文最后更新于 <span class=timeago datetime=2019-11-20T00:00:00 title="November 20, 2019">2019-11-20</span>，文中内容可能已过时。</div>
+</div>
+</div><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin:admin001 -X POST --header &#39;content-type:application/json&#39; --header &#39;accept:application/json&#39; -d &#39;{
+  &#34;filesetName&#34;: &#34;fset007&#34;, 
+  &#34;path&#34;: &#34;/gpfs/fset007&#34;, 
+  &#34;owner&#34;: &#34;sunyh&#34;, 
+  &#34;permissions&#34;: &#34;700&#34;
+}&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets&#39;
+</code></pre></td></tr></table>
+</div>
+</div><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin:admin001 -X POST --header &#39;content-type:application/json&#39; --header &#39;accept:application/json&#39; -d &#39;{
+  &#34;filesetName&#34;: &#34;fset007&#34;, 
+  &#34;path&#34;: &#34;/gpfs/fset007&#34;, 
+  &#34;owner&#34;: &#34;sunyh&#34;, 
+  &#34;permissions&#34;: &#34;700&#34;
+}&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets&#39;
+</code></pre></td></tr></table>
+</div>
+</div><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin:admin001 -X POST --header &#39;content-type:application/json&#39; --header &#39;accept:application/json&#39; -d &#39;{
+  &#34;filesetName&#34;: &#34;fset007&#34;, 
+  &#34;path&#34;: &#34;/gpfs/fset007&#34;, 
+  &#34;owner&#34;: &#34;sunyh&#34;, 
+  &#34;permissions&#34;: &#34;700&#34;,
+  &#34;inodeSpace&#34;: &#34;root&#34;
+}&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets&#39;
+</code></pre></td></tr></table>
+</div>
+</div><div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin:admin001 -X GET --header &#39;accept:application/json&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/jobs/1000000000013&#39;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=创建文件集>创建文件集</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin001:deepbay2010 -X POST --header &#39;content-type:application/json&#39; --header &#39;accept:application/json&#39; -d &#39;{ &#34;filesetName&#34;: &#34;feitest&#34;, &#34;owner&#34; : &#34;root&#34;, &#34;path&#34;: &#34;/gpfs/feitest&#34;, &#34;permissions&#34;: &#34;777&#34; }&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p>注释：</p>
+<p>filesetName ：文件集名称</p>
+<p>owner： 新文件集所有者的用户ID，然后可选地加上组ID，例如“ root：”。</p>
+<p>path：文件集路径</p>
+<p>permissions：权限， 相当于使用<strong>chmod</strong>设置的权限</p>
+<blockquote>
+<p>tip：创建文件集的时候，path不能存在，否则会创建失败。</p>
+</blockquote>
+<h3 id=设置文件集配额>设置文件集配额</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin001:deepbay2010 -X POST --header &#39;content-type:application/json&#39; --header &#39;accept:application/json&#39; -d &#39;{&#34;operationType&#34;: &#34;setQuota&#34;,&#34;quotaType&#34;: &#34;FILESET&#34;,&#34;objectName&#34;: &#34;feitest&#34;,&#34;blockSoftLimit&#34;: &#34;1G&#34;,&#34;blockHardLimit&#34;: &#34;1G&#34;}&#39; &#34;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/quotas&#34;
+</code></pre></td></tr></table>
+</div>
+</div><p>注释：</p>
+<p>objectName：文件集名称</p>
+<p>blockSoftLimit：软限制 （警告）</p>
+<p>blockHardLimit：硬限制</p>
+<h3 id=删除文件集>删除文件集</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin001:deepbay2010 -X DELETE --header &#39;accept:application/json&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets/{feilSetName}&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p>注释：</p>
+<p>路径最后为文件集名称</p>
+<blockquote>
+<p>tip：删除文件集会把该文件集对应路径下的所有文件删除</p>
+</blockquote>
+<h3 id=获取指定文件集信息>获取指定文件集信息</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin001:deepbay2010 -X GET --header &#39;accept:application/json&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets/{feilSetName}&#39;
+</code></pre></td></tr></table>
+</div>
+</div><p>​</p>
+<h3 id=获取简略的所有文件集信息>获取简略的所有文件集信息</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin001:deepbay2010 -X GET --header &#39;accept:application/json&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets&#39;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=获取指定文件集配额信息>获取指定文件集配额信息</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin001:deepbay2010 -X GET --header &#39;accept:application/json&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/filesets/{feilSetName}/quotas&#39;
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=获取配额使用信息----所有的文件集>获取配额使用信息 (所有的文件集)</h3>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>curl -k -u admin001:deepbay2010 -X GET --header &#39;accept:application/json&#39; &#39;https://192.168.1.50:443/scalemgmt/v2/filesystems/gpfs/quotas&#39;
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>tip：等效于 mmrepquota -g -v -a</p>
+</blockquote>
+<h3 id=注意事项>注意事项</h3>
+<ul>
+<li>上传文件超过配额大小时，会中止上传，但是已上传的部分会留在磁盘内，建议删除已上传的部分。</li>
+<li>不能使用root用户进行文件上传，否则上传配额失效。</li>
+</ul>
+<p>gui页面 https://192.168.1.50</p>
+<p>官网 <a href=https://www.ibm.com/support/knowledgecenter/STXKQY_4.2.3/com.ibm.spectrum.scale.v4r23.doc/bl1adm_apiv2postfilesystemfilesets.htm target=_blank rel="noopener noreffer">https://www.ibm.com/support/knowledgecenter/STXKQY_4.2.3/com.ibm.spectrum.scale.v4r23.doc/bl1adm_apiv2postfilesystemfilesets.htm</a></p>
+<blockquote>
+<p>版本：4.2.3 ，V2</p>
+</blockquote></div>
+<div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>更新于 2019-11-20</span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=/posts/gpfs_api/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/运维&测试/fs/GPFS/GPFS_API.md target=_blank rel="noopener noreferrer">编辑此页</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/gpfs/>GPFS</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
+</section>
+</div>
+<div class=post-nav><a href=/posts/gpfs_basics/ class=prev rel=prev title=GPFS安装配置><i class="fas fa-angle-left fa-fw"></i>GPFS安装配置</a>
+<a href=/posts/docker_examples/ class=next rel=next title=Docker常用应用示例>Docker常用应用示例<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+<div id=comments><div id=gitalk class=comment></div><noscript>
+Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
+</noscript></div></article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
+<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论>
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
+<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-20T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"GPFS API文档"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
+<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
+</body>
+</html>
