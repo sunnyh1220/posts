@@ -1,141 +1,24 @@
-<!doctype html><html lang=zh-cn>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<title class=pjax-title>Docker基础 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="Docker基础">
-<meta property="og:description" content>
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://sunnyh1220.github.io/posts/docker_basics/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2019-11-20T00:00:00+00:00">
-<meta property="article:modified_time" content="2019-11-20T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
-<meta name=twitter:title content="Docker基础">
-<meta name=twitter:description content>
-<meta name=application-name content="Sunnyh's Blog">
-<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
-<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/docker_basics/><link rel=prev href=https://sunnyh1220.github.io/posts/docker_examples/><link rel=next href=https://sunnyh1220.github.io/posts/docker_storage_driver/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Docker基础","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/docker_basics\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Docker","wordcount":1354,"url":"https:\/\/sunnyh1220.github.io\/posts\/docker_basics\/","datePublished":"2019-11-20T00:00:00+00:00","dateModified":"2019-11-20T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
-<div id=back-to-top></div>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/docker_basics/ selected>简体中文</option></select>
-</a><span class="menu-item search" id=search-desktop>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i>
-<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a></div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
-取消
-</a>
-</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Docker基础 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="Docker基础"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://sunnyh1220.github.io/posts/docker_basics/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-11-20T00:00:00+00:00"><meta property="article:modified_time" content="2019-11-20T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp"><meta name=twitter:title content="Docker基础"><meta name=twitter:description content><meta name=application-name content="Sunnyh's Blog"><meta name=apple-mobile-web-app-title content="Sunnyh's Blog"><meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/docker_basics/><link rel=prev href=https://sunnyh1220.github.io/posts/gpfs_api/><link rel=next href=https://sunnyh1220.github.io/posts/docker_examples/><link rel=stylesheet href=/posts/css/main.css><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/color.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/fontawesome-free/all.min.css><noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/animate/animate.min.css><noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Docker基础","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/docker_basics\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Docker","wordcount":1354,"url":"https:\/\/sunnyh1220.github.io\/posts\/docker_basics\/","datePublished":"2019-11-20T00:00:00+00:00","dateModified":"2019-11-20T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script><script src=//instant.page/5.2.0 defer type=module integrity=sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z></script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e),document.documentElement.style.setProperty("color-scheme",e==="light"?"light":"dark"),window.theme=e,window.isDark=window.theme!=="light"}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(e){const t=document.getElementsByTagName("meta");for(let n=0;n<t.length;n++)if(t[n].getAttribute("name")===e)return t[n];return""}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}else"auto"==="light"||"auto"==="dark"||"auto"==="black"?(setTheme("auto"),saveTheme("auto")):(saveTheme("auto"),setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")],window.switchThemeEventSet=new Set</script><div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=desktop-header-typeit class=typeit></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/everything/>索引 </a><a class=menu-item href=/posts/posts/>文章 </a><a class=menu-item href=/posts/collections/>收集 </a><a class=menu-item href=/posts/tags/>标签 </a><a class=menu-item href=/posts/categories/>分类 </a><a class=menu-item href=/posts/series/>系列 </a><a class=menu-item href=/posts/authors/>作者 </a><a class=menu-item href=/posts/about/>关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i> </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 id=language-select-desktop onchange="location=this.value"><option value=/posts/docker_basics/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-select" title=切换主题><i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=mobile-header-typeit class=typeit></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i></a><a href=javascript:void(0); class="menu-item theme-select" title=切换主题>
 <i class="fas fa-adjust fa-fw"></i>
 <select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/docker_basics/ selected>简体中文</option></select>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>目录</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Docker基础</h1><div class=post-meta>
-<div class=post-meta-line>
-<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
-</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/cloudnative/><i class="far fa-folder fa-fw"></i>CloudNative</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1354 字&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
-</div><div class=featured-image><img class=lazyload data-src=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png data-srcset="https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png, https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png 1.5x, https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png 2x" data-sizes=auto alt=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png title=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png height=auto width=auto></div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>目录</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li><a href=#下载安装>下载安装</a></li>
-<li><a href=#修改存储位置>修改存储位置</a></li>
-<li><a href=#docker常用操作>Docker常用操作</a></li>
-<li><a href=#dockerfile>Dockerfile</a></li>
-</ul>
-</nav></div>
-</div><div class=content id=content><div class="details admonition warning open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>
-本文最后更新于 <span class=timeago datetime=2019-11-20T00:00:00 title="November 20, 2019">2019-11-20</span>，文中内容可能已过时。</div>
-</div>
-</div><h2 id=下载安装>下载安装</h2>
-<blockquote>
-<p>Environment: Ubuntu18.04</p>
-<p>Reference: <a href=https://docs.docker.com/engine/install/ubuntu/ target=_blank rel="noopener noreffer">https://docs.docker.com/engine/install/ubuntu/</a></p>
-</blockquote>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 onchange="location=this.value"><option value=/posts/docker_basics/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto><nav id=TableOfContents><ul><li><a href=#下载安装>下载安装</a></li><li><a href=#修改存储位置>修改存储位置</a></li><li><a href=#docker常用操作>Docker常用操作</a></li><li><a href=#dockerfile>Dockerfile</a></li></ul></nav></div></div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Docker基础</h1><div class=post-meta><div class=post-meta-line><span class=post-author><span class="author fas fa-user-circle fa-fw"></span><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreferrer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/cloudnative/><i class="far fa-folder fa-fw"></i>CloudNative</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1354 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div></div><div class=featured-image><img loading=eager src=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png srcset="https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png, https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png 1.5x, https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png 2x" sizes=auto alt=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png title=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png height=auto width=auto></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#下载安装>下载安装</a></li><li><a href=#修改存储位置>修改存储位置</a></li><li><a href=#docker常用操作>Docker常用操作</a></li><li><a href=#dockerfile>Dockerfile</a></li></ul></nav></div></div><div class=content id=content><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>本文最后更新于 <span class=timeago datetime=2019-11-20T00:00:00 title="November 20, 2019">2019-11-20</span>，文中内容可能已过时。</div></div></div><h2 id=下载安装 class=headerLink><a href=#%e4%b8%8b%e8%bd%bd%e5%ae%89%e8%a3%85 class=header-mark></a>下载安装</h2><blockquote><p>Environment: Ubuntu18.04</p><p>Reference: <a href=https://docs.docker.com/engine/install/ubuntu/ target=_blank rel="noopener noreferrer">https://docs.docker.com/engine/install/ubuntu/</a></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># 卸载 docker</span>
-sudo apt-get remove docker docker-engine docker.io containerd runc
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 卸载 docker</span>
+</span></span><span class=line><span class=cl>sudo apt-get remove docker docker-engine docker.io containerd runc
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -155,98 +38,61 @@ sudo apt-get remove docker docker-engine docker.io containerd runc
 </span><span class=lnt>18
 </span><span class=lnt>19
 </span><span class=lnt>20
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo apt-get update
-
-sudo apt-get install <span class=se>\
-</span><span class=se></span>    apt-transport-https <span class=se>\
-</span><span class=se></span>    ca-certificates <span class=se>\
-</span><span class=se></span>    curl <span class=se>\
-</span><span class=se></span>    gnupg-agent <span class=se>\
-</span><span class=se></span>    software-properties-common
-    
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class=p>|</span> sudo apt-key add -
-
-sudo add-apt-repository <span class=s2>&#34;deb [arch=amd64]  https://download.docker.com/linux/ubuntu </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> stable&#34;</span> 
-
-<span class=c1># docker version list</span>
-apt-cache madison docker-ce
-apt-cache madison docker-ce-cli
-
-<span class=c1># install</span>
-sudo apt-get update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo apt-get install <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    apt-transport-https <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    ca-certificates <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    curl <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    gnupg-agent <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    software-properties-common
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class=p>|</span> sudo apt-key add -
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo add-apt-repository <span class=s2>&#34;deb [arch=amd64]  https://download.docker.com/linux/ubuntu </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> stable&#34;</span> 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># docker version list</span>
+</span></span><span class=line><span class=cl>apt-cache madison docker-ce
+</span></span><span class=line><span class=cl>apt-cache madison docker-ce-cli
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># install</span>
+</span></span><span class=line><span class=cl>sudo apt-get update
+</span></span><span class=line><span class=cl>sudo apt-get install docker-ce docker-ce-cli containerd.io
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># 安装指定版本</span>
-sudo apt-get install docker-ce<span class=o>=</span>5:18.09.9~3-0~ubuntu-bionic docker-ce-cli<span class=o>=</span>5:18.09.9~3-0~ubuntu-bionic containerd.io
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 安装指定版本</span>
+</span></span><span class=line><span class=cl>sudo apt-get install docker-ce<span class=o>=</span>5:18.09.9~3-0~ubuntu-bionic docker-ce-cli<span class=o>=</span>5:18.09.9~3-0~ubuntu-bionic containerd.io
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># 设置 daemon.json</span>
-sudo tee /etc/docker/daemon.json <span class=s>&lt;&lt;-&#39;EOF&#39;
-</span><span class=s>{
-</span><span class=s>  &#34;registry-mirrors&#34;: [&#34;https://registry.docker-cn.com&#34;]
-</span><span class=s>}
-</span><span class=s>EOF</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 设置 daemon.json</span>
+</span></span><span class=line><span class=cl>sudo tee /etc/docker/daemon.json <span class=s>&lt;&lt;-&#39;EOF&#39;
+</span></span></span><span class=line><span class=cl><span class=s>{
+</span></span></span><span class=line><span class=cl><span class=s>  &#34;registry-mirrors&#34;: [&#34;https://registry.docker-cn.com&#34;]
+</span></span></span><span class=line><span class=cl><span class=s>}
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># reboot docker</span>
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># reboot docker</span>
+</span></span><span class=line><span class=cl>sudo systemctl daemon-reload
+</span></span><span class=line><span class=cl>sudo systemctl restart docker
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># start up automatically on boot up</span>
-sudo systemctl <span class=nb>enable</span> docker <span class=o>&amp;&amp;</span> sudo systemctl start docker
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># start up automatically on boot up</span>
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> docker <span class=o>&amp;&amp;</span> sudo systemctl start docker
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># docker permission deny</span>
-sudo groupadd docker
-sudo gpasswd -a <span class=o>[</span>user name<span class=o>]</span> docker
-sudo service docker restart
-</code></pre></td></tr></table>
-</div>
-</div><h2 id=修改存储位置>修改存储位置</h2>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># docker permission deny</span>
+</span></span><span class=line><span class=cl>sudo groupadd docker
+</span></span><span class=line><span class=cl>sudo gpasswd -a <span class=o>[</span>user name<span class=o>]</span> docker
+</span></span><span class=line><span class=cl>sudo service docker restart
+</span></span></code></pre></td></tr></table></div></div><h2 id=修改存储位置 class=headerLink><a href=#%e4%bf%ae%e6%94%b9%e5%ad%98%e5%82%a8%e4%bd%8d%e7%bd%ae class=header-mark></a>修改存储位置</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -261,29 +107,22 @@ sudo service docker restart
 </span><span class=lnt>13
 </span><span class=lnt>14
 </span><span class=lnt>15
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>// 修改docker默认镜像/容器存储位置
-// Docker默认的镜像和容器存储位置在/var/lib/docke
-
-1<span class=o>)</span>修改docker.service文件　
-<span class=nb>cd</span> /etc/systemd/system/multi-user.target.wants
-sudo vim docker.service
-
-// <span class=nv>ExecStart</span><span class=o>=</span>/usr/bin/dockerd --graph<span class=o>=</span>/data/docker --storage-driver<span class=o>=</span>overlay
-
---graph<span class=o>=</span>/data/docker：docker新的存储位置
---storage-driver<span class=o>=</span>overlay ： 当前docker所使用的存储驱动
-
-2<span class=o>)</span> 重启docker　
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-</code></pre></td></tr></table>
-</div>
-</div><h2 id=docker常用操作>Docker常用操作</h2>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>// 修改docker默认镜像/容器存储位置
+</span></span><span class=line><span class=cl>// Docker默认的镜像和容器存储位置在/var/lib/docke
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>1<span class=o>)</span>修改docker.service文件　
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /etc/systemd/system/multi-user.target.wants
+</span></span><span class=line><span class=cl>sudo vim docker.service
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// <span class=nv>ExecStart</span><span class=o>=</span>/usr/bin/dockerd --graph<span class=o>=</span>/data/docker --storage-driver<span class=o>=</span>overlay
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>--graph<span class=o>=</span>/data/docker：docker新的存储位置
+</span></span><span class=line><span class=cl>--storage-driver<span class=o>=</span>overlay ： 当前docker所使用的存储驱动
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>2<span class=o>)</span> 重启docker　
+</span></span><span class=line><span class=cl>sudo systemctl daemon-reload
+</span></span><span class=line><span class=cl>sudo systemctl restart docker
+</span></span></code></pre></td></tr></table></div></div><h2 id=docker常用操作 class=headerLink><a href=#docker%e5%b8%b8%e7%94%a8%e6%93%8d%e4%bd%9c class=header-mark></a>Docker常用操作</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -323,53 +162,47 @@ sudo systemctl restart docker
 </span><span class=lnt>38
 </span><span class=lnt>39
 </span><span class=lnt>40
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># docker --help</span>
-build       Build an image from a Dockerfile
-commit      Create a new image from a container<span class=s1>&#39;s changes
-</span><span class=s1>cp          Copy files/folders between a container and the local filesystem
-</span><span class=s1>create      Create a new container
-</span><span class=s1>diff        Inspect changes to files or directories on a container&#39;</span>s filesystem
-events      Get real <span class=nb>time</span> events from the server
-<span class=nb>exec</span>        Run a <span class=nb>command</span> in a running container
-<span class=nb>export</span>      Export a container<span class=err>&#39;</span>s filesystem as a tar archive
-<span class=nb>history</span>     Show the <span class=nb>history</span> of an image
-images      List images
-import      Import the contents from a tarball to create a filesystem image
-info        Display system-wide information
-inspect     Return low-level information on Docker objects
-<span class=nb>kill</span>        Kill one or more running containers
-load        Load an image from a tar archive or STDIN
-login       Log in to a Docker registry
-<span class=nb>logout</span>      Log out from a Docker registry
-logs        Fetch the logs of a container
-pause       Pause all processes within one or more containers
-port        List port mappings or a specific mapping <span class=k>for</span> the container
-ps          List containers
-pull        Pull an image or a repository from a registry
-push        Push an image or a repository to a registry
-rename      Rename a container
-restart     Restart one or more containers
-rm          Remove one or more containers
-rmi         Remove one or more images
-run         Run a <span class=nb>command</span> in a new container
-save        Save one or more images to a tar archive <span class=o>(</span>streamed to STDOUT by default<span class=o>)</span>
-search      Search the Docker Hub <span class=k>for</span> images
-start       Start one or more stopped containers
-stats       Display a live stream of container<span class=o>(</span>s<span class=o>)</span> resource usage statistics
-stop        Stop one or more running containers
-tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
-top         Display the running processes of a container
-unpause     Unpause all processes within one or more containers
-update      Update configuration of one or more containers
-version     Show the Docker version information
-<span class=nb>wait</span>        Block <span class=k>until</span> one or more containers stop, <span class=k>then</span> print their <span class=nb>exit</span> codes
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># docker --help</span>
+</span></span><span class=line><span class=cl>build       Build an image from a Dockerfile
+</span></span><span class=line><span class=cl>commit      Create a new image from a container<span class=s1>&#39;s changes
+</span></span></span><span class=line><span class=cl><span class=s1>cp          Copy files/folders between a container and the local filesystem
+</span></span></span><span class=line><span class=cl><span class=s1>create      Create a new container
+</span></span></span><span class=line><span class=cl><span class=s1>diff        Inspect changes to files or directories on a container&#39;</span>s filesystem
+</span></span><span class=line><span class=cl>events      Get real <span class=nb>time</span> events from the server
+</span></span><span class=line><span class=cl><span class=nb>exec</span>        Run a <span class=nb>command</span> in a running container
+</span></span><span class=line><span class=cl><span class=nb>export</span>      Export a container<span class=err>&#39;</span>s filesystem as a tar archive
+</span></span><span class=line><span class=cl><span class=nb>history</span>     Show the <span class=nb>history</span> of an image
+</span></span><span class=line><span class=cl>images      List images
+</span></span><span class=line><span class=cl>import      Import the contents from a tarball to create a filesystem image
+</span></span><span class=line><span class=cl>info        Display system-wide information
+</span></span><span class=line><span class=cl>inspect     Return low-level information on Docker objects
+</span></span><span class=line><span class=cl><span class=nb>kill</span>        Kill one or more running containers
+</span></span><span class=line><span class=cl>load        Load an image from a tar archive or STDIN
+</span></span><span class=line><span class=cl>login       Log in to a Docker registry
+</span></span><span class=line><span class=cl><span class=nb>logout</span>      Log out from a Docker registry
+</span></span><span class=line><span class=cl>logs        Fetch the logs of a container
+</span></span><span class=line><span class=cl>pause       Pause all processes within one or more containers
+</span></span><span class=line><span class=cl>port        List port mappings or a specific mapping <span class=k>for</span> the container
+</span></span><span class=line><span class=cl>ps          List containers
+</span></span><span class=line><span class=cl>pull        Pull an image or a repository from a registry
+</span></span><span class=line><span class=cl>push        Push an image or a repository to a registry
+</span></span><span class=line><span class=cl>rename      Rename a container
+</span></span><span class=line><span class=cl>restart     Restart one or more containers
+</span></span><span class=line><span class=cl>rm          Remove one or more containers
+</span></span><span class=line><span class=cl>rmi         Remove one or more images
+</span></span><span class=line><span class=cl>run         Run a <span class=nb>command</span> in a new container
+</span></span><span class=line><span class=cl>save        Save one or more images to a tar archive <span class=o>(</span>streamed to STDOUT by default<span class=o>)</span>
+</span></span><span class=line><span class=cl>search      Search the Docker Hub <span class=k>for</span> images
+</span></span><span class=line><span class=cl>start       Start one or more stopped containers
+</span></span><span class=line><span class=cl>stats       Display a live stream of container<span class=o>(</span>s<span class=o>)</span> resource usage statistics
+</span></span><span class=line><span class=cl>stop        Stop one or more running containers
+</span></span><span class=line><span class=cl>tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+</span></span><span class=line><span class=cl>top         Display the running processes of a container
+</span></span><span class=line><span class=cl>unpause     Unpause all processes within one or more containers
+</span></span><span class=line><span class=cl>update      Update configuration of one or more containers
+</span></span><span class=line><span class=cl>version     Show the Docker version information
+</span></span><span class=line><span class=cl><span class=nb>wait</span>        Block <span class=k>until</span> one or more containers stop, <span class=k>then</span> print their <span class=nb>exit</span> codes
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -395,40 +228,33 @@ version     Show the Docker version information
 </span><span class=lnt>24
 </span><span class=lnt>25
 </span><span class=lnt>26
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># docker build --help</span>
-Usage:  docker run <span class=o>[</span>OPTIONS<span class=o>]</span> IMAGE <span class=o>[</span>COMMAND<span class=o>]</span> <span class=o>[</span>ARG...<span class=o>]</span>
-
-Run a <span class=nb>command</span> in a new container
-
-Options:
- 	  --add-host list                  Add a custom host-to-IP mapping <span class=o>(</span>host:ip<span class=o>)</span>
-  -d, --detach                         Run container in background and print container ID
-  -e, --env list                       Set environment variables
-      --gpus gpu-request               GPU devices to add to the container <span class=o>(</span><span class=s1>&#39;all&#39;</span> to pass all GPUs<span class=o>)</span>
-      --help                           Print usage
-  -h, --hostname string                Container host name
-  -i, --interactive                    Keep STDIN open even <span class=k>if</span> not attached
-  -m, --memory bytes                   Memory limit
-      --mount mount                    Attach a filesystem mount to the container
-      --name string                    Assign a name to the container
-      --network network                Connect a container to a network
-      --privileged                     Give extended privileges to this container
-  -p, --publish list                   Publish a container<span class=err>&#39;</span>s port<span class=o>(</span>s<span class=o>)</span> to the host
-      --rm                             Automatically remove the container when it exits
-      --shm-size bytes                 Size of /dev/shm
-  -t, --tty                            Allocate a pseudo-TTY
-      --ulimit <span class=nb>ulimit</span>                  Ulimit options <span class=o>(</span>default <span class=o>[])</span>
-  -u, --user string                    Username or UID <span class=o>(</span>format: &lt;name<span class=p>|</span>uid&gt;<span class=o>[</span>:&lt;group<span class=p>|</span>gid&gt;<span class=o>])</span>
-  -v, --volume list                    Bind mount a volume
-  -w, --workdir string                 Working directory inside the container
-</code></pre></td></tr></table>
-</div>
-</div><p>Examples</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># docker build --help</span>
+</span></span><span class=line><span class=cl>Usage:  docker run <span class=o>[</span>OPTIONS<span class=o>]</span> IMAGE <span class=o>[</span>COMMAND<span class=o>]</span> <span class=o>[</span>ARG...<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Run a <span class=nb>command</span> in a new container
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Options:
+</span></span><span class=line><span class=cl> 	  --add-host list                  Add a custom host-to-IP mapping <span class=o>(</span>host:ip<span class=o>)</span>
+</span></span><span class=line><span class=cl>  -d, --detach                         Run container in background and print container ID
+</span></span><span class=line><span class=cl>  -e, --env list                       Set environment variables
+</span></span><span class=line><span class=cl>      --gpus gpu-request               GPU devices to add to the container <span class=o>(</span><span class=s1>&#39;all&#39;</span> to pass all GPUs<span class=o>)</span>
+</span></span><span class=line><span class=cl>      --help                           Print usage
+</span></span><span class=line><span class=cl>  -h, --hostname string                Container host name
+</span></span><span class=line><span class=cl>  -i, --interactive                    Keep STDIN open even <span class=k>if</span> not attached
+</span></span><span class=line><span class=cl>  -m, --memory bytes                   Memory limit
+</span></span><span class=line><span class=cl>      --mount mount                    Attach a filesystem mount to the container
+</span></span><span class=line><span class=cl>      --name string                    Assign a name to the container
+</span></span><span class=line><span class=cl>      --network network                Connect a container to a network
+</span></span><span class=line><span class=cl>      --privileged                     Give extended privileges to this container
+</span></span><span class=line><span class=cl>  -p, --publish list                   Publish a container<span class=err>&#39;</span>s port<span class=o>(</span>s<span class=o>)</span> to the host
+</span></span><span class=line><span class=cl>      --rm                             Automatically remove the container when it exits
+</span></span><span class=line><span class=cl>      --shm-size bytes                 Size of /dev/shm
+</span></span><span class=line><span class=cl>  -t, --tty                            Allocate a pseudo-TTY
+</span></span><span class=line><span class=cl>      --ulimit <span class=nb>ulimit</span>                  Ulimit options <span class=o>(</span>default <span class=o>[])</span>
+</span></span><span class=line><span class=cl>  -u, --user string                    Username or UID <span class=o>(</span>format: &lt;name<span class=p>|</span>uid&gt;<span class=o>[</span>:&lt;group<span class=p>|</span>gid&gt;<span class=o>])</span>
+</span></span><span class=line><span class=cl>  -v, --volume list                    Bind mount a volume
+</span></span><span class=line><span class=cl>  -w, --workdir string                 Working directory inside the container
+</span></span></code></pre></td></tr></table></div></div><p>Examples</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -448,70 +274,43 @@ Options:
 </span><span class=lnt>18
 </span><span class=lnt>19
 </span><span class=lnt>20
-</span><span class=lnt>21
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># list all containers </span>
-docker container ls -a / docker ps -a
-
-<span class=c1># list all containers id</span>
-docker container ls -aq / docker contaier ls -a <span class=p>|</span> awk <span class=o>{</span><span class=s1>&#39;print$1&#39;</span><span class=o>}</span>
-
-<span class=c1># remove all containers</span>
-docker rm <span class=k>$(</span>docker container ls -aq<span class=k>)</span>
-
-<span class=c1># list all exited containers</span>
-docker container ls -f <span class=s2>&#34;status=exited&#34;</span>
-
-<span class=c1># list all exited containers id</span>
-docker container ls -f <span class=s2>&#34;status=exited&#34;</span> -q
-docker ps -a<span class=p>|</span>grep Exited<span class=p>|</span>awk <span class=s1>&#39;{print $1}&#39;</span>
-
-<span class=c1># remove all exited containers</span>
-docker rm <span class=k>$(</span>docker container ls -f <span class=s2>&#34;status=exited&#34;</span> -q<span class=k>)</span>
-docker rm <span class=sb>`</span>docker ps -a<span class=p>|</span>grep Exited<span class=p>|</span>awk <span class=s1>&#39;{print $1}&#39;</span><span class=sb>`</span>
-docker rm <span class=k>$(</span>docker ps -qf <span class=nv>status</span><span class=o>=</span>exited<span class=k>)</span>
-
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># list all containers </span>
+</span></span><span class=line><span class=cl>docker container ls -a / docker ps -a
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># list all containers id</span>
+</span></span><span class=line><span class=cl>docker container ls -aq / docker contaier ls -a <span class=p>|</span> awk <span class=o>{</span><span class=s1>&#39;print$1&#39;</span><span class=o>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># remove all containers</span>
+</span></span><span class=line><span class=cl>docker rm <span class=k>$(</span>docker container ls -aq<span class=k>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># list all exited containers</span>
+</span></span><span class=line><span class=cl>docker container ls -f <span class=s2>&#34;status=exited&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># list all exited containers id</span>
+</span></span><span class=line><span class=cl>docker container ls -f <span class=s2>&#34;status=exited&#34;</span> -q
+</span></span><span class=line><span class=cl>docker ps -a<span class=p>|</span>grep Exited<span class=p>|</span>awk <span class=s1>&#39;{print $1}&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># remove all exited containers</span>
+</span></span><span class=line><span class=cl>docker rm <span class=k>$(</span>docker container ls -f <span class=s2>&#34;status=exited&#34;</span> -q<span class=k>)</span>
+</span></span><span class=line><span class=cl>docker rm <span class=sb>`</span>docker ps -a<span class=p>|</span>grep Exited<span class=p>|</span>awk <span class=s1>&#39;{print $1}&#39;</span><span class=sb>`</span>
+</span></span><span class=line><span class=cl>docker rm <span class=k>$(</span>docker ps -qf <span class=nv>status</span><span class=o>=</span>exited<span class=k>)</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1>#删除名称或标签为none的镜像</span>
-docker rmi -f  <span class=sb>`</span>docker images <span class=p>|</span> grep <span class=s1>&#39;&lt;none&gt;&#39;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $3}&#39;</span><span class=sb>`</span>
-<span class=c1>#删除所有名字中带 “dee” 关键字的镜像</span>
-docker rmi <span class=k>$(</span>docker images <span class=p>|</span> grep <span class=s2>&#34;dee&#34;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $3}&#39;</span><span class=k>)</span> 
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1>#删除名称或标签为none的镜像</span>
+</span></span><span class=line><span class=cl>docker rmi -f  <span class=sb>`</span>docker images <span class=p>|</span> grep <span class=s1>&#39;&lt;none&gt;&#39;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $3}&#39;</span><span class=sb>`</span>
+</span></span><span class=line><span class=cl><span class=c1>#删除所有名字中带 “dee” 关键字的镜像</span>
+</span></span><span class=line><span class=cl>docker rmi <span class=k>$(</span>docker images <span class=p>|</span> grep <span class=s2>&#34;dee&#34;</span> <span class=p>|</span> awk <span class=s1>&#39;{print $3}&#39;</span><span class=k>)</span> 
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># docker commit [CONTAINER] [REPOSITORY]</span>
-docker run -d -it --name nginx nginx
-docker commit nginx hisunyh/my-nginx:1.0
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>docker run -d -it --name crawler --add-host master.namenode:192.168.1.25 --add-host slave.datanode1:192.168.1.26 --add-host slave.datanode2:192.168.1.29 -e <span class=s2>&#34;queue_names=for_get_tb_detail&#34;</span> dee_crawler:1.0
-</code></pre></td></tr></table>
-</div>
-</div><p>container export/import</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># docker commit [CONTAINER] [REPOSITORY]</span>
+</span></span><span class=line><span class=cl>docker run -d -it --name nginx nginx
+</span></span><span class=line><span class=cl>docker commit nginx hisunyh/my-nginx:1.0
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run -d -it --name crawler --add-host master.namenode:192.168.1.25 --add-host slave.datanode1:192.168.1.26 --add-host slave.datanode2:192.168.1.29 -e <span class=s2>&#34;queue_names=for_get_tb_detail&#34;</span> dee_crawler:1.0
+</span></span></code></pre></td></tr></table></div></div><p>container export/import</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -520,23 +319,16 @@ docker commit nginx hisunyh/my-nginx:1.0
 </span><span class=lnt>7
 </span><span class=lnt>8
 </span><span class=lnt>9
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># docker export [OPTIONS] CONTAINER</span>
-<span class=c1># [OPTIONS] --output , -o</span>
-
-docker <span class=nb>export</span> crawler &gt; crawler-export.tar
-<span class=c1># or</span>
-docker <span class=nb>export</span> --output<span class=o>=</span><span class=s2>&#34;crawler-export&#34;</span> crawler
-
-<span class=c1># docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]</span>
-docker import crawler-export.tarr dee_crawler_export:1.0
-</code></pre></td></tr></table>
-</div>
-</div><p>image save/load</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># docker export [OPTIONS] CONTAINER</span>
+</span></span><span class=line><span class=cl><span class=c1># [OPTIONS] --output , -o</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker <span class=nb>export</span> crawler &gt; crawler-export.tar
+</span></span><span class=line><span class=cl><span class=c1># or</span>
+</span></span><span class=line><span class=cl>docker <span class=nb>export</span> --output<span class=o>=</span><span class=s2>&#34;crawler-export&#34;</span> crawler
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># docker import [OPTIONS] file|URL|- [REPOSITORY[:TAG]]</span>
+</span></span><span class=line><span class=cl>docker import crawler-export.tarr dee_crawler_export:1.0
+</span></span></code></pre></td></tr></table></div></div><p>image save/load</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -549,33 +341,20 @@ docker import crawler-export.tarr dee_crawler_export:1.0
 </span><span class=lnt>11
 </span><span class=lnt>12
 </span><span class=lnt>13
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1># docker save [OPTIONS] IMAGE [IMAGE...]</span>
-<span class=c1># [OPTIONS] --output , -o</span>
-
-docker save -o dee_crawler_save.tar dee_crawler:1.0
-<span class=c1># or</span>
-docker save dee_crawler:2.0 &gt; dee_crawler_save.tar
-
-scp dee_crawler_save.tar user@host:/tmp/dee_crawler_save.tar
-
-<span class=c1># docker load [OPTIONS]</span>
-<span class=c1># [OPTIONS] --input , -i</span>
-docker load &lt; dee_crawler_save.tar
-docker load --input dee_crawler_save.tar
-</code></pre></td></tr></table>
-</div>
-</div><h2 id=dockerfile>Dockerfile</h2>
-<blockquote>
-<p>Refenence:</p>
-<p><a href=https://docs.docker.com/engine/reference/builder/ target=_blank rel="noopener noreffer">https://docs.docker.com/engine/reference/builder/</a></p>
-<p><a href=https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ target=_blank rel="noopener noreffer">https://docs.docker.com/develop/develop-images/dockerfile_best-practices/</a></p>
-</blockquote>
-<p>Samples</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># docker save [OPTIONS] IMAGE [IMAGE...]</span>
+</span></span><span class=line><span class=cl><span class=c1># [OPTIONS] --output , -o</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker save -o dee_crawler_save.tar dee_crawler:1.0
+</span></span><span class=line><span class=cl><span class=c1># or</span>
+</span></span><span class=line><span class=cl>docker save dee_crawler:2.0 &gt; dee_crawler_save.tar
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>scp dee_crawler_save.tar user@host:/tmp/dee_crawler_save.tar
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># docker load [OPTIONS]</span>
+</span></span><span class=line><span class=cl><span class=c1># [OPTIONS] --input , -i</span>
+</span></span><span class=line><span class=cl>docker load &lt; dee_crawler_save.tar
+</span></span><span class=line><span class=cl>docker load --input dee_crawler_save.tar
+</span></span></code></pre></td></tr></table></div></div><h2 id=dockerfile class=headerLink><a href=#dockerfile class=header-mark></a>Dockerfile</h2><blockquote><p>Refenence:</p><p><a href=https://docs.docker.com/engine/reference/builder/ target=_blank rel="noopener noreferrer">https://docs.docker.com/engine/reference/builder/</a></p><p><a href=https://docs.docker.com/develop/develop-images/dockerfile_best-practices/ target=_blank rel="noopener noreferrer">https://docs.docker.com/develop/develop-images/dockerfile_best-practices/</a></p></blockquote><p>Samples</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -604,81 +383,36 @@ docker load --input dee_crawler_save.tar
 </span><span class=lnt>27
 </span><span class=lnt>28
 </span><span class=lnt>29
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>sudo tee ./Dockerfile.dev <span class=s>&lt;&lt;-&#39;EOF&#39;
-</span><span class=s>FROM golang:1.14-alpine AS prod-build
-</span><span class=s>ENV GOPROXY https://goproxy.cn,direct
-</span><span class=s># ENV GO111MODULE on
-</span><span class=s>WORKDIR /workspace
-</span><span class=s>COPY . /workspace
-</span><span class=s>RUN CGO_ENABLED=0 GOOS=linux go build -o deep_arena .
-</span><span class=s>
-</span><span class=s># FROM scratch AS prod-final
-</span><span class=s>FROM debian:9.12 AS prod-final
-</span><span class=s>RUN rm -f /etc/localtime \
-</span><span class=s>&amp;&amp; ln -sv /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
-</span><span class=s>&amp;&amp; echo &#34;Asia/Shanghai&#34; &gt; /etc/timezone
-</span><span class=s>
-</span><span class=s>COPY --from=prod-build /workspace/deep_arena .
-</span><span class=s>COPY --from=prod-build /workspace/conf.toml .
-</span><span class=s>COPY --from=prod-build /workspace/config .
-</span><span class=s>EXPOSE 8082
-</span><span class=s>CMD [&#34;/deep_arena&#34;]
-</span><span class=s>EOF</span>
-
-docker login my-horbor.com
-
-docker build -f ./Dockerfile.dev -t my-horbor.com/deep_arena:dev_v1.0 .
-
-docker push my-horbor.com/deep_arena:dev_v1.0
-docker pull my-horbor.com/deep_arena:dev_v1.0
-
-docker run -d -it -p 9082:8082 --name da -v ~/pod_logs:/pod_logs my-horbor.com/deep_arena:dev_v1.0
-</code></pre></td></tr></table>
-</div>
-</div></div>
-<div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>更新于 2019-11-20</span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/posts/docker_basics/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
-</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/运维&测试/Docker/docker_basics.md target=_blank rel="noopener noreferrer">编辑此页</a>
-</span></div>
-<div class=post-info-share>
-<span></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/docker/>Docker</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/posts/docker_examples/ class=prev rel=prev title=Docker常用应用示例><i class="fas fa-angle-left fa-fw"></i>Docker常用应用示例</a>
-<a href=/posts/docker_storage_driver/ class=next rel=next title="Docker Storage Driver">Docker Storage Driver<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=gitalk class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
-<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title=查看评论>
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
-<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-20T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"Docker基础"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
-</body>
-</html>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>sudo tee ./Dockerfile.dev <span class=s>&lt;&lt;-&#39;EOF&#39;
+</span></span></span><span class=line><span class=cl><span class=s>FROM golang:1.14-alpine AS prod-build
+</span></span></span><span class=line><span class=cl><span class=s>ENV GOPROXY https://goproxy.cn,direct
+</span></span></span><span class=line><span class=cl><span class=s># ENV GO111MODULE on
+</span></span></span><span class=line><span class=cl><span class=s>WORKDIR /workspace
+</span></span></span><span class=line><span class=cl><span class=s>COPY . /workspace
+</span></span></span><span class=line><span class=cl><span class=s>RUN CGO_ENABLED=0 GOOS=linux go build -o deep_arena .
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s># FROM scratch AS prod-final
+</span></span></span><span class=line><span class=cl><span class=s>FROM debian:9.12 AS prod-final
+</span></span></span><span class=line><span class=cl><span class=s>RUN rm -f /etc/localtime \
+</span></span></span><span class=line><span class=cl><span class=s>&amp;&amp; ln -sv /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+</span></span></span><span class=line><span class=cl><span class=s>&amp;&amp; echo &#34;Asia/Shanghai&#34; &gt; /etc/timezone
+</span></span></span><span class=line><span class=cl><span class=s>
+</span></span></span><span class=line><span class=cl><span class=s>COPY --from=prod-build /workspace/deep_arena .
+</span></span></span><span class=line><span class=cl><span class=s>COPY --from=prod-build /workspace/conf.toml .
+</span></span></span><span class=line><span class=cl><span class=s>COPY --from=prod-build /workspace/config .
+</span></span></span><span class=line><span class=cl><span class=s>EXPOSE 8082
+</span></span></span><span class=line><span class=cl><span class=s>CMD [&#34;/deep_arena&#34;]
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker login my-horbor.com
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker build -f ./Dockerfile.dev -t my-horbor.com/deep_arena:dev_v1.0 .
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker push my-horbor.com/deep_arena:dev_v1.0
+</span></span><span class=line><span class=cl>docker pull my-horbor.com/deep_arena:dev_v1.0
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker run -d -it -p 9082:8082 --name da -v ~/pod_logs:/pod_logs my-horbor.com/deep_arena:dev_v1.0
+</span></span></code></pre></td></tr></table></div></div></div><h2>相关内容</h2><div class=related-container><div class=related-item-container><h2 class=related-title><a href=/posts/docker_storage_driver/>Docker Storage Driver</a></h2></div><div class=related-item-container><h2 class=related-title><a href=/posts/docker_examples/>Docker常用应用示例</a></h2></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2019-11-20</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-mardown href=/posts/docker_basics/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span><span>|&nbsp;<a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/运维&测试/Docker/docker_basics.md target=_blank rel="noopener noreferrer">编辑此页</a></span></div><div class=post-info-share></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/docker/>Docker</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span></section></div><div class=post-nav><a href=/posts/gpfs_api/ class=prev rel=prev title="GPFS API文档"><i class="fas fa-angle-left fa-fw"></i>GPFS API文档</a>
+<a href=/posts/docker_examples/ class=next rel=next title=Docker常用应用示例>Docker常用应用示例<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=gitalk class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreferrer" title="Hugo 0.117.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreferrer" title="DoIt 0.4.0"><i class="far fa-edit fa-fw"></i> DoIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div><div class=footer-line></div><div class=footer-line></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.register("/sw.min.js",{scope:"/"}).then(function(){}),navigator.serviceWorker.ready.then(function(){}))</script></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=assets><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-20T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"Docker基础"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.3,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript src=/posts/js/theme.min.js defer></script><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/js/gitalk.min.js defer></script></div></body></html>

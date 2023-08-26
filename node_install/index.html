@@ -1,133 +1,20 @@
-<!doctype html><html lang=zh-cn>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<title class=pjax-title>node安装配置 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="node安装配置">
-<meta property="og:description" content="nvm,npm,nrm">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://sunnyh1220.github.io/posts/node_install/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2019-11-20T00:00:00+00:00">
-<meta property="article:modified_time" content="2019-11-20T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
-<meta name=twitter:title content="node安装配置">
-<meta name=twitter:description content="nvm,npm,nrm">
-<meta name=application-name content="Sunnyh's Blog">
-<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
-<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/node_install/><link rel=prev href=https://sunnyh1220.github.io/posts/redis-cli/><link rel=next href=https://sunnyh1220.github.io/posts/gpfs_basics/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"node安装配置","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/node_install\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"node","wordcount":136,"url":"https:\/\/sunnyh1220.github.io\/posts\/node_install\/","datePublished":"2019-11-20T00:00:00+00:00","dateModified":"2019-11-20T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
-<div id=back-to-top></div>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/node_install/ selected>简体中文</option></select>
-</a><span class="menu-item search" id=search-desktop>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i>
-<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a></div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
-取消
-</a>
-</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>node安装配置 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="node安装配置"><meta property="og:description" content="nvm,npm,nrm"><meta property="og:type" content="article"><meta property="og:url" content="https://sunnyh1220.github.io/posts/node_install/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-11-20T00:00:00+00:00"><meta property="article:modified_time" content="2019-11-20T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp"><meta name=twitter:title content="node安装配置"><meta name=twitter:description content="nvm,npm,nrm"><meta name=application-name content="Sunnyh's Blog"><meta name=apple-mobile-web-app-title content="Sunnyh's Blog"><meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/node_install/><link rel=prev href=https://sunnyh1220.github.io/posts/redis-cli/><link rel=next href=https://sunnyh1220.github.io/posts/gpfs_basics/><link rel=stylesheet href=/posts/css/main.css><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/color.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/fontawesome-free/all.min.css><noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/animate/animate.min.css><noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"node安装配置","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/node_install\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"node","wordcount":134,"url":"https:\/\/sunnyh1220.github.io\/posts\/node_install\/","datePublished":"2019-11-20T00:00:00+00:00","dateModified":"2019-11-20T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script><script src=//instant.page/5.2.0 defer type=module integrity=sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z></script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e),document.documentElement.style.setProperty("color-scheme",e==="light"?"light":"dark"),window.theme=e,window.isDark=window.theme!=="light"}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(e){const t=document.getElementsByTagName("meta");for(let n=0;n<t.length;n++)if(t[n].getAttribute("name")===e)return t[n];return""}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}else"auto"==="light"||"auto"==="dark"||"auto"==="black"?(setTheme("auto"),saveTheme("auto")):(saveTheme("auto"),setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")],window.switchThemeEventSet=new Set</script><div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=desktop-header-typeit class=typeit></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/everything/>索引 </a><a class=menu-item href=/posts/posts/>文章 </a><a class=menu-item href=/posts/collections/>收集 </a><a class=menu-item href=/posts/tags/>标签 </a><a class=menu-item href=/posts/categories/>分类 </a><a class=menu-item href=/posts/series/>系列 </a><a class=menu-item href=/posts/authors/>作者 </a><a class=menu-item href=/posts/about/>关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i> </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 id=language-select-desktop onchange="location=this.value"><option value=/posts/node_install/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-select" title=切换主题><i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=mobile-header-typeit class=typeit></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i></a><a href=javascript:void(0); class="menu-item theme-select" title=切换主题>
 <i class="fas fa-adjust fa-fw"></i>
 <select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/node_install/ selected>简体中文</option></select>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>目录</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">node安装配置</h1><div class=post-meta>
-<div class=post-meta-line>
-<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
-</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/node/><i class="far fa-folder fa-fw"></i>node</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 136 字&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 1 分钟&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>目录</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#nvm>nvm</a></li>
-<li><a href=#npm>npm</a></li>
-<li><a href=#nrm>nrm</a></li>
-<li><a href=#源码编译node>源码编译node</a></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-</div><div class=content id=content><div class="details admonition warning open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>
-本文最后更新于 <span class=timeago datetime=2019-11-20T00:00:00 title="November 20, 2019">2019-11-20</span>，文中内容可能已过时。</div>
-</div>
-</div><p>nvm,npm,nrm</p>
-<h3 id=nvm>nvm</h3>
-<p><a href=https://github.com/nvm-sh/nvm target=_blank rel="noopener noreffer">nvm git</a></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 onchange="location=this.value"><option value=/posts/node_install/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto><nav id=TableOfContents><ul><li><ul><li><a href=#nvm>nvm</a></li><li><a href=#npm>npm</a></li><li><a href=#nrm>nrm</a></li><li><a href=#源码编译node>源码编译node</a></li></ul></li></ul></nav></div></div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">node安装配置</h1><div class=post-meta><div class=post-meta-line><span class=post-author><span class="author fas fa-user-circle fa-fw"></span><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreferrer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/node/><i class="far fa-folder fa-fw"></i>node</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-20>2019-11-20</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 134 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 1 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#nvm>nvm</a></li><li><a href=#npm>npm</a></li><li><a href=#nrm>nrm</a></li><li><a href=#源码编译node>源码编译node</a></li></ul></li></ul></nav></div></div><div class=content id=content><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>本文最后更新于 <span class=timeago datetime=2019-11-20T00:00:00 title="November 20, 2019">2019-11-20</span>，文中内容可能已过时。</div></div></div><p>nvm,npm,nrm</p><h3 id=nvm class=headerLink><a href=#nvm class=header-mark></a>nvm</h3><p><a href=https://github.com/nvm-sh/nvm target=_blank rel="noopener noreferrer">nvm git</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -141,121 +28,53 @@
 </span><span class=lnt>12
 </span><span class=lnt>13
 </span><span class=lnt>14
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh <span class=p>|</span> bash
-
-<span class=nb>source</span> .bashrc
-
-nvm --version
-nvm ls-remote
-nvm install 10.16.0
-which node
-
-nvm list
-nvm use <span class=m>10</span>
-nvm <span class=nb>alias</span> default <span class=m>10</span>
-
-nvm reinstall-packages <span class=m>10</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=npm>npm</h3>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh <span class=p>|</span> bash
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>source</span> .bashrc
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>nvm --version
+</span></span><span class=line><span class=cl>nvm ls-remote
+</span></span><span class=line><span class=cl>nvm install 10.16.0
+</span></span><span class=line><span class=cl>which node
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>nvm list
+</span></span><span class=line><span class=cl>nvm use <span class=m>10</span>
+</span></span><span class=line><span class=cl>nvm <span class=nb>alias</span> default <span class=m>10</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>nvm reinstall-packages <span class=m>10</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=npm class=headerLink><a href=#npm class=header-mark></a>npm</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>npm -v
-npm install -g npm    // -P  -D  -g
-
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=nrm>nrm</h3>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>npm -v
+</span></span><span class=line><span class=cl>npm install -g npm    // -P  -D  -g
+</span></span></code></pre></td></tr></table></div></div><h3 id=nrm class=headerLink><a href=#nrm class=header-mark></a>nrm</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
 </span><span class=lnt>7
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>npm install --global nrm
-nrm test
-nrm ls
-nrm use cnpm
-
-// 推荐使用cnpm部署私有源镜像服务器
-nrm add yourcompany http://registry.npm.yourcompany.com/
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=源码编译node>源码编译node</h3>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>npm install --global nrm
+</span></span><span class=line><span class=cl>nrm test
+</span></span><span class=line><span class=cl>nrm ls
+</span></span><span class=line><span class=cl>nrm use cnpm
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>// 推荐使用cnpm部署私有源镜像服务器
+</span></span><span class=line><span class=cl>nrm add yourcompany http://registry.npm.yourcompany.com/
+</span></span></code></pre></td></tr></table></div></div><h3 id=源码编译node class=headerLink><a href=#%e6%ba%90%e7%a0%81%e7%bc%96%e8%af%91node class=header-mark></a>源码编译node</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
 </span><span class=lnt>7
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>sudo apt-get install g++ curl libssl-dev apache2-utils git-core build-essential
-
-git clone https://github.com/nodejs/node.git
-cd node
-./configure
-make
-sudo make install
-</code></pre></td></tr></table>
-</div>
-</div></div>
-<div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>更新于 2019-11-20</span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/posts/node_install/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
-</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/前端&移动端/node/node_install.md target=_blank rel="noopener noreferrer">编辑此页</a>
-</span></div>
-<div class=post-info-share>
-<span></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/node/>node</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/posts/redis-cli/ class=prev rel=prev title="redis cli"><i class="fas fa-angle-left fa-fw"></i>redis cli</a>
-<a href=/posts/gpfs_basics/ class=next rel=next title=GPFS安装配置>GPFS安装配置<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=gitalk class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
-<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title=查看评论>
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
-<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-20T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"node安装配置"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
-</body>
-</html>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>sudo apt-get install g++ curl libssl-dev apache2-utils git-core build-essential
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>git clone https://github.com/nodejs/node.git
+</span></span><span class=line><span class=cl>cd node
+</span></span><span class=line><span class=cl>./configure
+</span></span><span class=line><span class=cl>make
+</span></span><span class=line><span class=cl>sudo make install
+</span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2019-11-20</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-mardown href=/posts/node_install/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span><span>|&nbsp;<a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/前端&移动端/node/node_install.md target=_blank rel="noopener noreferrer">编辑此页</a></span></div><div class=post-info-share></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/node/>node</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span></section></div><div class=post-nav><a href=/posts/redis-cli/ class=prev rel=prev title="redis cli"><i class="fas fa-angle-left fa-fw"></i>redis cli</a>
+<a href=/posts/gpfs_basics/ class=next rel=next title=GPFS安装配置>GPFS安装配置<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=gitalk class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreferrer" title="Hugo 0.117.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreferrer" title="DoIt 0.4.0"><i class="far fa-edit fa-fw"></i> DoIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div><div class=footer-line></div><div class=footer-line></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.register("/sw.min.js",{scope:"/"}).then(function(){}),navigator.serviceWorker.ready.then(function(){}))</script></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=assets><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-20T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"node安装配置"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.3,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript src=/posts/js/theme.min.js defer></script><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/js/gitalk.min.js defer></script></div></body></html>

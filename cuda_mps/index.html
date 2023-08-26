@@ -1,268 +1,29 @@
-<!doctype html><html lang=zh-cn>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<title class=pjax-title>CUDA多进程服务MPS - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="CUDA多进程服务MPS">
-<meta property="og:description" content>
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://sunnyh1220.github.io/posts/cuda_mps/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2020-04-15T00:00:00+00:00">
-<meta property="article:modified_time" content="2020-04-15T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
-<meta name=twitter:title content="CUDA多进程服务MPS">
-<meta name=twitter:description content>
-<meta name=application-name content="Sunnyh's Blog">
-<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
-<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/cuda_mps/><link rel=prev href=https://sunnyh1220.github.io/posts/horovod_basics/><link rel=next href=https://sunnyh1220.github.io/posts/spark2_basics/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"CUDA多进程服务MPS","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/cuda_mps\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"CUDA, MPS","wordcount":1023,"url":"https:\/\/sunnyh1220.github.io\/posts\/cuda_mps\/","datePublished":"2020-04-15T00:00:00+00:00","dateModified":"2020-04-15T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
-<div id=back-to-top></div>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/cuda_mps/ selected>简体中文</option></select>
-</a><span class="menu-item search" id=search-desktop>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i>
-<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a></div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
-取消
-</a>
-</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>CUDA多进程服务MPS - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="CUDA多进程服务MPS"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://sunnyh1220.github.io/posts/cuda_mps/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-04-15T00:00:00+00:00"><meta property="article:modified_time" content="2020-04-15T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp"><meta name=twitter:title content="CUDA多进程服务MPS"><meta name=twitter:description content><meta name=application-name content="Sunnyh's Blog"><meta name=apple-mobile-web-app-title content="Sunnyh's Blog"><meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/cuda_mps/><link rel=prev href=https://sunnyh1220.github.io/posts/horovod_basics/><link rel=next href=https://sunnyh1220.github.io/posts/spark2_basics/><link rel=stylesheet href=/posts/css/main.css><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/color.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/fontawesome-free/all.min.css><noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/animate/animate.min.css><noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"CUDA多进程服务MPS","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/cuda_mps\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"CUDA, MPS","wordcount":1023,"url":"https:\/\/sunnyh1220.github.io\/posts\/cuda_mps\/","datePublished":"2020-04-15T00:00:00+00:00","dateModified":"2020-04-15T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script><script src=//instant.page/5.2.0 defer type=module integrity=sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z></script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e),document.documentElement.style.setProperty("color-scheme",e==="light"?"light":"dark"),window.theme=e,window.isDark=window.theme!=="light"}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(e){const t=document.getElementsByTagName("meta");for(let n=0;n<t.length;n++)if(t[n].getAttribute("name")===e)return t[n];return""}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}else"auto"==="light"||"auto"==="dark"||"auto"==="black"?(setTheme("auto"),saveTheme("auto")):(saveTheme("auto"),setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")],window.switchThemeEventSet=new Set</script><div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=desktop-header-typeit class=typeit></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/everything/>索引 </a><a class=menu-item href=/posts/posts/>文章 </a><a class=menu-item href=/posts/collections/>收集 </a><a class=menu-item href=/posts/tags/>标签 </a><a class=menu-item href=/posts/categories/>分类 </a><a class=menu-item href=/posts/series/>系列 </a><a class=menu-item href=/posts/authors/>作者 </a><a class=menu-item href=/posts/about/>关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i> </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 id=language-select-desktop onchange="location=this.value"><option value=/posts/cuda_mps/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-select" title=切换主题><i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=mobile-header-typeit class=typeit></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i></a><a href=javascript:void(0); class="menu-item theme-select" title=切换主题>
 <i class="fas fa-adjust fa-fw"></i>
 <select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/cuda_mps/ selected>简体中文</option></select>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>目录</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">CUDA多进程服务MPS</h1><div class=post-meta>
-<div class=post-meta-line>
-<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
-</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/nvidia/><i class="far fa-folder fa-fw"></i>NVIDIA</a>&nbsp;<a href=/posts/categories/gpu/><i class="far fa-folder fa-fw"></i>GPU</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-04-15>2020-04-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2020-04-15>2020-04-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1023 字&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>目录</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#1-cuda-context>1. CUDA context</a></li>
-<li><a href=#2-hyper-q-hyper-queue>2. Hyper-Q (Hyper Queue)</a></li>
-<li><a href=#3-mps---multi-process-service多进程服务>3. MPS - Multi-Process Service，多进程服务</a></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-</div><div class=content id=content><div class="details admonition warning open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>
-本文最后更新于 <span class=timeago datetime=2020-04-15T00:00:00 title="April 15, 2020">2020-04-15</span>，文中内容可能已过时。</div>
-</div>
-</div><blockquote>
-<p>Reference:</p>
-<p><a href=https://developer.download.nvidia.cn/compute/DevZone/C/html_x64/6_Advanced/simpleHyperQ/doc/HyperQ.pdf target=_blank rel="noopener noreffer">Hyper-Q Example</a></p>
-<p><a href=https://docs.nvidia.com/deploy/pdf/CUDA_Multi_Process_Service_Overview.pdf target=_blank rel="noopener noreffer">MULTI-PROCESS SERVICE</a></p>
-<p><a href=http://on-demand.gputechconf.com/gtc/2015/presentation/S5584-Priyanka-Sah.pdf target=_blank rel="noopener noreffer">IMPROVING GPU UTILIZATION WITH MULTI-PROCESS SERVICE (MPS)</a></p>
-<p><a href=https://blog.csdn.net/beckham999221/article/details/85257137 target=_blank rel="noopener noreffer">多个docker容器如何共享GPU</a></p>
-<p><a href=https://blog.csdn.net/beckham999221/article/details/86644970 target=_blank rel="noopener noreffer">基于Volta MPS执行资源配置下的多容器共享GPU性能测试</a></p>
-<p><a href=https://docs.nvidia.com/deploy/mps/index.html target=_blank rel="noopener noreffer">MPS</a></p>
-</blockquote>
-<h3 id=1-cuda-context>1. CUDA context</h3>
-<ul>
-<li>类似于CPU进程上下文,表示与特定进程关联的所有<strong>状态</strong>
-<ul>
-<li>从CPU端分配的GPU上的Global memory (cudaMalloc/cudaMallocManaged)</li>
-<li>Kernel函数中定义和分配的堆栈空间，例如local memory</li>
-<li>CUDA streams / events 对象</li>
-<li>代码模块(*.cubin, *.ptx)</li>
-</ul>
-</li>
-<li>不同的进程有自己的CUDA context</li>
-<li>每个context有自己的地址空间，并且不能访问其他CUDA context的地址空间</li>
-</ul>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414150825492.png data-srcset="./assets/MPS.assets/image-20200414150825492.png, ./assets/MPS.assets/image-20200414150825492.png 1.5x, ./assets/MPS.assets/image-20200414150825492.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414150825492.png title=image-20200414150825492></p>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414150919287.png data-srcset="./assets/MPS.assets/image-20200414150919287.png, ./assets/MPS.assets/image-20200414150919287.png 1.5x, ./assets/MPS.assets/image-20200414150919287.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414150919287.png title=image-20200414150919287></p>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414151016618.png data-srcset="./assets/MPS.assets/image-20200414151016618.png, ./assets/MPS.assets/image-20200414151016618.png 1.5x, ./assets/MPS.assets/image-20200414151016618.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414151016618.png title=image-20200414151016618></p>
-<p>时间片轮转调度,相当于串行执行,每个时刻只有一个进程在GPU上执行,吞吐率不会发生变化,而且由于上下文context切换的开销,延迟增加的同时,吞吐量反而是下降的.</p>
-<h3 id=2-hyper-q-hyper-queue>2. Hyper-Q (Hyper Queue)</h3>
-<ul>
-<li>
-<p>允许多个CPU 线程或进程同时加载任务到一个GPU上,实现CUDA kernels的<strong>并发执行</strong> –- 硬件特性</p>
-</li>
-<li>
-<p>支持的连接类型</p>
-<ul>
-<li>Multi cuda streams</li>
-<li>Multi cpu threads</li>
-<li>Multi cpu processes——MPS</li>
-</ul>
-</li>
-<li>
-<p>管理可并发的最大连接数</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 onchange="location=this.value"><option value=/posts/cuda_mps/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto><nav id=TableOfContents><ul><li><ul><li><a href=#1-cuda-context>1. CUDA context</a></li><li><a href=#2-hyper-q-hyper-queue>2. Hyper-Q (Hyper Queue)</a></li><li><a href=#3-mps---multi-process-service多进程服务>3. MPS - Multi-Process Service，多进程服务</a></li></ul></li></ul></nav></div></div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">CUDA多进程服务MPS</h1><div class=post-meta><div class=post-meta-line><span class=post-author><span class="author fas fa-user-circle fa-fw"></span><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreferrer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/nvidia/><i class="far fa-folder fa-fw"></i>NVIDIA</a>&nbsp;<a href=/posts/categories/gpu/><i class="far fa-folder fa-fw"></i>GPU</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-04-15>2020-04-15</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2020-04-15>2020-04-15</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1023 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 3 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#1-cuda-context>1. CUDA context</a></li><li><a href=#2-hyper-q-hyper-queue>2. Hyper-Q (Hyper Queue)</a></li><li><a href=#3-mps---multi-process-service多进程服务>3. MPS - Multi-Process Service，多进程服务</a></li></ul></li></ul></nav></div></div><div class=content id=content><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>本文最后更新于 <span class=timeago datetime=2020-04-15T00:00:00 title="April 15, 2020">2020-04-15</span>，文中内容可能已过时。</div></div></div><blockquote><p>Reference:</p><p><a href=https://developer.download.nvidia.cn/compute/DevZone/C/html_x64/6_Advanced/simpleHyperQ/doc/HyperQ.pdf target=_blank rel="noopener noreferrer">Hyper-Q Example</a></p><p><a href=https://docs.nvidia.com/deploy/pdf/CUDA_Multi_Process_Service_Overview.pdf target=_blank rel="noopener noreferrer">MULTI-PROCESS SERVICE</a></p><p><a href=http://on-demand.gputechconf.com/gtc/2015/presentation/S5584-Priyanka-Sah.pdf target=_blank rel="noopener noreferrer">IMPROVING GPU UTILIZATION WITH MULTI-PROCESS SERVICE (MPS)</a></p><p><a href=https://blog.csdn.net/beckham999221/article/details/85257137 target=_blank rel="noopener noreferrer">多个docker容器如何共享GPU</a></p><p><a href=https://blog.csdn.net/beckham999221/article/details/86644970 target=_blank rel="noopener noreferrer">基于Volta MPS执行资源配置下的多容器共享GPU性能测试</a></p><p><a href=https://docs.nvidia.com/deploy/mps/index.html target=_blank rel="noopener noreferrer">MPS</a></p></blockquote><h3 id=1-cuda-context class=headerLink><a href=#1-cuda-context class=header-mark></a>1. CUDA context</h3><ul><li>类似于CPU进程上下文,表示与特定进程关联的所有<strong>状态</strong><ul><li>从CPU端分配的GPU上的Global memory (cudaMalloc/cudaMallocManaged)</li><li>Kernel函数中定义和分配的堆栈空间，例如local memory</li><li>CUDA streams / events 对象</li><li>代码模块(*.cubin, *.ptx)</li></ul></li><li>不同的进程有自己的CUDA context</li><li>每个context有自己的地址空间，并且不能访问其他CUDA context的地址空间</li></ul><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414150825492.png title=image-20200414150825492 data-thumbnail=./assets/MPS.assets/image-20200414150825492.png><img loading=lazy src=./assets/MPS.assets/image-20200414150825492.png srcset="./assets/MPS.assets/image-20200414150825492.png, ./assets/MPS.assets/image-20200414150825492.png 1.5x, ./assets/MPS.assets/image-20200414150825492.png 2x" sizes=auto alt=image-20200414150825492></a></figure></p><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414150919287.png title=image-20200414150919287 data-thumbnail=./assets/MPS.assets/image-20200414150919287.png><img loading=lazy src=./assets/MPS.assets/image-20200414150919287.png srcset="./assets/MPS.assets/image-20200414150919287.png, ./assets/MPS.assets/image-20200414150919287.png 1.5x, ./assets/MPS.assets/image-20200414150919287.png 2x" sizes=auto alt=image-20200414150919287></a></figure></p><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414151016618.png title=image-20200414151016618 data-thumbnail=./assets/MPS.assets/image-20200414151016618.png><img loading=lazy src=./assets/MPS.assets/image-20200414151016618.png srcset="./assets/MPS.assets/image-20200414151016618.png, ./assets/MPS.assets/image-20200414151016618.png 1.5x, ./assets/MPS.assets/image-20200414151016618.png 2x" sizes=auto alt=image-20200414151016618></a></figure></p><p>时间片轮转调度,相当于串行执行,每个时刻只有一个进程在GPU上执行,吞吐率不会发生变化,而且由于上下文context切换的开销,延迟增加的同时,吞吐量反而是下降的.</p><h3 id=2-hyper-q-hyper-queue class=headerLink><a href=#2-hyper-q-hyper-queue class=header-mark></a>2. Hyper-Q (Hyper Queue)</h3><ul><li><p>允许多个CPU 线程或进程同时加载任务到一个GPU上,实现CUDA kernels的<strong>并发执行</strong> –- 硬件特性</p></li><li><p>支持的连接类型</p><ul><li>Multi cuda streams</li><li>Multi cpu threads</li><li>Multi cpu processes——MPS</li></ul></li><li><p>管理可并发的最大连接数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback># (默认是8)
-CUDA_DEVICE_MAX_CONNECTIONS = 32 
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>好处</p>
-<ul>
-<li>增加GPU利用率（utilization）和占用率（occupancy）</li>
-<li>减少CPU空闲时间</li>
-<li>增加吞吐率并减少延</li>
-</ul>
-</li>
-<li>
-<p>使用限制</p>
-<ul>
-<li>当kernel A正在执行时, 只有当GPU上任意SM上<strong>有足够的资源</strong>( 寄存器, 共享内存, 线程块槽位等等)来执行kernel B中的1个线程块时， kernel B才会被发射</li>
-<li>要求<strong>GPU计算能力大于等于3.5</strong></li>
-<li>最大连接数限制： 32</li>
-</ul>
-</li>
-<li>
-<p>示例代码</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>$CUDA_PATH/samples/6_Advanced/simpleHyperQ
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/MPS.assets/image-20200414152818622.png data-srcset="./assets/MPS.assets/image-20200414152818622.png, ./assets/MPS.assets/image-20200414152818622.png 1.5x, ./assets/MPS.assets/image-20200414152818622.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414152818622.png title=image-20200414152818622></p>
-</li>
-</ul>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414152854056.png data-srcset="./assets/MPS.assets/image-20200414152854056.png, ./assets/MPS.assets/image-20200414152854056.png 1.5x, ./assets/MPS.assets/image-20200414152854056.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414152854056.png title=image-20200414152854056></p>
-<h3 id=3-mps---multi-process-service多进程服务>3. MPS - Multi-Process Service，多进程服务</h3>
-<ul>
-<li>
-<p>什么是MPS</p>
-<ul>
-<li>一组可替换的，二进制兼容的CUDA API实现，包括：守护进程,服务进程,用户运行时</li>
-<li>利用GPU上的Hyper-Q 能力
-<ul>
-<li>允许多个CPU进程<strong>共享同一GPU context</strong></li>
-<li>允许不同进程的kernel和memcpy操作在同一GPU上并发执行，以实现最大化
-GPU利用率.</li>
-</ul>
-</li>
-</ul>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414153922257.png data-srcset="./assets/MPS.assets/image-20200414153922257.png, ./assets/MPS.assets/image-20200414153922257.png 1.5x, ./assets/MPS.assets/image-20200414153922257.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414153922257.png title=image-20200414153922257></p>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414154004787.png data-srcset="./assets/MPS.assets/image-20200414154004787.png, ./assets/MPS.assets/image-20200414154004787.png 1.5x, ./assets/MPS.assets/image-20200414154004787.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414154004787.png title=image-20200414154004787></p>
-</li>
-<li>
-<p>好处</p>
-<ul>
-<li>提升GPU利用率（时间上）和占用率（空间上）</li>
-<li>减少GPU上下文切换时间</li>
-<li>减少GPU上下文存储空</li>
-</ul>
-</li>
-<li>
-<p>使用限制</p>
-<ul>
-<li>操作系统: 仅支持linux</li>
-<li>GPU版本： 大于等于CC 3.5</li>
-<li>CUDA版本：大于等于5.5</li>
-<li>最大用户连接数量：
-<ul>
-<li>Pascal及之前GPU: 16</li>
-<li>Volta及之后GPU: 48</li>
-</ul>
-</li>
-</ul>
-</li>
-<li>
-<p>启动</p>
-<ul>
-<li>
-<p>设置GPU compute mode 为 exclusive mode (非必须，但推荐设置)</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>sudo nvidia-smi -i <span class=m>0</span> -c EXCLUSIVE_PROCESS
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>启动MPS 守护进程</p>
-</li>
-</ul>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl># (默认是8)
+</span></span><span class=line><span class=cl>CUDA_DEVICE_MAX_CONNECTIONS = 32 
+</span></span></code></pre></td></tr></table></div></div></li><li><p>好处</p><ul><li>增加GPU利用率（utilization）和占用率（occupancy）</li><li>减少CPU空闲时间</li><li>增加吞吐率并减少延</li></ul></li><li><p>使用限制</p><ul><li>当kernel A正在执行时, 只有当GPU上任意SM上<strong>有足够的资源</strong>( 寄存器, 共享内存, 线程块槽位等等)来执行kernel B中的1个线程块时， kernel B才会被发射</li><li>要求<strong>GPU计算能力大于等于3.5</strong></li><li>最大连接数限制： 32</li></ul></li><li><p>示例代码</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>$CUDA_PATH/samples/6_Advanced/simpleHyperQ
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414152818622.png title=image-20200414152818622 data-thumbnail=./assets/MPS.assets/image-20200414152818622.png><img loading=lazy src=./assets/MPS.assets/image-20200414152818622.png srcset="./assets/MPS.assets/image-20200414152818622.png, ./assets/MPS.assets/image-20200414152818622.png 1.5x, ./assets/MPS.assets/image-20200414152818622.png 2x" sizes=auto alt=image-20200414152818622></a></figure></p></li></ul><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414152854056.png title=image-20200414152854056 data-thumbnail=./assets/MPS.assets/image-20200414152854056.png><img loading=lazy src=./assets/MPS.assets/image-20200414152854056.png srcset="./assets/MPS.assets/image-20200414152854056.png, ./assets/MPS.assets/image-20200414152854056.png 1.5x, ./assets/MPS.assets/image-20200414152854056.png 2x" sizes=auto alt=image-20200414152854056></a></figure></p><h3 id=3-mps---multi-process-service多进程服务 class=headerLink><a href=#3-mps---multi-process-service%e5%a4%9a%e8%bf%9b%e7%a8%8b%e6%9c%8d%e5%8a%a1 class=header-mark></a>3. MPS - Multi-Process Service，多进程服务</h3><ul><li><p>什么是MPS</p><ul><li>一组可替换的，二进制兼容的CUDA API实现，包括：守护进程,服务进程,用户运行时</li><li>利用GPU上的Hyper-Q 能力<ul><li>允许多个CPU进程<strong>共享同一GPU context</strong></li><li>允许不同进程的kernel和memcpy操作在同一GPU上并发执行，以实现最大化
+GPU利用率.</li></ul></li></ul><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414153922257.png title=image-20200414153922257 data-thumbnail=./assets/MPS.assets/image-20200414153922257.png><img loading=lazy src=./assets/MPS.assets/image-20200414153922257.png srcset="./assets/MPS.assets/image-20200414153922257.png, ./assets/MPS.assets/image-20200414153922257.png 1.5x, ./assets/MPS.assets/image-20200414153922257.png 2x" sizes=auto alt=image-20200414153922257></a></figure></p><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414154004787.png title=image-20200414154004787 data-thumbnail=./assets/MPS.assets/image-20200414154004787.png><img loading=lazy src=./assets/MPS.assets/image-20200414154004787.png srcset="./assets/MPS.assets/image-20200414154004787.png, ./assets/MPS.assets/image-20200414154004787.png 1.5x, ./assets/MPS.assets/image-20200414154004787.png 2x" sizes=auto alt=image-20200414154004787></a></figure></p></li><li><p>好处</p><ul><li>提升GPU利用率（时间上）和占用率（空间上）</li><li>减少GPU上下文切换时间</li><li>减少GPU上下文存储空</li></ul></li><li><p>使用限制</p><ul><li>操作系统: 仅支持linux</li><li>GPU版本： 大于等于CC 3.5</li><li>CUDA版本：大于等于5.5</li><li>最大用户连接数量：<ul><li>Pascal及之前GPU: 16</li><li>Volta及之后GPU: 48</li></ul></li></ul></li><li><p>启动</p><ul><li><p>设置GPU compute mode 为 exclusive mode (非必须，但推荐设置)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>sudo nvidia-smi -i <span class=m>0</span> -c EXCLUSIVE_PROCESS
+</span></span></code></pre></td></tr></table></div></div></li><li><p>启动MPS 守护进程</p></li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -272,129 +33,31 @@ GPU利用率.</li>
 </span><span class=lnt> 8
 </span><span class=lnt> 9
 </span><span class=lnt>10
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=c1># 指定要启动MPS的GPU,不指定默认对所有GPU生效</span>
-<span class=nb>export</span> <span class=nv>CUDA_VISIBLE_DEVICES</span><span class=o>=</span><span class=m>0</span>
-
-<span class=c1># cuda 7.0 以后非必须</span>
-<span class=nb>export</span> <span class=nv>CUDA_MPS_PIPE_DIRECTORY</span><span class=o>=</span>/tmp/nvidia-mps 
-
-<span class=c1># cuda 7.0 以后非必须</span>
-<span class=nb>export</span> <span class=nv>CUDA_MPS_LOG_DIRECTORY</span><span class=o>=</span>/tmp/nvidia-log 
-
-nvidia-cuda-mps-control –d
-</code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>
-<p>查看MPS 守护进程是否正在运行</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>ps -ef <span class=p>|</span> grep mps
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>运行应用程序</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>mpirun –np <span class=m>4</span> ./test
-</code></pre></td></tr></table>
-</div>
-</div><p>应用程序运行前:</p>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414155300462.png data-srcset="./assets/MPS.assets/image-20200414155300462.png, ./assets/MPS.assets/image-20200414155300462.png 1.5x, ./assets/MPS.assets/image-20200414155300462.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414155300462.png title=image-20200414155300462></p>
-<p>应用程序运行后:</p>
-<p><img class=lazyload data-src=./assets/MPS.assets/image-20200414155446902.png data-srcset="./assets/MPS.assets/image-20200414155446902.png, ./assets/MPS.assets/image-20200414155446902.png 1.5x, ./assets/MPS.assets/image-20200414155446902.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414155446902.png title=image-20200414155446902></p>
-</li>
-</ul>
-</li>
-<li>
-<p>停止</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 指定要启动MPS的GPU,不指定默认对所有GPU生效</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CUDA_VISIBLE_DEVICES</span><span class=o>=</span><span class=m>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># cuda 7.0 以后非必须</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CUDA_MPS_PIPE_DIRECTORY</span><span class=o>=</span>/tmp/nvidia-mps 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># cuda 7.0 以后非必须</span>
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>CUDA_MPS_LOG_DIRECTORY</span><span class=o>=</span>/tmp/nvidia-log 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>nvidia-cuda-mps-control –d
+</span></span></code></pre></td></tr></table></div></div><ul><li><p>查看MPS 守护进程是否正在运行</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>ps -ef <span class=p>|</span> grep mps
+</span></span></code></pre></td></tr></table></div></div></li><li><p>运行应用程序</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>mpirun –np <span class=m>4</span> ./test
+</span></span></code></pre></td></tr></table></div></div><p>应用程序运行前:</p><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414155300462.png title=image-20200414155300462 data-thumbnail=./assets/MPS.assets/image-20200414155300462.png><img loading=lazy src=./assets/MPS.assets/image-20200414155300462.png srcset="./assets/MPS.assets/image-20200414155300462.png, ./assets/MPS.assets/image-20200414155300462.png 1.5x, ./assets/MPS.assets/image-20200414155300462.png 2x" sizes=auto alt=image-20200414155300462></a></figure></p><p>应用程序运行后:</p><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414155446902.png title=image-20200414155446902 data-thumbnail=./assets/MPS.assets/image-20200414155446902.png><img loading=lazy src=./assets/MPS.assets/image-20200414155446902.png srcset="./assets/MPS.assets/image-20200414155446902.png, ./assets/MPS.assets/image-20200414155446902.png 1.5x, ./assets/MPS.assets/image-20200414155446902.png 2x" sizes=auto alt=image-20200414155446902></a></figure></p></li></ul></li><li><p>停止</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=nb>echo</span> quit <span class=p>|</span> nvidia-cuda-mps-control
-sudo nvidia-smi -i <span class=m>0</span> -c <span class=m>0</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>监视</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>nvidia-smi
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/MPS.assets/image-20200414155727800.png data-srcset="./assets/MPS.assets/image-20200414155727800.png, ./assets/MPS.assets/image-20200414155727800.png 1.5x, ./assets/MPS.assets/image-20200414155727800.png 2x" data-sizes=auto alt=./assets/MPS.assets/image-20200414155727800.png title=image-20200414155727800></p>
-</li>
-<li>
-<p>分析</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=nb>echo</span> quit <span class=p>|</span> nvidia-cuda-mps-control
+</span></span><span class=line><span class=cl>sudo nvidia-smi -i <span class=m>0</span> -c <span class=m>0</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>监视</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>nvidia-smi
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/MPS.assets/image-20200414155727800.png title=image-20200414155727800 data-thumbnail=./assets/MPS.assets/image-20200414155727800.png><img loading=lazy src=./assets/MPS.assets/image-20200414155727800.png srcset="./assets/MPS.assets/image-20200414155727800.png, ./assets/MPS.assets/image-20200414155727800.png 1.5x, ./assets/MPS.assets/image-20200414155727800.png 2x" sizes=auto alt=image-20200414155727800></a></figure></p></li><li><p>分析</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell> nvprof --profile-all-processes -o output.%p
- mpirun –np <span class=m>4</span> ./test
-</code></pre></td></tr></table>
-</div>
-</div></li>
-</ul></div>
-<div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>更新于 2020-04-15</span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/posts/cuda_mps/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
-</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/AI&大数据/GPU/CUDA_MPS/index.zh-cn.md target=_blank rel="noopener noreferrer">编辑此页</a>
-</span></div>
-<div class=post-info-share>
-<span></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/cuda/>CUDA</a>,&nbsp;<a href=/posts/tags/mps/>MPS</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/posts/horovod_basics/ class=prev rel=prev title=Horovod基本原理与使用><i class="fas fa-angle-left fa-fw"></i>Horovod基本原理与使用</a>
-<a href=/posts/spark2_basics/ class=next rel=next title=Spark2环境搭建与使用>Spark2环境搭建与使用<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=gitalk class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
-<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title=查看评论>
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
-<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2020-04-15T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"CUDA多进程服务MPS"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
-</body>
-</html>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl> nvprof --profile-all-processes -o output.%p
+</span></span><span class=line><span class=cl> mpirun –np <span class=m>4</span> ./test
+</span></span></code></pre></td></tr></table></div></div></li></ul></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2020-04-15</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-mardown href=/posts/cuda_mps/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span><span>|&nbsp;<a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/AI&大数据/GPU/CUDA_MPS/index.zh-cn.md target=_blank rel="noopener noreferrer">编辑此页</a></span></div><div class=post-info-share></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/cuda/>CUDA</a>,&nbsp;<a href=/posts/tags/mps/>MPS</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span></section></div><div class=post-nav><a href=/posts/horovod_basics/ class=prev rel=prev title=Horovod基本原理与使用><i class="fas fa-angle-left fa-fw"></i>Horovod基本原理与使用</a>
+<a href=/posts/spark2_basics/ class=next rel=next title=Spark2环境搭建与使用>Spark2环境搭建与使用<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=gitalk class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreferrer" title="Hugo 0.117.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreferrer" title="DoIt 0.4.0"><i class="far fa-edit fa-fw"></i> DoIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div><div class=footer-line></div><div class=footer-line></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.register("/sw.min.js",{scope:"/"}).then(function(){}),navigator.serviceWorker.ready.then(function(){}))</script></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=assets><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2020-04-15T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"CUDA多进程服务MPS"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.3,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript src=/posts/js/theme.min.js defer></script><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/js/gitalk.min.js defer></script></div></body></html>

@@ -1,166 +1,20 @@
-<!doctype html><html lang=zh-cn>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<title class=pjax-title>Spark2环境搭建与使用 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="Spark2环境搭建与使用">
-<meta property="og:description" content>
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://sunnyh1220.github.io/posts/spark2_basics/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2020-05-25T00:00:00+00:00">
-<meta property="article:modified_time" content="2020-12-01T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
-<meta name=twitter:title content="Spark2环境搭建与使用">
-<meta name=twitter:description content>
-<meta name=application-name content="Sunnyh's Blog">
-<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
-<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/spark2_basics/><link rel=prev href=https://sunnyh1220.github.io/posts/cuda_mps/><link rel=next href=https://sunnyh1220.github.io/posts/github-action/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Spark2环境搭建与使用","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/spark2_basics\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Spark2","wordcount":2743,"url":"https:\/\/sunnyh1220.github.io\/posts\/spark2_basics\/","datePublished":"2020-05-25T00:00:00+00:00","dateModified":"2020-12-01T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
-<div id=back-to-top></div>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/spark2_basics/ selected>简体中文</option></select>
-</a><span class="menu-item search" id=search-desktop>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i>
-<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a></div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
-取消
-</a>
-</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Spark2环境搭建与使用 - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="Spark2环境搭建与使用"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://sunnyh1220.github.io/posts/spark2_basics/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-05-25T00:00:00+00:00"><meta property="article:modified_time" content="2020-12-01T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp"><meta name=twitter:title content="Spark2环境搭建与使用"><meta name=twitter:description content><meta name=application-name content="Sunnyh's Blog"><meta name=apple-mobile-web-app-title content="Sunnyh's Blog"><meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/spark2_basics/><link rel=prev href=https://sunnyh1220.github.io/posts/cuda_mps/><link rel=next href=https://sunnyh1220.github.io/posts/github-action/><link rel=stylesheet href=/posts/css/main.css><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/color.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/fontawesome-free/all.min.css><noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/animate/animate.min.css><noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Spark2环境搭建与使用","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/spark2_basics\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Spark2","wordcount":2802,"url":"https:\/\/sunnyh1220.github.io\/posts\/spark2_basics\/","datePublished":"2020-05-25T00:00:00+00:00","dateModified":"2020-12-01T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script><script src=//instant.page/5.2.0 defer type=module integrity=sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z></script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e),document.documentElement.style.setProperty("color-scheme",e==="light"?"light":"dark"),window.theme=e,window.isDark=window.theme!=="light"}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(e){const t=document.getElementsByTagName("meta");for(let n=0;n<t.length;n++)if(t[n].getAttribute("name")===e)return t[n];return""}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}else"auto"==="light"||"auto"==="dark"||"auto"==="black"?(setTheme("auto"),saveTheme("auto")):(saveTheme("auto"),setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")],window.switchThemeEventSet=new Set</script><div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=desktop-header-typeit class=typeit></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/everything/>索引 </a><a class=menu-item href=/posts/posts/>文章 </a><a class=menu-item href=/posts/collections/>收集 </a><a class=menu-item href=/posts/tags/>标签 </a><a class=menu-item href=/posts/categories/>分类 </a><a class=menu-item href=/posts/series/>系列 </a><a class=menu-item href=/posts/authors/>作者 </a><a class=menu-item href=/posts/about/>关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i> </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 id=language-select-desktop onchange="location=this.value"><option value=/posts/spark2_basics/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-select" title=切换主题><i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=mobile-header-typeit class=typeit></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i></a><a href=javascript:void(0); class="menu-item theme-select" title=切换主题>
 <i class="fas fa-adjust fa-fw"></i>
 <select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/spark2_basics/ selected>简体中文</option></select>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>目录</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Spark2环境搭建与使用</h1><div class=post-meta>
-<div class=post-meta-line>
-<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
-</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/spark/><i class="far fa-folder fa-fw"></i>Spark</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-05-25>2020-05-25</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2020-12-01>2020-12-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2743 字&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>目录</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li><a href=#spark>Spark</a>
-<ul>
-<li><a href=#1-install>1. install</a>
-<ul>
-<li><a href=#11-java>1.1 java</a></li>
-<li><a href=#12-scala>1.2 scala</a></li>
-<li><a href=#13-hadoop>1.3 hadoop</a></li>
-<li><a href=#14-maven>1.4 maven</a></li>
-<li><a href=#15-spark>1.5 spark</a>
-<ul>
-<li><a href=#151-源码编译>1.5.1 源码编译</a></li>
-<li><a href=#152-tar包解压>1.5.2 tar包解压</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href=#2-spark-rdd>2. Spark RDD</a>
-<ul>
-<li><a href=#rdd编程>RDD编程</a></li>
-</ul>
-</li>
-<li><a href=#3-pyspark>3. PySpark</a></li>
-<li><a href=#4-spark运行模式>4. Spark运行模式</a>
-<ul>
-<li><a href=#41-local>4.1 Local</a></li>
-<li><a href=#42-standalone>4.2 Standalone</a></li>
-<li><a href=#43-yarn>4.3 Yarn</a></li>
-</ul>
-</li>
-<li><a href=#5-monitoring>5. Monitoring</a></li>
-<li><a href=#6-spark调优>6. Spark调优</a></li>
-<li><a href=#7-spark-sql>7. Spark SQL</a></li>
-<li><a href=#8-spark-streaming>8. Spark Streaming</a></li>
-<li><a href=#9-mllib>9. MLlib</a></li>
-<li><a href=#10-graphx>10. GraphX</a></li>
-</ul>
-</li>
-<li><a href=#spark3>Spark3</a></li>
-</ul>
-</nav></div>
-</div><div class=content id=content><div class="details admonition warning open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>
-本文最后更新于 <span class=timeago datetime=2020-12-01T00:00:00 title="December 1, 2020">2020-12-01</span>，文中内容可能已过时。</div>
-</div>
-</div><h2 id=spark>Spark</h2>
-<img src=./assets/Spark2.assets/image-20200525100810390.png alt=image-20200525100810390>
-<h3 id=1-install>1. install</h3>
-<p>env : centos7</p>
-<h4 id=11-java>1.1 java</h4>
-<p>卸载centos7自带openjdk,安装oracle的jdk</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 onchange="location=this.value"><option value=/posts/spark2_basics/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto><nav id=TableOfContents><ul><li><a href=#spark>Spark</a><ul><li><a href=#1-install>1. install</a><ul><li><a href=#11-java>1.1 java</a></li><li><a href=#12-scala>1.2 scala</a></li><li><a href=#13-hadoop>1.3 hadoop</a></li><li><a href=#14-maven>1.4 maven</a></li><li><a href=#15-spark>1.5 spark</a><ul><li><a href=#151-源码编译>1.5.1 源码编译</a></li><li><a href=#152-tar包解压>1.5.2 tar包解压</a></li></ul></li></ul></li><li><a href=#2-spark-rdd>2. Spark RDD</a><ul><li><a href=#rdd编程>RDD编程</a></li></ul></li><li><a href=#3-pyspark>3. PySpark</a></li><li><a href=#4-spark运行模式>4. Spark运行模式</a><ul><li><a href=#41-local>4.1 Local</a></li><li><a href=#42-standalone>4.2 Standalone</a></li><li><a href=#43-yarn>4.3 Yarn</a></li></ul></li><li><a href=#5-monitoring>5. Monitoring</a></li><li><a href=#6-spark调优>6. Spark调优</a></li><li><a href=#7-spark-sql>7. Spark SQL</a></li><li><a href=#8-spark-streaming>8. Spark Streaming</a></li><li><a href=#9-mllib>9. MLlib</a></li><li><a href=#10-graphx>10. GraphX</a></li></ul></li><li><a href=#spark3>Spark3</a></li></ul></nav></div></div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Spark2环境搭建与使用</h1><div class=post-meta><div class=post-meta-line><span class=post-author><span class="author fas fa-user-circle fa-fw"></span><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreferrer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/spark/><i class="far fa-folder fa-fw"></i>Spark</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-05-25>2020-05-25</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2020-12-01>2020-12-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 2802 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 6 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#spark>Spark</a><ul><li><a href=#1-install>1. install</a><ul><li><a href=#11-java>1.1 java</a></li><li><a href=#12-scala>1.2 scala</a></li><li><a href=#13-hadoop>1.3 hadoop</a></li><li><a href=#14-maven>1.4 maven</a></li><li><a href=#15-spark>1.5 spark</a><ul><li><a href=#151-源码编译>1.5.1 源码编译</a></li><li><a href=#152-tar包解压>1.5.2 tar包解压</a></li></ul></li></ul></li><li><a href=#2-spark-rdd>2. Spark RDD</a><ul><li><a href=#rdd编程>RDD编程</a></li></ul></li><li><a href=#3-pyspark>3. PySpark</a></li><li><a href=#4-spark运行模式>4. Spark运行模式</a><ul><li><a href=#41-local>4.1 Local</a></li><li><a href=#42-standalone>4.2 Standalone</a></li><li><a href=#43-yarn>4.3 Yarn</a></li></ul></li><li><a href=#5-monitoring>5. Monitoring</a></li><li><a href=#6-spark调优>6. Spark调优</a></li><li><a href=#7-spark-sql>7. Spark SQL</a></li><li><a href=#8-spark-streaming>8. Spark Streaming</a></li><li><a href=#9-mllib>9. MLlib</a></li><li><a href=#10-graphx>10. GraphX</a></li></ul></li><li><a href=#spark3>Spark3</a></li></ul></nav></div></div><div class=content id=content><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>本文最后更新于 <span class=timeago datetime=2020-12-01T00:00:00 title="December 1, 2020">2020-12-01</span>，文中内容可能已过时。</div></div></div><h2 id=spark class=headerLink><a href=#spark class=header-mark></a>Spark</h2><img src=./assets/Spark2.assets/image-20200525100810390.png alt=image-20200525100810390><h3 id=1-install class=headerLink><a href=#1-install class=header-mark></a>1. install</h3><p>env : centos7</p><h4 id=11-java class=headerLink><a href=#11-java class=header-mark></a>1.1 java</h4><p>卸载centos7自带openjdk,安装oracle的jdk</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -171,113 +25,40 @@
 </span><span class=lnt> 9
 </span><span class=lnt>10
 </span><span class=lnt>11
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>sh-4.2$ rpm -qa<span class=p>|</span>grep jdk
-java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64
-java-1.8.0-openjdk-headless-1.8.0.252.b09-2.el7_8.x86_64
-copy-jdk-configs-3.3-10.el7_5.noarch
-
-<span class=c1># uninstall</span>
-sh-4.2$ sudo rpm -e --nodeps java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64
-sh-4.2$ sudo rpm -e --nodeps java-1.8.0-openjdk-headless-1.8.0.252.b09-2.el7_8.x86_64
-
-sh-4.2$ rpm -qa<span class=p>|</span>grep jdk
-copy-jdk-configs-3.3-10.el7_5.noarch
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>tar -zxvf jdk-8u251-linux-x64.tar.gz -C ~/app/
-</code></pre></td></tr></table>
-</div>
-</div><p>修改环境变量:</p>
-<p><code>vim ~/.bash_profile</code></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>sh-4.2$ rpm -qa<span class=p>|</span>grep jdk
+</span></span><span class=line><span class=cl>java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64
+</span></span><span class=line><span class=cl>java-1.8.0-openjdk-headless-1.8.0.252.b09-2.el7_8.x86_64
+</span></span><span class=line><span class=cl>copy-jdk-configs-3.3-10.el7_5.noarch
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># uninstall</span>
+</span></span><span class=line><span class=cl>sh-4.2$ sudo rpm -e --nodeps java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64
+</span></span><span class=line><span class=cl>sh-4.2$ sudo rpm -e --nodeps java-1.8.0-openjdk-headless-1.8.0.252.b09-2.el7_8.x86_64
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sh-4.2$ rpm -qa<span class=p>|</span>grep jdk
+</span></span><span class=line><span class=cl>copy-jdk-configs-3.3-10.el7_5.noarch
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>tar -zxvf jdk-8u251-linux-x64.tar.gz -C ~/app/
+</span></span></code></pre></td></tr></table></div></div><p>修改环境变量:</p><p><code>vim ~/.bash_profile</code></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>export</span> <span class=nv>JAVA_HOME</span><span class=o>=</span>/home/sunyh/app/jdk1.8.0_251
-<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$JAVA_HOME</span>/bin:<span class=nv>$PATH</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>source</span> ~/.bash_profile
-</code></pre></td></tr></table>
-</div>
-</div><h4 id=12-scala>1.2 scala</h4>
-<p>spark与scala版本对应参考: <a href=https://spark.apache.org/docs/latest/index.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/index.html</a></p>
-<p>scala下载: <a href=https://www.scala-lang.org/download/2.12.11.html target=_blank rel="noopener noreffer">https://www.scala-lang.org/download/2.12.11.html</a></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>tar -zxvf scala-2.11.12.tgz -C ~/app/
-</code></pre></td></tr></table>
-</div>
-</div><p>env:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>export</span> <span class=nv>JAVA_HOME</span><span class=o>=</span>/home/sunyh/app/jdk1.8.0_251
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$JAVA_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>source</span> ~/.bash_profile
+</span></span></code></pre></td></tr></table></div></div><h4 id=12-scala class=headerLink><a href=#12-scala class=header-mark></a>1.2 scala</h4><p>spark与scala版本对应参考: <a href=https://spark.apache.org/docs/latest/index.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/index.html</a></p><p>scala下载: <a href=https://www.scala-lang.org/download/2.12.11.html target=_blank rel="noopener noreferrer">https://www.scala-lang.org/download/2.12.11.html</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>tar -zxvf scala-2.11.12.tgz -C ~/app/
+</span></span></code></pre></td></tr></table></div></div><p>env:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>export</span> <span class=nv>SCALA_HOME</span><span class=o>=</span>/home/sunyh/app/scala-2.12.11
-<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$SCALA_HOME</span>/bin:<span class=nv>$PATH</span>
-</code></pre></td></tr></table>
-</div>
-</div><p><a href=https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz target=_blank rel="noopener noreffer">https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz</a></p>
-<h4 id=13-hadoop>1.3 hadoop</h4>
-<p>cdh版本: <a href=http://archive.cloudera.com/cdh5/cdh/5/ target=_blank rel="noopener noreffer">http://archive.cloudera.com/cdh5/cdh/5/</a></p>
-<p><a href=http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2.tar.gz target=_blank rel="noopener noreffer">http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2.tar.gz</a></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>tar -zxvf hadoop-2.6.0-cdh5.16.2.tar.gz -C ~/app/
-</code></pre></td></tr></table>
-</div>
-</div><p>env:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>export</span> <span class=nv>SCALA_HOME</span><span class=o>=</span>/home/sunyh/app/scala-2.12.11
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$SCALA_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span></code></pre></td></tr></table></div></div><p><a href=https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz target=_blank rel="noopener noreferrer">https://downloads.lightbend.com/scala/2.11.12/scala-2.11.12.tgz</a></p><h4 id=13-hadoop class=headerLink><a href=#13-hadoop class=header-mark></a>1.3 hadoop</h4><p>cdh版本: <a href=http://archive.cloudera.com/cdh5/cdh/5/ target=_blank rel="noopener noreferrer">http://archive.cloudera.com/cdh5/cdh/5/</a></p><p><a href=http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2.tar.gz target=_blank rel="noopener noreferrer">http://archive.cloudera.com/cdh5/cdh/5/hadoop-2.6.0-cdh5.16.2.tar.gz</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>tar -zxvf hadoop-2.6.0-cdh5.16.2.tar.gz -C ~/app/
+</span></span></code></pre></td></tr></table></div></div><p>env:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>export</span> <span class=nv>HADOOP_HOME</span><span class=o>=</span>/home/sunyh/app/hadoop-2.6.0-cdh5.16.2
-<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$HADOOP_HOME</span>/bin:<span class=nv>$PATH</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>配置修改:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/etc/hadoop
-</code></pre></td></tr></table>
-</div>
-</div><ul>
-<li>
-<p>hadoop-env.sh</p>
-<p>修改JAVA_HOME</p>
-</li>
-<li>
-<p>core-site.xml</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>export</span> <span class=nv>HADOOP_HOME</span><span class=o>=</span>/home/sunyh/app/hadoop-2.6.0-cdh5.16.2
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$HADOOP_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span></code></pre></td></tr></table></div></div><p>配置修改:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/etc/hadoop
+</span></span></code></pre></td></tr></table></div></div><ul><li><p>hadoop-env.sh</p><p>修改JAVA_HOME</p></li><li><p>core-site.xml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -286,135 +67,68 @@ copy-jdk-configs-3.3-10.el7_5.noarch
 </span><span class=lnt>7
 </span><span class=lnt>8
 </span><span class=lnt>9
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;configuration&gt;</span>
-  <span class=nt>&lt;property&gt;</span>
-    <span class=nt>&lt;name&gt;</span>fs.defaultFS<span class=nt>&lt;/name&gt;</span>
-    <span class=nt>&lt;value&gt;</span>hdfs://master01:8020<span class=nt>&lt;/value&gt;</span>
-  <span class=nt>&lt;/property&gt;</span>
-  <span class=nt>&lt;property&gt;</span>
-    <span class=nt>&lt;name&gt;</span>hadoop.tmp.dir<span class=nt>&lt;/name&gt;</span>
-  <span class=nt>&lt;value&gt;</span>/home/sunyh/app/tmp<span class=nt>&lt;/value&gt;</span>
-  <span class=nt>&lt;/property&gt;</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
-</ul>
-</configuration>
-```
-<ul>
-<li>
-<p>hdfs-site.xml</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;configuration&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name&gt;</span>fs.defaultFS<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;value&gt;</span>hdfs://master01:8020<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name&gt;</span>hadoop.tmp.dir<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;value&gt;</span>/home/sunyh/app/tmp<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/property&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li></ul></configuration>```<ul><li><p>hdfs-site.xml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;configuration&gt;</span>
-  <span class=nt>&lt;property&gt;</span>
-    <span class=nt>&lt;name&gt;</span>dfs.replication<span class=nt>&lt;/name&gt;</span>
-    <span class=nt>&lt;value&gt;</span>1<span class=nt>&lt;/value&gt;</span>
-  <span class=nt>&lt;/property&gt;</span>
-<span class=nt>&lt;/configuration&gt;</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>mapred-site.xml.template</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>cp mapred-site.xml.template mapred-site.xml
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;configuration&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name&gt;</span>dfs.replication<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;value&gt;</span>1<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/configuration&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>mapred-site.xml.template</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>cp mapred-site.xml.template mapred-site.xml
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;configuration&gt;</span>
-  <span class=nt>&lt;property&gt;</span>
-    <span class=nt>&lt;name&gt;</span>mapreduce.framework.name<span class=nt>&lt;/name&gt;</span>
-    <span class=nt>&lt;value&gt;</span>yarn<span class=nt>&lt;/value&gt;</span>
-  <span class=nt>&lt;/property&gt;</span>
-<span class=nt>&lt;/configuration&gt;</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>yarn-site.xml</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;configuration&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name&gt;</span>mapreduce.framework.name<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;value&gt;</span>yarn<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/configuration&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>yarn-site.xml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;configuration&gt;</span>
-  <span class=nt>&lt;property&gt;</span>
-    <span class=nt>&lt;name&gt;</span>yarn.nodemanager.aux-serivices<span class=nt>&lt;/name&gt;</span>
-    <span class=nt>&lt;value&gt;</span>mapreduce_shuffle<span class=nt>&lt;/value&gt;</span>
-  <span class=nt>&lt;/property&gt;</span>
-<span class=nt>&lt;/configuration&gt;</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
-</ul>
-<p>格式化:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;configuration&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;name&gt;</span>yarn.nodemanager.aux-serivices<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;value&gt;</span>mapreduce_shuffle<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/configuration&gt;</span>
+</span></span></code></pre></td></tr></table></div></div></li></ul><p>格式化:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/bin
-
-./hdfs namenode -formate
-</code></pre></td></tr></table>
-</div>
-</div><p>启动hdfs:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/bin
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>./hdfs namenode -formate
+</span></span></code></pre></td></tr></table></div></div><p>启动hdfs:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/sbin
-
-./start-dfs.sh
-</code></pre></td></tr></table>
-</div>
-</div><p>查看启动状态:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>jps
-</code></pre></td></tr></table>
-</div>
-</div><p>测试:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/sbin
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>./start-dfs.sh
+</span></span></code></pre></td></tr></table></div></div><p>查看启动状态:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>jps
+</span></span></code></pre></td></tr></table></div></div><p>测试:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -422,153 +136,41 @@ copy-jdk-configs-3.3-10.el7_5.noarch
 </span><span class=lnt>6
 </span><span class=lnt>7
 </span><span class=lnt>8
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>hadoop fs -ls /
-
-hadoop fs -mkdir /test
-
-<span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2
-hadoop fs -put README.txt /test/
-hadoop fs -ls /test
-hadoop fs -text /test/README.txt
-</code></pre></td></tr></table>
-</div>
-</div><p>web: master01:50070</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200525183356337.png data-srcset="./assets/Spark2.assets/image-20200525183356337.png, ./assets/Spark2.assets/image-20200525183356337.png 1.5x, ./assets/Spark2.assets/image-20200525183356337.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200525183356337.png title=image-20200525183356337></p>
-<p>启动YARN:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>hadoop fs -ls /
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>hadoop fs -mkdir /test
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2
+</span></span><span class=line><span class=cl>hadoop fs -put README.txt /test/
+</span></span><span class=line><span class=cl>hadoop fs -ls /test
+</span></span><span class=line><span class=cl>hadoop fs -text /test/README.txt
+</span></span></code></pre></td></tr></table></div></div><p>web: master01:50070</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200525183356337.png title=image-20200525183356337 data-thumbnail=./assets/Spark2.assets/image-20200525183356337.png><img loading=lazy src=./assets/Spark2.assets/image-20200525183356337.png srcset="./assets/Spark2.assets/image-20200525183356337.png, ./assets/Spark2.assets/image-20200525183356337.png 1.5x, ./assets/Spark2.assets/image-20200525183356337.png 2x" sizes=auto alt=image-20200525183356337></a></figure></p><p>启动YARN:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/sbin
-
-./start-yarn.sh
-</code></pre></td></tr></table>
-</div>
-</div><p>web: master01:8088</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200525183459047.png data-srcset="./assets/Spark2.assets/image-20200525183459047.png, ./assets/Spark2.assets/image-20200525183459047.png 1.5x, ./assets/Spark2.assets/image-20200525183459047.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200525183459047.png title=image-20200525183459047></p>
-<h4 id=14-maven>1.4 maven</h4>
-<p><a href=https://maven.apache.org/download.cgi target=_blank rel="noopener noreffer">https://maven.apache.org/download.cgi</a></p>
-<p><a href=https://spark.apache.org/docs/latest/building-spark.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/building-spark.html</a></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>tar -zxvf apache-maven-3.5.4-bin.tar.gz -C ~/app/
-</code></pre></td></tr></table>
-</div>
-</div><p>env:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> /home/sunyh/app/hadoop-2.6.0-cdh5.16.2/sbin
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>./start-yarn.sh
+</span></span></code></pre></td></tr></table></div></div><p>web: master01:8088</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200525183459047.png title=image-20200525183459047 data-thumbnail=./assets/Spark2.assets/image-20200525183459047.png><img loading=lazy src=./assets/Spark2.assets/image-20200525183459047.png srcset="./assets/Spark2.assets/image-20200525183459047.png, ./assets/Spark2.assets/image-20200525183459047.png 1.5x, ./assets/Spark2.assets/image-20200525183459047.png 2x" sizes=auto alt=image-20200525183459047></a></figure></p><h4 id=14-maven class=headerLink><a href=#14-maven class=header-mark></a>1.4 maven</h4><p><a href=https://maven.apache.org/download.cgi target=_blank rel="noopener noreferrer">https://maven.apache.org/download.cgi</a></p><p><a href=https://spark.apache.org/docs/latest/building-spark.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/building-spark.html</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>tar -zxvf apache-maven-3.5.4-bin.tar.gz -C ~/app/
+</span></span></code></pre></td></tr></table></div></div><p>env:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>export</span> <span class=nv>MAVEN_HOME</span><span class=o>=</span>/home/sunyh/app/apache-maven-3.5.4
-<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$MAVEN_HOME</span>/bin:<span class=nv>$PATH</span>
-</code></pre></td></tr></table>
-</div>
-</div><h4 id=15-spark>1.5 spark</h4>
-<h5 id=151-源码编译>1.5.1 源码编译</h5>
-<p>编译没成功</p>
-<img src=./assets/Spark2.assets/image-20200526101255416.png alt=image-20200526101255416 style=zoom:80%>
-<p>package type选择source type.</p>
-<p><a href=https://spark.apache.org/docs/latest/building-spark.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/building-spark.html</a></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>tar -zxvf spark-2.4.5.tgzbash
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>export</span> <span class=nv>MAVEN_OPTS</span><span class=o>=</span><span class=s2>&#34;-Xmx2g -XX:ReservedCodeCacheSize=1g&#34;</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>export</span> <span class=nv>MAVEN_HOME</span><span class=o>=</span>/home/sunyh/app/apache-maven-3.5.4
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$MAVEN_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=15-spark class=headerLink><a href=#15-spark class=header-mark></a>1.5 spark</h4><h5 id=151-源码编译 class=headerLink><a href=#151-%e6%ba%90%e7%a0%81%e7%bc%96%e8%af%91 class=header-mark></a>1.5.1 源码编译</h5><p>编译没成功</p><img src=./assets/Spark2.assets/image-20200526101255416.png alt=image-20200526101255416 style=zoom:80%><p>package type选择source type.</p><p><a href=https://spark.apache.org/docs/latest/building-spark.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/building-spark.html</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>tar -zxvf spark-2.4.5.tgzbash
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>export</span> <span class=nv>MAVEN_OPTS</span><span class=o>=</span><span class=s2>&#34;-Xmx2g -XX:ReservedCodeCacheSize=1g&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nb>cd</span> /home/sunyh/software/spark-2.4.5
-./dev/make-distribution.sh --name 2.6.0-cdh5.16.2 --tgz -Phadoop-2.6 -Phive -Phive-thriftserver -Pyarn -Dhadoop.version<span class=o>=</span>2.6.0-cdh5.16.2
-</code></pre></td></tr></table>
-</div>
-</div><h5 id=152-tar包解压>1.5.2 tar包解压</h5>
-<img src=./assets/Spark2.assets/image-20200526173737738.png alt=image-20200526173737738 style=zoom:80%>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>tar -zxvf spark-2.4.5-bin-hadoop2.6.tgz -C ~/app/
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nb>cd</span> /home/sunyh/software/spark-2.4.5
+</span></span><span class=line><span class=cl>./dev/make-distribution.sh --name 2.6.0-cdh5.16.2 --tgz -Phadoop-2.6 -Phive -Phive-thriftserver -Pyarn -Dhadoop.version<span class=o>=</span>2.6.0-cdh5.16.2
+</span></span></code></pre></td></tr></table></div></div><h5 id=152-tar包解压 class=headerLink><a href=#152-tar%e5%8c%85%e8%a7%a3%e5%8e%8b class=header-mark></a>1.5.2 tar包解压</h5><img src=./assets/Spark2.assets/image-20200526173737738.png alt=image-20200526173737738 style=zoom:80%><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>tar -zxvf spark-2.4.5-bin-hadoop2.6.tgz -C ~/app/
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>export</span> <span class=nv>SPARK_HOME</span><span class=o>=</span>/home/sunyh/app/spark-2.4.5-bin-hadoop2.6
-<span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$SPARK_HOME</span>/bin:<span class=nv>$PATH</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=2-spark-rdd>2. Spark RDD</h3>
-<p>Resilient Distributed Dataset</p>
-<p><a href=https://github.com/apache/spark/blob/master/core/src/main/scala/org/apache/spark/rdd/RDD.scala target=_blank rel="noopener noreffer">https://github.com/apache/spark/blob/master/core/src/main/scala/org/apache/spark/rdd/RDD.scala</a></p>
-<h4 id=rdd编程>RDD编程</h4>
-<ul>
-<li>
-<p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#parallelized-collections target=_blank rel="noopener noreffer">Parallelized Collections</a></p>
-</li>
-<li>
-<p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#external-datasets target=_blank rel="noopener noreffer">External Datasets</a></p>
-<p>PySpark can create distributed datasets from any storage source supported by Hadoop, including your local file system, HDFS, Cassandra, HBase, <a href=http://wiki.apache.org/hadoop/AmazonS3 target=_blank rel="noopener noreffer">Amazon S3</a>, etc. Spark supports text files, <a href=http://hadoop.apache.org/common/docs/current/api/org/apache/hadoop/mapred/SequenceFileInputFormat.html target=_blank rel="noopener noreffer">SequenceFiles</a>, and any other Hadoop <a href=http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/InputFormat.html target=_blank rel="noopener noreffer">InputFormat</a>.</p>
-</li>
-<li>
-<p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-operations target=_blank rel="noopener noreffer">RDD Operations</a></p>
-<ul>
-<li><em>transformations</em></li>
-<li><em>actions</em></li>
-</ul>
-</li>
-<li>
-<p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence target=_blank rel="noopener noreffer">RDD Persistence</a></p>
-</li>
-</ul>
-<h3 id=3-pyspark>3. PySpark</h3>
-<p>PyCharm环境配置(local 本地测试):</p>
-<ul>
-<li>
-<p>python intercepter</p>
-</li>
-<li>
-<p>python structure</p>
-<p>添加/home/sunyh/app/spark-2.4.5-bin-hadoop2.6/python/lib下的两个zip包</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200526175324000.png data-srcset="./assets/Spark2.assets/image-20200526175324000.png, ./assets/Spark2.assets/image-20200526175324000.png 1.5x, ./assets/Spark2.assets/image-20200526175324000.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200526175324000.png title=image-20200526175324000></p>
-</li>
-<li>
-<p>Run Configurations</p>
-<p>env 添加PYTHONPATH</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200526174946632.png data-srcset="./assets/Spark2.assets/image-20200526174946632.png, ./assets/Spark2.assets/image-20200526174946632.png 1.5x, ./assets/Spark2.assets/image-20200526174946632.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200526174946632.png title=image-20200526174946632></p>
-</li>
-</ul>
-<p>测试:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>export</span> <span class=nv>SPARK_HOME</span><span class=o>=</span>/home/sunyh/app/spark-2.4.5-bin-hadoop2.6
+</span></span><span class=line><span class=cl><span class=nb>export</span> <span class=nv>PATH</span><span class=o>=</span><span class=nv>$SPARK_HOME</span>/bin:<span class=nv>$PATH</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=2-spark-rdd class=headerLink><a href=#2-spark-rdd class=header-mark></a>2. Spark RDD</h3><p>Resilient Distributed Dataset</p><p><a href=https://github.com/apache/spark/blob/master/core/src/main/scala/org/apache/spark/rdd/RDD.scala target=_blank rel="noopener noreferrer">https://github.com/apache/spark/blob/master/core/src/main/scala/org/apache/spark/rdd/RDD.scala</a></p><h4 id=rdd编程 class=headerLink><a href=#rdd%e7%bc%96%e7%a8%8b class=header-mark></a>RDD编程</h4><ul><li><p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#parallelized-collections target=_blank rel="noopener noreferrer">Parallelized Collections</a></p></li><li><p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#external-datasets target=_blank rel="noopener noreferrer">External Datasets</a></p><p>PySpark can create distributed datasets from any storage source supported by Hadoop, including your local file system, HDFS, Cassandra, HBase, <a href=http://wiki.apache.org/hadoop/AmazonS3 target=_blank rel="noopener noreferrer">Amazon S3</a>, etc. Spark supports text files, <a href=http://hadoop.apache.org/common/docs/current/api/org/apache/hadoop/mapred/SequenceFileInputFormat.html target=_blank rel="noopener noreferrer">SequenceFiles</a>, and any other Hadoop <a href=http://hadoop.apache.org/docs/stable/api/org/apache/hadoop/mapred/InputFormat.html target=_blank rel="noopener noreferrer">InputFormat</a>.</p></li><li><p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-operations target=_blank rel="noopener noreferrer">RDD Operations</a></p><ul><li><em>transformations</em></li><li><em>actions</em></li></ul></li><li><p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#rdd-persistence target=_blank rel="noopener noreferrer">RDD Persistence</a></p></li></ul><h3 id=3-pyspark class=headerLink><a href=#3-pyspark class=header-mark></a>3. PySpark</h3><p>PyCharm环境配置(local 本地测试):</p><ul><li><p>python intercepter</p></li><li><p>python structure</p><p>添加/home/sunyh/app/spark-2.4.5-bin-hadoop2.6/python/lib下的两个zip包</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200526175324000.png title=image-20200526175324000 data-thumbnail=./assets/Spark2.assets/image-20200526175324000.png><img loading=lazy src=./assets/Spark2.assets/image-20200526175324000.png srcset="./assets/Spark2.assets/image-20200526175324000.png, ./assets/Spark2.assets/image-20200526175324000.png 1.5x, ./assets/Spark2.assets/image-20200526175324000.png 2x" sizes=auto alt=image-20200526175324000></a></figure></p></li><li><p>Run Configurations</p><p>env 添加PYTHONPATH</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200526174946632.png title=image-20200526174946632 data-thumbnail=./assets/Spark2.assets/image-20200526174946632.png><img loading=lazy src=./assets/Spark2.assets/image-20200526174946632.png srcset="./assets/Spark2.assets/image-20200526174946632.png, ./assets/Spark2.assets/image-20200526174946632.png 1.5x, ./assets/Spark2.assets/image-20200526174946632.png 2x" sizes=auto alt=image-20200526174946632></a></figure></p></li></ul><p>测试:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -578,44 +180,21 @@ hadoop fs -text /test/README.txt
 </span><span class=lnt> 8
 </span><span class=lnt> 9
 </span><span class=lnt>10
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>from</span> <span class=nn>pyspark</span> <span class=kn>import</span> <span class=n>SparkConf</span><span class=p>,</span><span class=n>SparkContext</span>
- 
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
-    <span class=c1># conf = SparkConf().setMaster(&#34;local[2]&#34;).setAppName(&#34;spark0526&#34;)</span>
-    <span class=n>conf</span> <span class=o>=</span> <span class=n>SparkConf</span><span class=p>()</span>
-    <span class=n>sc</span> <span class=o>=</span> <span class=n>SparkContext</span><span class=p>(</span><span class=n>conf</span><span class=o>=</span><span class=n>conf</span><span class=p>)</span>
-    <span class=n>data</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>]</span>
-    <span class=n>distData</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>parallelize</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>distData</span><span class=o>.</span><span class=n>collect</span><span class=p>())</span>
-    <span class=n>sc</span><span class=o>.</span><span class=n>stop</span><span class=p>()</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>提交pyspark应用程序:</p>
-<p>参考:https://spark.apache.org/docs/latest/submitting-applications.html</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark0526 /home/sunyh/py_project/spark_test/test.py
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>spark-submit --help
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527104025743.png data-srcset="./assets/Spark2.assets/image-20200527104025743.png, ./assets/Spark2.assets/image-20200527104025743.png 1.5x, ./assets/Spark2.assets/image-20200527104025743.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527104025743.png title=image-20200527104025743></p>
-<h3 id=4-spark运行模式>4. Spark运行模式</h3>
-<img src=./assets/Spark2.assets/image-20200527103356698.png alt=image-20200527103356698 style=zoom:80%>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pyspark</span> <span class=kn>import</span> <span class=n>SparkConf</span><span class=p>,</span><span class=n>SparkContext</span>
+</span></span><span class=line><span class=cl> 
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=c1># conf = SparkConf().setMaster(&#34;local[2]&#34;).setAppName(&#34;spark0526&#34;)</span>
+</span></span><span class=line><span class=cl>    <span class=n>conf</span> <span class=o>=</span> <span class=n>SparkConf</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>sc</span> <span class=o>=</span> <span class=n>SparkContext</span><span class=p>(</span><span class=n>conf</span><span class=o>=</span><span class=n>conf</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>data</span> <span class=o>=</span> <span class=p>[</span><span class=mi>1</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mi>3</span><span class=p>,</span> <span class=mi>4</span><span class=p>,</span> <span class=mi>5</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>distData</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>parallelize</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>distData</span><span class=o>.</span><span class=n>collect</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>    <span class=n>sc</span><span class=o>.</span><span class=n>stop</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>提交pyspark应用程序:</p><p>参考:https://spark.apache.org/docs/latest/submitting-applications.html</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark0526 /home/sunyh/py_project/spark_test/test.py
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>spark-submit --help
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527104025743.png title=image-20200527104025743 data-thumbnail=./assets/Spark2.assets/image-20200527104025743.png><img loading=lazy src=./assets/Spark2.assets/image-20200527104025743.png srcset="./assets/Spark2.assets/image-20200527104025743.png, ./assets/Spark2.assets/image-20200527104025743.png 1.5x, ./assets/Spark2.assets/image-20200527104025743.png 2x" sizes=auto alt=image-20200527104025743></a></figure></p><h3 id=4-spark运行模式 class=headerLink><a href=#4-spark%e8%bf%90%e8%a1%8c%e6%a8%a1%e5%bc%8f class=header-mark></a>4. Spark运行模式</h3><img src=./assets/Spark2.assets/image-20200527103356698.png alt=image-20200527103356698 style=zoom:80%><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -639,51 +218,37 @@ hadoop fs -text /test/README.txt
 </span><span class=lnt>22
 </span><span class=lnt>23
 </span><span class=lnt>24
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=c1># spark_op.py  统计单词个数</span>
-
-<span class=kn>import</span> <span class=nn>sys</span>
-
-<span class=kn>from</span> <span class=nn>pyspark</span> <span class=kn>import</span> <span class=n>SparkConf</span><span class=p>,</span> <span class=n>SparkContext</span>
-
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
-    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;Usage: wordcount &lt;input&gt;&#34;</span><span class=p>,</span> <span class=n>file</span><span class=o>=</span><span class=n>sys</span><span class=o>.</span><span class=n>stderr</span><span class=p>)</span>
-    <span class=n>conf</span> <span class=o>=</span> <span class=n>SparkConf</span><span class=p>()</span>
-    <span class=n>sc</span> <span class=o>=</span> <span class=n>SparkContext</span><span class=p>(</span><span class=n>conf</span><span class=o>=</span><span class=n>conf</span><span class=p>)</span>
-
-    <span class=k>def</span> <span class=nf>print_result</span><span class=p>():</span>
-        <span class=n>counts</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>textFile</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> \
-            <span class=o>.</span><span class=n>flatMap</span><span class=p>(</span><span class=k>lambda</span> <span class=n>line</span><span class=p>:</span> <span class=n>line</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>))</span> \
-            <span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span> \
-            <span class=o>.</span><span class=n>reduceByKey</span><span class=p>(</span><span class=k>lambda</span> <span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>:</span> <span class=n>a</span> <span class=o>+</span> <span class=n>b</span><span class=p>)</span>
-        <span class=n>output</span> <span class=o>=</span> <span class=n>counts</span><span class=o>.</span><span class=n>collect</span><span class=p>()</span>
-        <span class=k>for</span> <span class=p>(</span><span class=n>word</span><span class=p>,</span> <span class=n>count</span><span class=p>)</span> <span class=ow>in</span> <span class=n>output</span><span class=p>:</span>
-            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>%s</span><span class=s1>: </span><span class=si>%i</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=p>(</span><span class=n>word</span><span class=p>,</span> <span class=n>count</span><span class=p>))</span>
-
-    <span class=n>print_result</span><span class=p>()</span>
-
-    <span class=n>sc</span><span class=o>.</span><span class=n>stop</span><span class=p>()</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>hello.txt</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=c1># spark_op.py  统计单词个数</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>sys</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pyspark</span> <span class=kn>import</span> <span class=n>SparkConf</span><span class=p>,</span> <span class=n>SparkContext</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>)</span> <span class=o>!=</span> <span class=mi>2</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;Usage: wordcount &lt;input&gt;&#34;</span><span class=p>,</span> <span class=n>file</span><span class=o>=</span><span class=n>sys</span><span class=o>.</span><span class=n>stderr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>conf</span> <span class=o>=</span> <span class=n>SparkConf</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>sc</span> <span class=o>=</span> <span class=n>SparkContext</span><span class=p>(</span><span class=n>conf</span><span class=o>=</span><span class=n>conf</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>print_result</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>        <span class=n>counts</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>textFile</span><span class=p>(</span><span class=n>sys</span><span class=o>.</span><span class=n>argv</span><span class=p>[</span><span class=mi>1</span><span class=p>])</span> \
+</span></span><span class=line><span class=cl>            <span class=o>.</span><span class=n>flatMap</span><span class=p>(</span><span class=k>lambda</span> <span class=n>line</span><span class=p>:</span> <span class=n>line</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>))</span> \
+</span></span><span class=line><span class=cl>            <span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>x</span><span class=p>:</span> <span class=p>(</span><span class=n>x</span><span class=p>,</span> <span class=mi>1</span><span class=p>))</span> \
+</span></span><span class=line><span class=cl>            <span class=o>.</span><span class=n>reduceByKey</span><span class=p>(</span><span class=k>lambda</span> <span class=n>a</span><span class=p>,</span> <span class=n>b</span><span class=p>:</span> <span class=n>a</span> <span class=o>+</span> <span class=n>b</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>output</span> <span class=o>=</span> <span class=n>counts</span><span class=o>.</span><span class=n>collect</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=p>(</span><span class=n>word</span><span class=p>,</span> <span class=n>count</span><span class=p>)</span> <span class=ow>in</span> <span class=n>output</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>%s</span><span class=s1>: </span><span class=si>%i</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=p>(</span><span class=n>word</span><span class=p>,</span> <span class=n>count</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>print_result</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>sc</span><span class=o>.</span><span class=n>stop</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><p>hello.txt</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>hello world
-hello spark
-welcome to beijing
-</code></pre></td></tr></table>
-</div>
-</div><h4 id=41-local>4.1 Local</h4>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>hello world
+</span></span><span class=line><span class=cl>hello spark
+</span></span><span class=line><span class=cl>welcome to beijing
+</span></span></code></pre></td></tr></table></div></div><h4 id=41-local class=headerLink><a href=#41-local class=header-mark></a>4.1 Local</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -692,84 +257,42 @@ welcome to beijing
 </span><span class=lnt>7
 </span><span class=lnt>8
 </span><span class=lnt>9
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 单文件</span>
-spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark_local <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
-</span><span class=se></span>file:///home/sunyh/py_project/spark_test/data/hello.txt
-	
-<span class=c1># 多文件</span>
-spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark_local <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
-</span><span class=se></span>file:///home/sunyh/py_project/spark_test/data
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527141936808.png data-srcset="./assets/Spark2.assets/image-20200527141936808.png, ./assets/Spark2.assets/image-20200527141936808.png 1.5x, ./assets/Spark2.assets/image-20200527141936808.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527141936808.png title=image-20200527141936808></p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527142043419.png data-srcset="./assets/Spark2.assets/image-20200527142043419.png, ./assets/Spark2.assets/image-20200527142043419.png 1.5x, ./assets/Spark2.assets/image-20200527142043419.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527142043419.png title=image-20200527142043419></p>
-<h4 id=42-standalone>4.2 Standalone</h4>
-<p><a href=https://spark.apache.org/docs/latest/spark-standalone.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/spark-standalone.html</a></p>
-<p>修改配置文件:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># 单文件</span>
+</span></span><span class=line><span class=cl>spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark_local <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>file:///home/sunyh/py_project/spark_test/data/hello.txt
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl><span class=c1># 多文件</span>
+</span></span><span class=line><span class=cl>spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark_local <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>file:///home/sunyh/py_project/spark_test/data
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527141936808.png title=image-20200527141936808 data-thumbnail=./assets/Spark2.assets/image-20200527141936808.png><img loading=lazy src=./assets/Spark2.assets/image-20200527141936808.png srcset="./assets/Spark2.assets/image-20200527141936808.png, ./assets/Spark2.assets/image-20200527141936808.png 1.5x, ./assets/Spark2.assets/image-20200527141936808.png 2x" sizes=auto alt=image-20200527141936808></a></figure></p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527142043419.png title=image-20200527142043419 data-thumbnail=./assets/Spark2.assets/image-20200527142043419.png><img loading=lazy src=./assets/Spark2.assets/image-20200527142043419.png srcset="./assets/Spark2.assets/image-20200527142043419.png, ./assets/Spark2.assets/image-20200527142043419.png 1.5x, ./assets/Spark2.assets/image-20200527142043419.png 2x" sizes=auto alt=image-20200527142043419></a></figure></p><h4 id=42-standalone class=headerLink><a href=#42-standalone class=header-mark></a>4.2 Standalone</h4><p><a href=https://spark.apache.org/docs/latest/spark-standalone.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/spark-standalone.html</a></p><p>修改配置文件:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># cd $SPARK_HOME/conf</span>
-<span class=nb>cd</span> /home/sunyh/app/spark-2.4.5-bin-hadoop2.6/conf
-cp slaves.template slaves
-
-<span class=c1># 修改spark slave节点名</span>
-vim slaves 
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527142952608.png data-srcset="./assets/Spark2.assets/image-20200527142952608.png, ./assets/Spark2.assets/image-20200527142952608.png 1.5x, ./assets/Spark2.assets/image-20200527142952608.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527142952608.png title=image-20200527142952608></p>
-<p>如果多台机器,每台机器都在相同路径下部署spark;</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># cd $SPARK_HOME/conf</span>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> /home/sunyh/app/spark-2.4.5-bin-hadoop2.6/conf
+</span></span><span class=line><span class=cl>cp slaves.template slaves
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 修改spark slave节点名</span>
+</span></span><span class=line><span class=cl>vim slaves 
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527142952608.png title=image-20200527142952608 data-thumbnail=./assets/Spark2.assets/image-20200527142952608.png><img loading=lazy src=./assets/Spark2.assets/image-20200527142952608.png srcset="./assets/Spark2.assets/image-20200527142952608.png, ./assets/Spark2.assets/image-20200527142952608.png 1.5x, ./assets/Spark2.assets/image-20200527142952608.png 2x" sizes=auto alt=image-20200527142952608></a></figure></p><p>如果多台机器,每台机器都在相同路径下部署spark;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/conf
-cp spark-env.sh.template spark-env.sh
-vim spark-env.sh
-<span class=c1># 添加java环境变量  JAVA_HOME=/home/sunyh/app/jdk1.8.0_251</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>启动spark:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/conf
+</span></span><span class=line><span class=cl>cp spark-env.sh.template spark-env.sh
+</span></span><span class=line><span class=cl>vim spark-env.sh
+</span></span><span class=line><span class=cl><span class=c1># 添加java环境变量  JAVA_HOME=/home/sunyh/app/jdk1.8.0_251</span>
+</span></span></code></pre></td></tr></table></div></div><p>启动spark:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/sbin
-<span class=c1># 可以使用start-master.sh / start-slave.sh 分别启动</span>
-./start-all.sh
-</code></pre></td></tr></table>
-</div>
-</div><p>检查是否启动成功: <em>jps</em></p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527145129067.png data-srcset="./assets/Spark2.assets/image-20200527145129067.png, ./assets/Spark2.assets/image-20200527145129067.png 1.5x, ./assets/Spark2.assets/image-20200527145129067.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527145129067.png title=image-20200527145129067></p>
-<blockquote>
-<p>HDFS: NameNode / DataNode</p>
-<p>YARN: ResourceManager / NodeManager</p>
-<p>Spark Standalone: Master / Worker</p>
-</blockquote>
-<p>启动日志:</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527145506546.png data-srcset="./assets/Spark2.assets/image-20200527145506546.png, ./assets/Spark2.assets/image-20200527145506546.png 1.5x, ./assets/Spark2.assets/image-20200527145506546.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527145506546.png title=image-20200527145506546></p>
-<p>测试:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/sbin
+</span></span><span class=line><span class=cl><span class=c1># 可以使用start-master.sh / start-slave.sh 分别启动</span>
+</span></span><span class=line><span class=cl>./start-all.sh
+</span></span></code></pre></td></tr></table></div></div><p>检查是否启动成功: <em>jps</em></p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527145129067.png title=image-20200527145129067 data-thumbnail=./assets/Spark2.assets/image-20200527145129067.png><img loading=lazy src=./assets/Spark2.assets/image-20200527145129067.png srcset="./assets/Spark2.assets/image-20200527145129067.png, ./assets/Spark2.assets/image-20200527145129067.png 1.5x, ./assets/Spark2.assets/image-20200527145129067.png 2x" sizes=auto alt=image-20200527145129067></a></figure></p><blockquote><p>HDFS: NameNode / DataNode</p><p>YARN: ResourceManager / NodeManager</p><p>Spark Standalone: Master / Worker</p></blockquote><p>启动日志:</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527145506546.png title=image-20200527145506546 data-thumbnail=./assets/Spark2.assets/image-20200527145506546.png><img loading=lazy src=./assets/Spark2.assets/image-20200527145506546.png srcset="./assets/Spark2.assets/image-20200527145506546.png, ./assets/Spark2.assets/image-20200527145506546.png 1.5x, ./assets/Spark2.assets/image-20200527145506546.png 2x" sizes=auto alt=image-20200527145506546></a></figure></p><p>测试:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -778,23 +301,16 @@ vim spark-env.sh
 </span><span class=lnt>7
 </span><span class=lnt>8
 </span><span class=lnt>9
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 单文件</span>
-spark-submit --master spark://master01:7077 --name spark_standalone <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
-</span><span class=se></span>file:///home/sunyh/py_project/spark_test/data/hello.txt
-	
-<span class=c1># 多文件</span>
-spark-submit --master spark://master01:7077 --name spark_standalone <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
-</span><span class=se></span>file:///home/sunyh/py_project/spark_test/data
-</code></pre></td></tr></table>
-</div>
-</div><p>使用standalone模式而且节点数大于1,使用本地文件测试,必须保证每个节点都有测试文件.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># 单文件</span>
+</span></span><span class=line><span class=cl>spark-submit --master spark://master01:7077 --name spark_standalone <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>file:///home/sunyh/py_project/spark_test/data/hello.txt
+</span></span><span class=line><span class=cl>	
+</span></span><span class=line><span class=cl><span class=c1># 多文件</span>
+</span></span><span class=line><span class=cl>spark-submit --master spark://master01:7077 --name spark_standalone <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>file:///home/sunyh/py_project/spark_test/data
+</span></span></code></pre></td></tr></table></div></div><p>使用standalone模式而且节点数大于1,使用本地文件测试,必须保证每个节点都有测试文件.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
@@ -803,97 +319,44 @@ spark-submit --master spark://master01:7077 --name spark_standalone <span class=
 </span><span class=lnt>7
 </span><span class=lnt>8
 </span><span class=lnt>9
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># 测试文件上传到hdfs</span>
-hadoop fs -put /home/sunyh/py_project/spark_test/data/hello.txt /test.txt
-<span class=c1># 查看文件</span>
-hadoop fs -text /test.txt
-<span class=c1># 测试</span>
-spark-submit --master spark://master01:7077 --name spark_standalone <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
-</span><span class=se></span>hdfs://master01:8020/test.txt <span class=se>\
-</span><span class=se></span>hdfs://master01:8020/test/output	<span class=c1>#输出文件</span>
-</code></pre></td></tr></table>
-</div>
-</div><h4 id=43-yarn>4.3 Yarn</h4>
-<p><a href=https://spark.apache.org/docs/latest/running-on-yarn.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/running-on-yarn.html</a></p>
-<p>spark仅作为客户端,然后把作业提交到yarn执行;</p>
-<p>yarn vs standalone:</p>
-<p>​ yarn: 只需一个spark节点,不需要spark集群(不用启动master,worker)</p>
-<p>​ standalone: spark集群每个节点都需要部署spark,然后启动spark集群(master,worker)</p>
-<p>yarn模式配置:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># 测试文件上传到hdfs</span>
+</span></span><span class=line><span class=cl>hadoop fs -put /home/sunyh/py_project/spark_test/data/hello.txt /test.txt
+</span></span><span class=line><span class=cl><span class=c1># 查看文件</span>
+</span></span><span class=line><span class=cl>hadoop fs -text /test.txt
+</span></span><span class=line><span class=cl><span class=c1># 测试</span>
+</span></span><span class=line><span class=cl>spark-submit --master spark://master01:7077 --name spark_standalone <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>hdfs://master01:8020/test.txt <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>hdfs://master01:8020/test/output	<span class=c1>#输出文件</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=43-yarn class=headerLink><a href=#43-yarn class=header-mark></a>4.3 Yarn</h4><p><a href=https://spark.apache.org/docs/latest/running-on-yarn.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/running-on-yarn.html</a></p><p>spark仅作为客户端,然后把作业提交到yarn执行;</p><p>yarn vs standalone:</p><p>​ yarn: 只需一个spark节点,不需要spark集群(不用启动master,worker)</p><p>​ standalone: spark集群每个节点都需要部署spark,然后启动spark集群(master,worker)</p><p>yarn模式配置:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/conf
-vim spark-env.sh
-<span class=c1># 添加HADOOP_CONF_DIR环境变量  HADOOP_CONF_DIR=/home/sunyh/app/hadoop-2.6.0-cdh5.16.2/etc/hadoop</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>测试:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/conf
+</span></span><span class=line><span class=cl>vim spark-env.sh
+</span></span><span class=line><span class=cl><span class=c1># 添加HADOOP_CONF_DIR环境变量  HADOOP_CONF_DIR=/home/sunyh/app/hadoop-2.6.0-cdh5.16.2/etc/hadoop</span>
+</span></span></code></pre></td></tr></table></div></div><p>测试:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>spark-submit --master yarn --name spark_yarn <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
-</span><span class=se></span>hdfs://master01:8020/test.txt <span class=se>\
-</span><span class=se></span>hdfs://master01:8020/test/output	<span class=c1>#输出文件</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>yarn部署模式(deploy-mode): <code>client</code>(默认)和<code>cluster</code></p>
-<p>​ client: 提交作业的进程不能停止</p>
-<p>​ cluster: 提交完作业,提交作业端断开,所以pyspark/spark-shell/spark-sql等交互式运行程序不能用cluster模式</p>
-<p>There are two deploy modes that can be used to launch Spark applications on YARN. In <code>cluster</code> mode, the Spark driver runs inside an <strong>application master process</strong> which is managed by YARN on the cluster, and the client can go away after initiating the application. In <code>client</code> mode, the driver runs in the <strong>client process</strong>, and the application master is only used for requesting resources from YARN.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>spark-submit --master yarn --name spark_yarn <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>hdfs://master01:8020/test.txt <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>hdfs://master01:8020/test/output	<span class=c1>#输出文件</span>
+</span></span></code></pre></td></tr></table></div></div><p>yarn部署模式(deploy-mode): <code>client</code>(默认)和<code>cluster</code></p><p>​ client: 提交作业的进程不能停止</p><p>​ cluster: 提交完作业,提交作业端断开,所以pyspark/spark-shell/spark-sql等交互式运行程序不能用cluster模式</p><p>There are two deploy modes that can be used to launch Spark applications on YARN. In <code>cluster</code> mode, the Spark driver runs inside an <strong>application master process</strong> which is managed by YARN on the cluster, and the client can go away after initiating the application. In <code>client</code> mode, the driver runs in the <strong>client process</strong>, and the application master is only used for requesting resources from YARN.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># cluster</span>
-spark-submit --master yarn --name spark_yarn_cluster --deploy-mode cluster <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
-</span><span class=se></span>hdfs://master01:8020/test.txt <span class=se>\
-</span><span class=se></span>hdfs://master01:8020/test/output	<span class=c1>#输出文件</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>查看yarn application 日志:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>yarn logs --applicationId &lt;app ID&gt;
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527154735288.png data-srcset="./assets/Spark2.assets/image-20200527154735288.png, ./assets/Spark2.assets/image-20200527154735288.png 1.5x, ./assets/Spark2.assets/image-20200527154735288.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527154735288.png title=image-20200527154735288></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>yarn logs --applicationId application_1590484746232_0003
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527155443266.png data-srcset="./assets/Spark2.assets/image-20200527155443266.png, ./assets/Spark2.assets/image-20200527155443266.png 1.5x, ./assets/Spark2.assets/image-20200527155443266.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527155443266.png title=image-20200527155443266></p>
-<p>Q: Log aggregation has not completed or is not enabled.(日志聚合功能没开启)</p>
-<p>A: 修改yarn-site.xml</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># cluster</span>
+</span></span><span class=line><span class=cl>spark-submit --master yarn --name spark_yarn_cluster --deploy-mode cluster <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_op.py <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>hdfs://master01:8020/test.txt <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>hdfs://master01:8020/test/output	<span class=c1>#输出文件</span>
+</span></span></code></pre></td></tr></table></div></div><p>查看yarn application 日志:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>yarn logs --applicationId &lt;app ID&gt;
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527154735288.png title=image-20200527154735288 data-thumbnail=./assets/Spark2.assets/image-20200527154735288.png><img loading=lazy src=./assets/Spark2.assets/image-20200527154735288.png srcset="./assets/Spark2.assets/image-20200527154735288.png, ./assets/Spark2.assets/image-20200527154735288.png 1.5x, ./assets/Spark2.assets/image-20200527154735288.png 2x" sizes=auto alt=image-20200527154735288></a></figure></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>yarn logs --applicationId application_1590484746232_0003
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527155443266.png title=image-20200527155443266 data-thumbnail=./assets/Spark2.assets/image-20200527155443266.png><img loading=lazy src=./assets/Spark2.assets/image-20200527155443266.png srcset="./assets/Spark2.assets/image-20200527155443266.png, ./assets/Spark2.assets/image-20200527155443266.png 1.5x, ./assets/Spark2.assets/image-20200527155443266.png 2x" sizes=auto alt=image-20200527155443266></a></figure></p><p>Q: Log aggregation has not completed or is not enabled.(日志聚合功能没开启)</p><p>A: 修改yarn-site.xml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -905,123 +368,39 @@ spark-submit --master yarn --name spark_yarn_cluster --deploy-mode cluster <span
 </span><span class=lnt>10
 </span><span class=lnt>11
 </span><span class=lnt>12
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;property&gt;</span>
-  <span class=nt>&lt;name&gt;</span>yarn.log-aggregation-enable<span class=nt>&lt;/name&gt;</span>
-  <span class=nt>&lt;value&gt;</span>true<span class=nt>&lt;/value&gt;</span>
-<span class=nt>&lt;/property&gt;</span>
-<span class=nt>&lt;property&gt;</span>
-  <span class=nt>&lt;name&gt;</span>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds<span class=nt>&lt;/name&gt;</span>
-  <span class=nt>&lt;value&gt;</span>3600<span class=nt>&lt;/value&gt;</span>
-<span class=nt>&lt;/property&gt;</span>
-<span class=nt>&lt;property&gt;</span>
-  <span class=nt>&lt;name&gt;</span>yarn.nodemanager.remote-app-log-dir<span class=nt>&lt;/name&gt;</span>
-  <span class=nt>&lt;value&gt;</span>/tmp/logs<span class=nt>&lt;/value&gt;</span>
-<span class=nt>&lt;/property&gt;</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>重启yarn,测试</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>yarn logs --applicationId application_1590566719320_0001
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/Spark2.assets/image-20200527160916885.png data-srcset="./assets/Spark2.assets/image-20200527160916885.png, ./assets/Spark2.assets/image-20200527160916885.png 1.5x, ./assets/Spark2.assets/image-20200527160916885.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200527160916885.png title=image-20200527160916885></p>
-<h3 id=5-monitoring>5. Monitoring</h3>
-<p><a href=https://spark.apache.org/docs/latest/monitoring.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/monitoring.html</a></p>
-<p>配置修改:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;name&gt;</span>yarn.log-aggregation-enable<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;value&gt;</span>true<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;name&gt;</span>yarn.nodemanager.log-aggregation.roll-monitoring-interval-seconds<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;value&gt;</span>3600<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/property&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;property&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;name&gt;</span>yarn.nodemanager.remote-app-log-dir<span class=nt>&lt;/name&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;value&gt;</span>/tmp/logs<span class=nt>&lt;/value&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/property&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>重启yarn,测试</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>yarn logs --applicationId application_1590566719320_0001
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200527160916885.png title=image-20200527160916885 data-thumbnail=./assets/Spark2.assets/image-20200527160916885.png><img loading=lazy src=./assets/Spark2.assets/image-20200527160916885.png srcset="./assets/Spark2.assets/image-20200527160916885.png, ./assets/Spark2.assets/image-20200527160916885.png 1.5x, ./assets/Spark2.assets/image-20200527160916885.png 2x" sizes=auto alt=image-20200527160916885></a></figure></p><h3 id=5-monitoring class=headerLink><a href=#5-monitoring class=header-mark></a>5. Monitoring</h3><p><a href=https://spark.apache.org/docs/latest/monitoring.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/monitoring.html</a></p><p>配置修改:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/conf
-cp spark-defaults.conf.template spark-defaults.conf
-vim spark-defaults.conf
-<span class=c1># 设置spark.eventLog.enabled和spark.eventLog.dir</span>
-</code></pre></td></tr></table>
-</div>
-</div><img src=./assets/Spark2.assets/image-20200527173053897.png alt=image-20200527173053897 style=zoom:80%>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/conf
+</span></span><span class=line><span class=cl>cp spark-defaults.conf.template spark-defaults.conf
+</span></span><span class=line><span class=cl>vim spark-defaults.conf
+</span></span><span class=line><span class=cl><span class=c1># 设置spark.eventLog.enabled和spark.eventLog.dir</span>
+</span></span></code></pre></td></tr></table></div></div><img src=./assets/Spark2.assets/image-20200527173053897.png alt=image-20200527173053897 style=zoom:80%><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>vim spark-env.sh
-<span class=c1># 修改SPARK_HISTORY_OPTS</span>
-<span class=c1># SPARK_HISTORY_OPTS=&#34;-Dspark.history.fs.logDirectory=hdfs://master01:8020/spark-logs&#34;</span>
-</code></pre></td></tr></table>
-</div>
-</div><img src=./assets/Spark2.assets/image-20200528094604956.png alt=image-20200528094604956 style=zoom:80%>
-<p>启动history server:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>vim spark-env.sh
+</span></span><span class=line><span class=cl><span class=c1># 修改SPARK_HISTORY_OPTS</span>
+</span></span><span class=line><span class=cl><span class=c1># SPARK_HISTORY_OPTS=&#34;-Dspark.history.fs.logDirectory=hdfs://master01:8020/spark-logs&#34;</span>
+</span></span></code></pre></td></tr></table></div></div><img src=./assets/Spark2.assets/image-20200528094604956.png alt=image-20200528094604956 style=zoom:80%><p>启动history server:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/sbin
-./start-history-server.sh
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/Spark2.assets/image-20200528095147715.png data-srcset="./assets/Spark2.assets/image-20200528095147715.png, ./assets/Spark2.assets/image-20200528095147715.png 1.5x, ./assets/Spark2.assets/image-20200528095147715.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200528095147715.png title=image-20200528095147715></p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200528095254668.png data-srcset="./assets/Spark2.assets/image-20200528095254668.png, ./assets/Spark2.assets/image-20200528095254668.png 1.5x, ./assets/Spark2.assets/image-20200528095254668.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200528095254668.png title=image-20200528095254668></p>
-<p>不同模式提交任务查看history server:</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200528095939519.png data-srcset="./assets/Spark2.assets/image-20200528095939519.png, ./assets/Spark2.assets/image-20200528095939519.png 1.5x, ./assets/Spark2.assets/image-20200528095939519.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200528095939519.png title=image-20200528095939519></p>
-<p>任务详细信息:</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200528100312141.png data-srcset="./assets/Spark2.assets/image-20200528100312141.png, ./assets/Spark2.assets/image-20200528100312141.png 1.5x, ./assets/Spark2.assets/image-20200528100312141.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200528100312141.png title=image-20200528100312141></p>
-<p>任务日志以json保存在配置的hdfs:</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/image-20200528100711927.png data-srcset="./assets/Spark2.assets/image-20200528100711927.png, ./assets/Spark2.assets/image-20200528100711927.png 1.5x, ./assets/Spark2.assets/image-20200528100711927.png 2x" data-sizes=auto alt=./assets/Spark2.assets/image-20200528100711927.png title=image-20200528100711927></p>
-<h3 id=6-spark调优>6. Spark调优</h3>
-<p><a href=https://spark.apache.org/docs/latest/tuning.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/tuning.html</a></p>
-<ul>
-<li>
-<p>Data Serialization</p>
-</li>
-<li>
-<p>Memory Tuning</p>
-</li>
-<li>
-<p>Broadcasting Large Variables</p>
-<p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#broadcast-variables target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/rdd-programming-guide.html#broadcast-variables</a></p>
-</li>
-<li>
-<p>Data Locality</p>
-</li>
-</ul>
-<h3 id=7-spark-sql>7. Spark SQL</h3>
-<blockquote>
-<p><a href=https://spark.apache.org/sql/ target=_blank rel="noopener noreffer">https://spark.apache.org/sql/</a></p>
-<p><a href=https://spark.apache.org/docs/latest/sql-programming-guide.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/sql-programming-guide.html</a></p>
-</blockquote>
-<p>Spark SQL is Apache Spark&rsquo;s module for working with structured data.</p>
-<p>Spark SQL提供的操作数据的方式: SQL, DataFrame API, Dataset API(暂时不支持python)</p>
-<ul>
-<li>
-<p>Dataset</p>
-<p>A Dataset is a distributed collection of data.</p>
-<p>[[Row]]的数据集</p>
-</li>
-<li>
-<p>DataFrame</p>
-<p>A DataFrame is a <em>Dataset</em> organized into named columns.</p>
-<p>以列(列名,列类型,列值)的的形式构成的分布式数据集.</p>
-<p>DataFrame = RDD[Row] + shcema</p>
-</li>
-</ul>
-<p>测试文件: <em>spark_sql_op.py</em></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>/sbin
+</span></span><span class=line><span class=cl>./start-history-server.sh
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200528095147715.png title=image-20200528095147715 data-thumbnail=./assets/Spark2.assets/image-20200528095147715.png><img loading=lazy src=./assets/Spark2.assets/image-20200528095147715.png srcset="./assets/Spark2.assets/image-20200528095147715.png, ./assets/Spark2.assets/image-20200528095147715.png 1.5x, ./assets/Spark2.assets/image-20200528095147715.png 2x" sizes=auto alt=image-20200528095147715></a></figure></p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200528095254668.png title=image-20200528095254668 data-thumbnail=./assets/Spark2.assets/image-20200528095254668.png><img loading=lazy src=./assets/Spark2.assets/image-20200528095254668.png srcset="./assets/Spark2.assets/image-20200528095254668.png, ./assets/Spark2.assets/image-20200528095254668.png 1.5x, ./assets/Spark2.assets/image-20200528095254668.png 2x" sizes=auto alt=image-20200528095254668></a></figure></p><p>不同模式提交任务查看history server:</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200528095939519.png title=image-20200528095939519 data-thumbnail=./assets/Spark2.assets/image-20200528095939519.png><img loading=lazy src=./assets/Spark2.assets/image-20200528095939519.png srcset="./assets/Spark2.assets/image-20200528095939519.png, ./assets/Spark2.assets/image-20200528095939519.png 1.5x, ./assets/Spark2.assets/image-20200528095939519.png 2x" sizes=auto alt=image-20200528095939519></a></figure></p><p>任务详细信息:</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200528100312141.png title=image-20200528100312141 data-thumbnail=./assets/Spark2.assets/image-20200528100312141.png><img loading=lazy src=./assets/Spark2.assets/image-20200528100312141.png srcset="./assets/Spark2.assets/image-20200528100312141.png, ./assets/Spark2.assets/image-20200528100312141.png 1.5x, ./assets/Spark2.assets/image-20200528100312141.png 2x" sizes=auto alt=image-20200528100312141></a></figure></p><p>任务日志以json保存在配置的hdfs:</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/image-20200528100711927.png title=image-20200528100711927 data-thumbnail=./assets/Spark2.assets/image-20200528100711927.png><img loading=lazy src=./assets/Spark2.assets/image-20200528100711927.png srcset="./assets/Spark2.assets/image-20200528100711927.png, ./assets/Spark2.assets/image-20200528100711927.png 1.5x, ./assets/Spark2.assets/image-20200528100711927.png 2x" sizes=auto alt=image-20200528100711927></a></figure></p><h3 id=6-spark调优 class=headerLink><a href=#6-spark%e8%b0%83%e4%bc%98 class=header-mark></a>6. Spark调优</h3><p><a href=https://spark.apache.org/docs/latest/tuning.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/tuning.html</a></p><ul><li><p>Data Serialization</p></li><li><p>Memory Tuning</p></li><li><p>Broadcasting Large Variables</p><p><a href=https://spark.apache.org/docs/latest/rdd-programming-guide.html#broadcast-variables target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/rdd-programming-guide.html#broadcast-variables</a></p></li><li><p>Data Locality</p></li></ul><h3 id=7-spark-sql class=headerLink><a href=#7-spark-sql class=header-mark></a>7. Spark SQL</h3><blockquote><p><a href=https://spark.apache.org/sql/ target=_blank rel="noopener noreferrer">https://spark.apache.org/sql/</a></p><p><a href=https://spark.apache.org/docs/latest/sql-programming-guide.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/sql-programming-guide.html</a></p></blockquote><p>Spark SQL is Apache Spark&rsquo;s module for working with structured data.</p><p>Spark SQL提供的操作数据的方式: SQL, DataFrame API, Dataset API(暂时不支持python)</p><ul><li><p>Dataset</p><p>A Dataset is a distributed collection of data.</p><p>[[Row]]的数据集</p></li><li><p>DataFrame</p><p>A DataFrame is a <em>Dataset</em> organized into named columns.</p><p>以列(列名,列类型,列值)的的形式构成的分布式数据集.</p><p>DataFrame = RDD[Row] + shcema</p></li></ul><p>测试文件: <em>spark_sql_op.py</em></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
 </span><span class=lnt>  2
 </span><span class=lnt>  3
 </span><span class=lnt>  4
@@ -1164,258 +543,162 @@ vim spark-defaults.conf
 </span><span class=lnt>141
 </span><span class=lnt>142
 </span><span class=lnt>143
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>from</span> <span class=nn>pyspark.sql</span> <span class=kn>import</span> <span class=n>SparkSession</span><span class=p>,</span> <span class=n>Row</span>
-<span class=c1># Import data types</span>
-<span class=kn>from</span> <span class=nn>pyspark.sql.types</span> <span class=kn>import</span> <span class=o>*</span>
-
-<span class=k>def</span> <span class=nf>base_test</span><span class=p>(</span><span class=n>spark</span><span class=p>):</span>
-    <span class=c1># spark is an existing SparkSession</span>
-    <span class=n>df</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>read</span><span class=o>.</span><span class=n>json</span><span class=p>(</span><span class=s2>&#34;file:///home/sunyh/app/spark-2.4.5-bin-hadoop2.6/examples/src/main/resources/people.json&#34;</span><span class=p>)</span>
-    <span class=c1># Displays the content of the DataFrame to stdout</span>
-    <span class=n>df</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
-    <span class=c1># +----+-------+</span>
-    <span class=c1># | age|   name|</span>
-    <span class=c1># +----+-------+</span>
-    <span class=c1># |null|Michael|</span>
-    <span class=c1># |  30|   Andy|</span>
-    <span class=c1># |  19| Justin|</span>
-    <span class=c1># +----+-------+</span>
-
-    <span class=c1># spark, df are from the previous example</span>
-    <span class=c1># Print the schema in a tree format</span>
-    <span class=n>df</span><span class=o>.</span><span class=n>printSchema</span><span class=p>()</span>
-    <span class=c1># root</span>
-    <span class=c1># |-- age: long (nullable = true)</span>
-    <span class=c1># |-- name: string (nullable = true)</span>
-
-    <span class=c1># Select only the &#34;name&#34; column</span>
-    <span class=n>df</span><span class=o>.</span><span class=n>select</span><span class=p>(</span><span class=s2>&#34;name&#34;</span><span class=p>)</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
-    <span class=c1># +-------+</span>
-    <span class=c1># |   name|</span>
-    <span class=c1># +-------+</span>
-    <span class=c1># |Michael|</span>
-    <span class=c1># |   Andy|</span>
-    <span class=c1># | Justin|</span>
-    <span class=c1># +-------+</span>
-
-    <span class=c1># Select everybody, but increment the age by 1</span>
-    <span class=n>df</span><span class=o>.</span><span class=n>select</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>&#39;name&#39;</span><span class=p>],</span> <span class=n>df</span><span class=p>[</span><span class=s1>&#39;age&#39;</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
-    <span class=c1># +-------+---------+</span>
-    <span class=c1># |   name|(age + 1)|</span>
-    <span class=c1># +-------+---------+</span>
-    <span class=c1># |Michael|     null|</span>
-    <span class=c1># |   Andy|       31|</span>
-    <span class=c1># | Justin|       20|</span>
-    <span class=c1># +-------+---------+</span>
-
-    <span class=c1># Select people older than 21</span>
-    <span class=n>df</span><span class=o>.</span><span class=n>filter</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>&#39;age&#39;</span><span class=p>]</span> <span class=o>&gt;</span> <span class=mi>21</span><span class=p>)</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
-    <span class=c1># +---+----+</span>
-    <span class=c1># |age|name|</span>
-    <span class=c1># +---+----+</span>
-    <span class=c1># | 30|Andy|</span>
-    <span class=c1># +---+----+</span>
-
-    <span class=c1># Count people by age</span>
-    <span class=n>df</span><span class=o>.</span><span class=n>groupBy</span><span class=p>(</span><span class=s2>&#34;age&#34;</span><span class=p>)</span><span class=o>.</span><span class=n>count</span><span class=p>()</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
-    <span class=c1># +----+-----+</span>
-    <span class=c1># | age|count|</span>
-    <span class=c1># +----+-----+</span>
-    <span class=c1># |  19|    1|</span>
-    <span class=c1># |null|    1|</span>
-    <span class=c1># |  30|    1|</span>
-    <span class=c1># +----+-----+</span>
-
-
-<span class=k>def</span> <span class=nf>schema_inference_example</span><span class=p>(</span><span class=n>spark</span><span class=p>):</span>
-    <span class=s2>&#34;&#34;&#34;
-</span><span class=s2>    RDD --&gt; DataFrame
-</span><span class=s2>    自动推导Schema
-</span><span class=s2>    :param spark:
-</span><span class=s2>    &#34;&#34;&#34;</span>
-    <span class=n>sc</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sparkContext</span>
-
-    <span class=c1># Load a text file and convert each line to a Row.</span>
-    <span class=n>lines</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>textFile</span><span class=p>(</span><span class=s2>&#34;file:///home/sunyh/app/spark-2.4.5-bin-hadoop2.6/examples/src/main/resources/people.txt&#34;</span><span class=p>)</span>
-    <span class=n>parts</span> <span class=o>=</span> <span class=n>lines</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>l</span><span class=p>:</span> <span class=n>l</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;,&#34;</span><span class=p>))</span>
-    <span class=n>people</span> <span class=o>=</span> <span class=n>parts</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=n>Row</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>age</span><span class=o>=</span><span class=nb>int</span><span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>])))</span>
-
-    <span class=c1># Infer the schema, and register the DataFrame as a table.</span>
-    <span class=n>schemaPeople</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>createDataFrame</span><span class=p>(</span><span class=n>people</span><span class=p>)</span>
-    <span class=n>schemaPeople</span><span class=o>.</span><span class=n>printSchema</span><span class=p>()</span>
-    <span class=n>schemaPeople</span><span class=o>.</span><span class=n>createOrReplaceTempView</span><span class=p>(</span><span class=s2>&#34;people&#34;</span><span class=p>)</span>
-
-    <span class=c1># SQL can be run over DataFrames that have been registered as a table.</span>
-    <span class=n>teenagers</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sql</span><span class=p>(</span><span class=s2>&#34;SELECT name FROM people WHERE age &gt;= 13 AND age &lt;= 19&#34;</span><span class=p>)</span>
-
-    <span class=c1># The results of SQL queries are Dataframe objects.</span>
-    <span class=c1># rdd returns the content as an :class:`pyspark.RDD` of :class:`Row`.</span>
-    <span class=n>teenNames</span> <span class=o>=</span> <span class=n>teenagers</span><span class=o>.</span><span class=n>rdd</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=s2>&#34;Name: &#34;</span> <span class=o>+</span> <span class=n>p</span><span class=o>.</span><span class=n>name</span><span class=p>)</span><span class=o>.</span><span class=n>collect</span><span class=p>()</span>
-    <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>teenNames</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
-    <span class=c1># Name: Justin</span>
-
-
-<span class=k>def</span> <span class=nf>schema_programmatic_example</span><span class=p>(</span><span class=n>spark</span><span class=p>):</span>
-    <span class=s2>&#34;&#34;&#34;
-</span><span class=s2>    RDD --&gt; DataFrame
-</span><span class=s2>    编程实现Schema
-</span><span class=s2>    :param spark:
-</span><span class=s2>    &#34;&#34;&#34;</span>
-    <span class=n>sc</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sparkContext</span>
-
-    <span class=c1># Load a text file and convert each line to a Row.</span>
-    <span class=n>lines</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>textFile</span><span class=p>(</span><span class=s2>&#34;file:///home/sunyh/app/spark-2.4.5-bin-hadoop2.6/examples/src/main/resources/people.txt&#34;</span><span class=p>)</span>
-    <span class=n>parts</span> <span class=o>=</span> <span class=n>lines</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>l</span><span class=p>:</span> <span class=n>l</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;,&#34;</span><span class=p>))</span>
-    <span class=c1># Each line is converted to a tuple.</span>
-    <span class=n>people</span> <span class=o>=</span> <span class=n>parts</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>strip</span><span class=p>()))</span>
-
-    <span class=c1># The schema is encoded in a string.</span>
-    <span class=n>schemaString</span> <span class=o>=</span> <span class=s2>&#34;name age&#34;</span>
-
-    <span class=n>fields</span> <span class=o>=</span> <span class=p>[</span><span class=n>StructField</span><span class=p>(</span><span class=n>field_name</span><span class=p>,</span> <span class=n>StringType</span><span class=p>(),</span> <span class=kc>True</span><span class=p>)</span> <span class=k>for</span> <span class=n>field_name</span> <span class=ow>in</span> <span class=n>schemaString</span><span class=o>.</span><span class=n>split</span><span class=p>()]</span>
-    <span class=n>schema</span> <span class=o>=</span> <span class=n>StructType</span><span class=p>(</span><span class=n>fields</span><span class=p>)</span>
-
-    <span class=c1># Apply the schema to the RDD.</span>
-    <span class=n>schemaPeople</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>createDataFrame</span><span class=p>(</span><span class=n>people</span><span class=p>,</span> <span class=n>schema</span><span class=p>)</span>
-
-    <span class=c1># Creates a temporary view using the DataFrame</span>
-    <span class=n>schemaPeople</span><span class=o>.</span><span class=n>createOrReplaceTempView</span><span class=p>(</span><span class=s2>&#34;people&#34;</span><span class=p>)</span>
-
-    <span class=c1># SQL can be run over DataFrames that have been registered as a table.</span>
-    <span class=n>results</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sql</span><span class=p>(</span><span class=s2>&#34;SELECT name FROM people&#34;</span><span class=p>)</span>
-
-    <span class=n>results</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
-    <span class=c1># +-------+</span>
-    <span class=c1># |   name|</span>
-    <span class=c1># +-------+</span>
-    <span class=c1># |Michael|</span>
-    <span class=c1># |   Andy|</span>
-    <span class=c1># | Justin|</span>
-    <span class=c1># +-------+</span>
-
-
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
-    <span class=n>spark</span> <span class=o>=</span> <span class=n>SparkSession</span> \
-        <span class=o>.</span><span class=n>builder</span> \
-        <span class=o>.</span><span class=n>appName</span><span class=p>(</span><span class=s2>&#34;Python Spark SQL basic example&#34;</span><span class=p>)</span> \
-        <span class=o>.</span><span class=n>config</span><span class=p>(</span><span class=s2>&#34;spark.some.config.option&#34;</span><span class=p>,</span> <span class=s2>&#34;some-value&#34;</span><span class=p>)</span> \
-        <span class=o>.</span><span class=n>getOrCreate</span><span class=p>()</span>
-
-    <span class=c1># base_test(spark=spark)</span>
-    <span class=c1># schema_inference_example(spark)</span>
-    <span class=n>schema_programmatic_example</span><span class=p>(</span><span class=n>spark</span><span class=p>)</span>
-
-    <span class=n>spark</span><span class=o>.</span><span class=n>stop</span><span class=p>()</span>
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pyspark.sql</span> <span class=kn>import</span> <span class=n>SparkSession</span><span class=p>,</span> <span class=n>Row</span>
+</span></span><span class=line><span class=cl><span class=c1># Import data types</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>pyspark.sql.types</span> <span class=kn>import</span> <span class=o>*</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>base_test</span><span class=p>(</span><span class=n>spark</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=c1># spark is an existing SparkSession</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>read</span><span class=o>.</span><span class=n>json</span><span class=p>(</span><span class=s2>&#34;file:///home/sunyh/app/spark-2.4.5-bin-hadoop2.6/examples/src/main/resources/people.json&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># Displays the content of the DataFrame to stdout</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +----+-------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># | age|   name|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +----+-------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |null|Michael|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |  30|   Andy|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |  19| Justin|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +----+-------+</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># spark, df are from the previous example</span>
+</span></span><span class=line><span class=cl>    <span class=c1># Print the schema in a tree format</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=o>.</span><span class=n>printSchema</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># root</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |-- age: long (nullable = true)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |-- name: string (nullable = true)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Select only the &#34;name&#34; column</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=o>.</span><span class=n>select</span><span class=p>(</span><span class=s2>&#34;name&#34;</span><span class=p>)</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |   name|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |Michael|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |   Andy|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># | Justin|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Select everybody, but increment the age by 1</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=o>.</span><span class=n>select</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>&#39;name&#39;</span><span class=p>],</span> <span class=n>df</span><span class=p>[</span><span class=s1>&#39;age&#39;</span><span class=p>]</span> <span class=o>+</span> <span class=mi>1</span><span class=p>)</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+---------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |   name|(age + 1)|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+---------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |Michael|     null|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |   Andy|       31|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># | Justin|       20|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+---------+</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Select people older than 21</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=o>.</span><span class=n>filter</span><span class=p>(</span><span class=n>df</span><span class=p>[</span><span class=s1>&#39;age&#39;</span><span class=p>]</span> <span class=o>&gt;</span> <span class=mi>21</span><span class=p>)</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +---+----+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |age|name|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +---+----+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># | 30|Andy|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +---+----+</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Count people by age</span>
+</span></span><span class=line><span class=cl>    <span class=n>df</span><span class=o>.</span><span class=n>groupBy</span><span class=p>(</span><span class=s2>&#34;age&#34;</span><span class=p>)</span><span class=o>.</span><span class=n>count</span><span class=p>()</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +----+-----+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># | age|count|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +----+-----+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |  19|    1|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |null|    1|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |  30|    1|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +----+-----+</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>schema_inference_example</span><span class=p>(</span><span class=n>spark</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    RDD --&gt; DataFrame
+</span></span></span><span class=line><span class=cl><span class=s2>    自动推导Schema
+</span></span></span><span class=line><span class=cl><span class=s2>    :param spark:
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>sc</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sparkContext</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Load a text file and convert each line to a Row.</span>
+</span></span><span class=line><span class=cl>    <span class=n>lines</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>textFile</span><span class=p>(</span><span class=s2>&#34;file:///home/sunyh/app/spark-2.4.5-bin-hadoop2.6/examples/src/main/resources/people.txt&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>parts</span> <span class=o>=</span> <span class=n>lines</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>l</span><span class=p>:</span> <span class=n>l</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;,&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>people</span> <span class=o>=</span> <span class=n>parts</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=n>Row</span><span class=p>(</span><span class=n>name</span><span class=o>=</span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>age</span><span class=o>=</span><span class=nb>int</span><span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>])))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Infer the schema, and register the DataFrame as a table.</span>
+</span></span><span class=line><span class=cl>    <span class=n>schemaPeople</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>createDataFrame</span><span class=p>(</span><span class=n>people</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>schemaPeople</span><span class=o>.</span><span class=n>printSchema</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>schemaPeople</span><span class=o>.</span><span class=n>createOrReplaceTempView</span><span class=p>(</span><span class=s2>&#34;people&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># SQL can be run over DataFrames that have been registered as a table.</span>
+</span></span><span class=line><span class=cl>    <span class=n>teenagers</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sql</span><span class=p>(</span><span class=s2>&#34;SELECT name FROM people WHERE age &gt;= 13 AND age &lt;= 19&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># The results of SQL queries are Dataframe objects.</span>
+</span></span><span class=line><span class=cl>    <span class=c1># rdd returns the content as an :class:`pyspark.RDD` of :class:`Row`.</span>
+</span></span><span class=line><span class=cl>    <span class=n>teenNames</span> <span class=o>=</span> <span class=n>teenagers</span><span class=o>.</span><span class=n>rdd</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=s2>&#34;Name: &#34;</span> <span class=o>+</span> <span class=n>p</span><span class=o>.</span><span class=n>name</span><span class=p>)</span><span class=o>.</span><span class=n>collect</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>name</span> <span class=ow>in</span> <span class=n>teenNames</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=n>name</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># Name: Justin</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>schema_programmatic_example</span><span class=p>(</span><span class=n>spark</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    RDD --&gt; DataFrame
+</span></span></span><span class=line><span class=cl><span class=s2>    编程实现Schema
+</span></span></span><span class=line><span class=cl><span class=s2>    :param spark:
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>sc</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sparkContext</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Load a text file and convert each line to a Row.</span>
+</span></span><span class=line><span class=cl>    <span class=n>lines</span> <span class=o>=</span> <span class=n>sc</span><span class=o>.</span><span class=n>textFile</span><span class=p>(</span><span class=s2>&#34;file:///home/sunyh/app/spark-2.4.5-bin-hadoop2.6/examples/src/main/resources/people.txt&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>parts</span> <span class=o>=</span> <span class=n>lines</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>l</span><span class=p>:</span> <span class=n>l</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s2>&#34;,&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=c1># Each line is converted to a tuple.</span>
+</span></span><span class=line><span class=cl>    <span class=n>people</span> <span class=o>=</span> <span class=n>parts</span><span class=o>.</span><span class=n>map</span><span class=p>(</span><span class=k>lambda</span> <span class=n>p</span><span class=p>:</span> <span class=p>(</span><span class=n>p</span><span class=p>[</span><span class=mi>0</span><span class=p>],</span> <span class=n>p</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span><span class=o>.</span><span class=n>strip</span><span class=p>()))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># The schema is encoded in a string.</span>
+</span></span><span class=line><span class=cl>    <span class=n>schemaString</span> <span class=o>=</span> <span class=s2>&#34;name age&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>fields</span> <span class=o>=</span> <span class=p>[</span><span class=n>StructField</span><span class=p>(</span><span class=n>field_name</span><span class=p>,</span> <span class=n>StringType</span><span class=p>(),</span> <span class=kc>True</span><span class=p>)</span> <span class=k>for</span> <span class=n>field_name</span> <span class=ow>in</span> <span class=n>schemaString</span><span class=o>.</span><span class=n>split</span><span class=p>()]</span>
+</span></span><span class=line><span class=cl>    <span class=n>schema</span> <span class=o>=</span> <span class=n>StructType</span><span class=p>(</span><span class=n>fields</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Apply the schema to the RDD.</span>
+</span></span><span class=line><span class=cl>    <span class=n>schemaPeople</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>createDataFrame</span><span class=p>(</span><span class=n>people</span><span class=p>,</span> <span class=n>schema</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># Creates a temporary view using the DataFrame</span>
+</span></span><span class=line><span class=cl>    <span class=n>schemaPeople</span><span class=o>.</span><span class=n>createOrReplaceTempView</span><span class=p>(</span><span class=s2>&#34;people&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># SQL can be run over DataFrames that have been registered as a table.</span>
+</span></span><span class=line><span class=cl>    <span class=n>results</span> <span class=o>=</span> <span class=n>spark</span><span class=o>.</span><span class=n>sql</span><span class=p>(</span><span class=s2>&#34;SELECT name FROM people&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>results</span><span class=o>.</span><span class=n>show</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |   name|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |Michael|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># |   Andy|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># | Justin|</span>
+</span></span><span class=line><span class=cl>    <span class=c1># +-------+</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s1>&#39;__main__&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>spark</span> <span class=o>=</span> <span class=n>SparkSession</span> \
+</span></span><span class=line><span class=cl>        <span class=o>.</span><span class=n>builder</span> \
+</span></span><span class=line><span class=cl>        <span class=o>.</span><span class=n>appName</span><span class=p>(</span><span class=s2>&#34;Python Spark SQL basic example&#34;</span><span class=p>)</span> \
+</span></span><span class=line><span class=cl>        <span class=o>.</span><span class=n>config</span><span class=p>(</span><span class=s2>&#34;spark.some.config.option&#34;</span><span class=p>,</span> <span class=s2>&#34;some-value&#34;</span><span class=p>)</span> \
+</span></span><span class=line><span class=cl>        <span class=o>.</span><span class=n>getOrCreate</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># base_test(spark=spark)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># schema_inference_example(spark)</span>
+</span></span><span class=line><span class=cl>    <span class=n>schema_programmatic_example</span><span class=p>(</span><span class=n>spark</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>spark</span><span class=o>.</span><span class=n>stop</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark_local <span class=se>\
-</span><span class=se></span>/home/sunyh/py_project/spark_test/spark_sql_op.py
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=8-spark-streaming>8. Spark Streaming</h3>
-<blockquote>
-<p><a href=https://spark.apache.org/streaming/ target=_blank rel="noopener noreffer">https://spark.apache.org/streaming/</a></p>
-<p><a href=https://spark.apache.org/docs/latest/streaming-programming-guide.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/streaming-programming-guide.html</a></p>
-</blockquote>
-<p>Spark Streaming is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams.</p>
-<p><img class=lazyload data-src=./assets/Spark2.assets/streaming-flow.png data-srcset="./assets/Spark2.assets/streaming-flow.png, ./assets/Spark2.assets/streaming-flow.png 1.5x, ./assets/Spark2.assets/streaming-flow.png 2x" data-sizes=auto alt=./assets/Spark2.assets/streaming-flow.png title="Spark Streaming"></p>
-<p>常用实时流处理框架:</p>
-<ul>
-<li>Storm: 真正实时流处理</li>
-<li>Spark Streaming: 不是真正的实时流处理,而是mini batch操作</li>
-<li>Flink</li>
-<li>Kafka Stream</li>
-</ul>
-<p><a href=https://spark.apache.org/docs/latest/streaming-programming-guide.html#discretized-streams-dstreams target=_blank rel="noopener noreffer">DStream</a></p>
-<p>Spark Streaming provides a high-level abstraction called <em>discretized stream</em> or <em>DStream</em>, which represents a continuous stream of data.</p>
-<p>Internally, a DStream is represented as a sequence of <a href=https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD target=_blank rel="noopener noreffer">RDDs</a>.</p>
-<p><a href=https://github.com/apache/spark/blob/v2.4.5/examples/src/main/python/streaming/network_wordcount.py target=_blank rel="noopener noreffer">https://github.com/apache/spark/blob/v2.4.5/examples/src/main/python/streaming/network_wordcount.py</a></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>spark-submit --master local<span class=o>[</span>2<span class=o>]</span> --name spark_local <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>/home/sunyh/py_project/spark_test/spark_sql_op.py
+</span></span></code></pre></td></tr></table></div></div><h3 id=8-spark-streaming class=headerLink><a href=#8-spark-streaming class=header-mark></a>8. Spark Streaming</h3><blockquote><p><a href=https://spark.apache.org/streaming/ target=_blank rel="noopener noreferrer">https://spark.apache.org/streaming/</a></p><p><a href=https://spark.apache.org/docs/latest/streaming-programming-guide.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/streaming-programming-guide.html</a></p></blockquote><p>Spark Streaming is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams.</p><p><figure><a class=lightgallery href=./assets/Spark2.assets/streaming-flow.png title="Spark Streaming" data-thumbnail=./assets/Spark2.assets/streaming-flow.png><img loading=lazy src=./assets/Spark2.assets/streaming-flow.png srcset="./assets/Spark2.assets/streaming-flow.png, ./assets/Spark2.assets/streaming-flow.png 1.5x, ./assets/Spark2.assets/streaming-flow.png 2x" sizes=auto alt="Spark Streaming"></a></figure></p><p>常用实时流处理框架:</p><ul><li>Storm: 真正实时流处理</li><li>Spark Streaming: 不是真正的实时流处理,而是mini batch操作</li><li>Flink</li><li>Kafka Stream</li></ul><p><a href=https://spark.apache.org/docs/latest/streaming-programming-guide.html#discretized-streams-dstreams target=_blank rel="noopener noreferrer">DStream</a></p><p>Spark Streaming provides a high-level abstraction called <em>discretized stream</em> or <em>DStream</em>, which represents a continuous stream of data.</p><p>Internally, a DStream is represented as a sequence of <a href=https://spark.apache.org/docs/latest/api/scala/index.html#org.apache.spark.rdd.RDD target=_blank rel="noopener noreferrer">RDDs</a>.</p><p><a href=https://github.com/apache/spark/blob/v2.4.5/examples/src/main/python/streaming/network_wordcount.py target=_blank rel="noopener noreferrer">https://github.com/apache/spark/blob/v2.4.5/examples/src/main/python/streaming/network_wordcount.py</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>nc -lk <span class=m>9999</span>
-
-<span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>
-./bin/spark-submit examples/src/main/python/streaming/network_wordcount.py localhost <span class=m>9999</span>
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=9-mllib>9. MLlib</h3>
-<blockquote>
-<p><a href=https://spark.apache.org/mllib/ target=_blank rel="noopener noreffer">https://spark.apache.org/mllib/</a></p>
-<p><a href=https://spark.apache.org/docs/latest/ml-guide.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/ml-guide.html</a></p>
-</blockquote>
-<ul>
-<li>spark.ml &ndash;> DataFrame-based API</li>
-<li>spark.mllib &ndash;> RDD-based API</li>
-</ul>
-<h3 id=10-graphx>10. GraphX</h3>
-<blockquote>
-<p><a href=https://spark.apache.org/graphx/ target=_blank rel="noopener noreffer">https://spark.apache.org/graphx/</a></p>
-<p><a href=https://spark.apache.org/docs/latest/graphx-programming-guide.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/latest/graphx-programming-guide.html</a></p>
-</blockquote>
-<h2 id=spark3>Spark3</h2>
-<blockquote>
-<p>参考:</p>
-<p><a href=https://spark.apache.org/docs/3.0.0-preview2/index.html target=_blank rel="noopener noreffer">https://spark.apache.org/docs/3.0.0-preview2/index.html</a></p>
-<p><a href=https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/apache-spark-3/ target=_blank rel="noopener noreffer">https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/apache-spark-3/</a></p>
-<p><a href=https://github.com/rapidsai/spark-examples target=_blank rel="noopener noreffer">https://github.com/rapidsai/spark-examples</a></p>
-</blockquote>
-<p>run a <a href=https://github.com/rapidsai/spark-examples/blob/support-spark3.0/getting-started-guides/on-prem-cluster/yarn-python.md#get-started-with-xgboost4j-spark-on-apache-hadoop-yarn target=_blank rel="noopener noreffer">sample</a> Apache Spark Python application that runs on NVIDIA GPUs</p></div>
-<div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>更新于 2020-12-01</span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/posts/spark2_basics/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
-</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/AI&大数据/spark/spark2_basics/index.zh-cn.md target=_blank rel="noopener noreferrer">编辑此页</a>
-</span></div>
-<div class=post-info-share>
-<span></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/spark2/>Spark2</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/posts/cuda_mps/ class=prev rel=prev title=CUDA多进程服务MPS><i class="fas fa-angle-left fa-fw"></i>CUDA多进程服务MPS</a>
-<a href=/posts/github-action/ class=next rel=next title="Github Action">Github Action<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=gitalk class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
-<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title=查看评论>
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
-<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2020-05-25T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"Spark2环境搭建与使用"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
-</body>
-</html>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>nc -lk <span class=m>9999</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>cd</span> <span class=nv>$SPARK_HOME</span>
+</span></span><span class=line><span class=cl>./bin/spark-submit examples/src/main/python/streaming/network_wordcount.py localhost <span class=m>9999</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=9-mllib class=headerLink><a href=#9-mllib class=header-mark></a>9. MLlib</h3><blockquote><p><a href=https://spark.apache.org/mllib/ target=_blank rel="noopener noreferrer">https://spark.apache.org/mllib/</a></p><p><a href=https://spark.apache.org/docs/latest/ml-guide.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/ml-guide.html</a></p></blockquote><ul><li>spark.ml &ndash;> DataFrame-based API</li><li>spark.mllib &ndash;> RDD-based API</li></ul><h3 id=10-graphx class=headerLink><a href=#10-graphx class=header-mark></a>10. GraphX</h3><blockquote><p><a href=https://spark.apache.org/graphx/ target=_blank rel="noopener noreferrer">https://spark.apache.org/graphx/</a></p><p><a href=https://spark.apache.org/docs/latest/graphx-programming-guide.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/latest/graphx-programming-guide.html</a></p></blockquote><h2 id=spark3 class=headerLink><a href=#spark3 class=header-mark></a>Spark3</h2><blockquote><p>参考:</p><p><a href=https://spark.apache.org/docs/3.0.0-preview2/index.html target=_blank rel="noopener noreferrer">https://spark.apache.org/docs/3.0.0-preview2/index.html</a></p><p><a href=https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/apache-spark-3/ target=_blank rel="noopener noreferrer">https://www.nvidia.com/en-us/deep-learning-ai/solutions/data-science/apache-spark-3/</a></p><p><a href=https://github.com/rapidsai/spark-examples target=_blank rel="noopener noreferrer">https://github.com/rapidsai/spark-examples</a></p></blockquote><p>run a <a href=https://github.com/rapidsai/spark-examples/blob/support-spark3.0/getting-started-guides/on-prem-cluster/yarn-python.md#get-started-with-xgboost4j-spark-on-apache-hadoop-yarn target=_blank rel="noopener noreferrer">sample</a> Apache Spark Python application that runs on NVIDIA GPUs</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2020-12-01</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-mardown href=/posts/spark2_basics/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span><span>|&nbsp;<a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/AI&大数据/spark/spark2_basics/index.zh-cn.md target=_blank rel="noopener noreferrer">编辑此页</a></span></div><div class=post-info-share></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/spark2/>Spark2</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span></section></div><div class=post-nav><a href=/posts/cuda_mps/ class=prev rel=prev title=CUDA多进程服务MPS><i class="fas fa-angle-left fa-fw"></i>CUDA多进程服务MPS</a>
+<a href=/posts/github-action/ class=next rel=next title="Github Action">Github Action<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=gitalk class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreferrer" title="Hugo 0.117.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreferrer" title="DoIt 0.4.0"><i class="far fa-edit fa-fw"></i> DoIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div><div class=footer-line></div><div class=footer-line></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.register("/sw.min.js",{scope:"/"}).then(function(){}),navigator.serviceWorker.ready.then(function(){}))</script></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=assets><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2020-05-25T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"Spark2环境搭建与使用"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.3,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript src=/posts/js/theme.min.js defer></script><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/js/gitalk.min.js defer></script></div></body></html>

@@ -1,193 +1,36 @@
-<!doctype html><html lang=zh-cn>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<title class=pjax-title>Docker Storage Driver - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="Docker Storage Driver">
-<meta property="og:description" content>
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://sunnyh1220.github.io/posts/docker_storage_driver/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2019-11-25T00:00:00+00:00">
-<meta property="article:modified_time" content="2019-11-25T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp">
-<meta name=twitter:title content="Docker Storage Driver">
-<meta name=twitter:description content>
-<meta name=application-name content="Sunnyh's Blog">
-<meta name=apple-mobile-web-app-title content="Sunnyh's Blog">
-<meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/docker_storage_driver/><link rel=prev href=https://sunnyh1220.github.io/posts/docker_basics/><link rel=next href=https://sunnyh1220.github.io/posts/kubernetes_install/><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/fontawesome-free/all.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/animate/animate.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Docker Storage Driver","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/docker_storage_driver\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Docker","wordcount":1550,"url":"https:\/\/sunnyh1220.github.io\/posts\/docker_storage_driver\/","datePublished":"2019-11-25T00:00:00+00:00","dateModified":"2019-11-25T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(a){document.body.setAttribute('theme',a)}function saveTheme(a){window.localStorage&&localStorage.setItem('theme',a)}function getMeta(b){const a=document.getElementsByTagName('meta');for(let c=0;c<a.length;c++)if(a[c].getAttribute('name')===b)return a[c];return''}if(window.localStorage&&localStorage.getItem('theme')){let a=localStorage.getItem('theme');a==='light'||a==='dark'||a==='black'?setTheme(a):window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light')}else'auto'==='light'||'auto'==='dark'||'auto'==='black'?(setTheme('auto'),saveTheme('auto')):(saveTheme('auto'),window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?setTheme('dark'):setTheme('light'));let metaColors={light:'#f8f8f8',dark:'#252627',black:'#000000'};getMeta('theme-color').content=metaColors[document.body.getAttribute('theme')]</script>
-<div id=back-to-top></div>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=desktop-header-typeit class=typeit></span></a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=/posts/everything/> 索引 </a><a class=menu-item href=/posts/posts/> 文章 </a><a class=menu-item href=/posts/collections/> 收集 </a><a class=menu-item href=/posts/tags/> 标签 </a><a class=menu-item href=/posts/categories/> 分类 </a><a class=menu-item href=/posts/series/> 系列 </a><a class=menu-item href=/posts/authors/> 作者 </a><a class=menu-item href=/posts/about/> 关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i> </a><span class="menu-item delimiter"></span><a href=# onclick=return!1 class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" id=language-select-desktop onchange="location=this.value"><option value=/posts/docker_storage_driver/ selected>简体中文</option></select>
-</a><span class="menu-item search" id=search-desktop>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-desktop title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-desktop title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
-<i class="fas fa-adjust fa-fw"></i>
-<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a></div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class="far fa-edit fa-fw"></i></span><span id=mobile-header-typeit class=typeit></span></a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
-<a href=# onclick=return!1 class="search-button search-toggle" id=search-toggle-mobile title=搜索>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=# onclick=return!1 class="search-button search-clear" id=search-clear-mobile title=清空>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=# onclick=return!1 class=search-cancel id=search-cancel-mobile>
-取消
-</a>
-</div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreffer" target=_blank><i class="fab fa-github fa-fw"></i></a><a href=# onclick=return!1 class="menu-item theme-select" title=切换主题>
+<!doctype html><html lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Docker Storage Driver - Sunnyh's Blog</title><meta name=Description content="一个计算机软硬件学习记录的博客"><meta property="og:title" content="Docker Storage Driver"><meta property="og:description" content><meta property="og:type" content="article"><meta property="og:url" content="https://sunnyh1220.github.io/posts/docker_storage_driver/"><meta property="og:image" content="https://sunnyh1220.github.io/images/avatar.webp"><meta property="article:section" content="posts"><meta property="article:published_time" content="2019-11-25T00:00:00+00:00"><meta property="article:modified_time" content="2019-11-25T00:00:00+00:00"><meta property="og:site_name" content="Sunnyh's Blog"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://sunnyh1220.github.io/images/avatar.webp"><meta name=twitter:title content="Docker Storage Driver"><meta name=twitter:description content><meta name=application-name content="Sunnyh's Blog"><meta name=apple-mobile-web-app-title content="Sunnyh's Blog"><meta name=theme-color content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://sunnyh1220.github.io/posts/docker_storage_driver/><link rel=prev href=https://sunnyh1220.github.io/posts/docker_examples/><link rel=next href=https://sunnyh1220.github.io/posts/kubernetes_install/><link rel=stylesheet href=/posts/css/main.css><link rel=stylesheet href=/posts/lib/normalize/normalize.min.css><link rel=stylesheet href=/posts/css/color.css><link rel=stylesheet href=/posts/css/style.min.css><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/fontawesome-free/all.min.css><noscript><link rel=stylesheet href=/posts/lib/fontawesome-free/all.min.css></noscript><link rel=preload as=style onload='this.onload=null,this.rel="stylesheet"' href=/posts/lib/animate/animate.min.css><noscript><link rel=stylesheet href=/posts/lib/animate/animate.min.css></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Docker Storage Driver","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/sunnyh1220.github.io\/posts\/docker_storage_driver\/"},"image":["https:\/\/sunnyh1220.github.io\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"Docker","wordcount":1556,"url":"https:\/\/sunnyh1220.github.io\/posts\/docker_storage_driver\/","datePublished":"2019-11-25T00:00:00+00:00","dateModified":"2019-11-25T00:00:00+00:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"sunnyh","logo":{"@type":"ImageObject","url":"https:\/\/sunnyh1220.github.io\/posts\/images\/avatar.webp","width":528,"height":560}},"author":{"@type":"Person","name":"sunnyh"},"description":""}</script><script src=//instant.page/5.2.0 defer type=module integrity=sha384-jnZyxPjiipYXnSU0ygqeac2q7CVYMbh84q0uHVRRxEtvFPiQYbXWUorga2aqZJ0z></script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>function setTheme(e){document.body.setAttribute("theme",e),document.documentElement.style.setProperty("color-scheme",e==="light"?"light":"dark"),window.theme=e,window.isDark=window.theme!=="light"}function saveTheme(e){window.localStorage&&localStorage.setItem("theme",e)}function getMeta(e){const t=document.getElementsByTagName("meta");for(let n=0;n<t.length;n++)if(t[n].getAttribute("name")===e)return t[n];return""}if(window.localStorage&&localStorage.getItem("theme")){let e=localStorage.getItem("theme");e==="light"||e==="dark"||e==="black"?setTheme(e):setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")}else"auto"==="light"||"auto"==="dark"||"auto"==="black"?(setTheme("auto"),saveTheme("auto")):(saveTheme("auto"),setTheme(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"));let metaColors={light:"#f8f8f8",dark:"#252627",black:"#000000"};getMeta("theme-color").content=metaColors[document.body.getAttribute("theme")],window.switchThemeEventSet=new Set</script><div id=back-to-top></div><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=desktop-header-typeit class=typeit></span></a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/everything/>索引 </a><a class=menu-item href=/posts/posts/>文章 </a><a class=menu-item href=/posts/collections/>收集 </a><a class=menu-item href=/posts/tags/>标签 </a><a class=menu-item href=/posts/categories/>分类 </a><a class=menu-item href=/posts/series/>系列 </a><a class=menu-item href=/posts/authors/>作者 </a><a class=menu-item href=/posts/about/>关于 </a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i> </a><span class="menu-item delimiter"></span><a href=javascript:void(0); class="menu-item language" title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 id=language-select-desktop onchange="location=this.value"><option value=/posts/docker_storage_driver/ selected>简体中文</option></select>
+</a><span class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容... id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-select" title=切换主题><i class="fas fa-adjust fa-fw"></i>
+<select class=color-theme-select id=theme-select-desktop title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/posts/ title="Sunnyh's Blog"><span class=header-title-pre><i class='far fa-edit fa-fw'></i></span><span id=mobile-header-typeit class=typeit></span></a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容... id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></div><a class=menu-item href=/posts/everything/ title>索引</a><a class=menu-item href=/posts/posts/ title>文章</a><a class=menu-item href=/posts/collections/ title>收集</a><a class=menu-item href=/posts/tags/ title>标签</a><a class=menu-item href=/posts/categories/ title>分类</a><a class=menu-item href=/posts/series/ title>系列</a><a class=menu-item href=/posts/authors/ title>作者</a><a class=menu-item href=/posts/about/ title>关于</a><a class=menu-item href=https://github.com/sunnyh1220/posts title=GitHub rel="noopener noreferrer" target=_blank><i class='fab fa-github fa-fw'></i></a><a href=javascript:void(0); class="menu-item theme-select" title=切换主题>
 <i class="fas fa-adjust fa-fw"></i>
 <select class=color-theme-select id=theme-select-mobile title=切换主题><option value=light>浅色</option><option value=dark>深色</option><option value=black>黑色</option><option value=auto>跟随系统</option></select>
-</a><a href=# onclick=return!1 class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
-<select class=language-select title="Select Language" onchange="location=this.value"><option value=/posts/docker_storage_driver/ selected>简体中文</option></select>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>目录</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><script>document.getElementsByTagName("main")[0].setAttribute("pageStyle","normal")</script><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Docker Storage Driver</h1><div class=post-meta>
-<div class=post-meta-line>
-<span class=post-author><i class="author fas fa-user-circle fa-fw"></i><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreffer author" class=author>sunnyh</a>
-</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/cloudnative/><i class="far fa-folder fa-fw"></i>CloudNative</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-25>2019-11-25</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-25>2019-11-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1550 字&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div>
-</div><div class="details toc" id=toc-static kept>
-<div class="details-summary toc-title">
-<span>目录</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li>
-<ul>
-<li><a href=#参考>参考</a></li>
-</ul>
-</li>
-<li><a href=#1-storage-driver>1. Storage Driver</a>
-<ul>
-<li><a href=#11-images--layers>1.1 images / layers</a></li>
-<li><a href=#12-container--layers>1.2 container / layers</a></li>
-<li><a href=#13-container-size-on-disk>1.3 container size on disk</a></li>
-<li><a href=#14-选择-storage-driver>1.4 选择 storage driver</a></li>
-</ul>
-</li>
-<li><a href=#2-device-mapper>2. Device Mapper</a>
-<ul>
-<li><a href=#21-设置storage-driver为device-mapper>2.1 设置storage driver为device mapper</a></li>
-<li><a href=#22-设置-docker-pool-data-space>2.2 设置 docker Pool Data Space</a></li>
-<li><a href=#23-设置-docker-device-size-container-size>2.3 设置 docker device size (container size)</a></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-</div><div class=content id=content><div class="details admonition warning open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>
-本文最后更新于 <span class=timeago datetime=2019-11-25T00:00:00 title="November 25, 2019">2019-11-25</span>，文中内容可能已过时。</div>
-</div>
-</div><h3 id=参考>参考</h3>
-<blockquote>
-<p><a href=https://docs.docker.com/storage/storagedriver/ target=_blank rel="noopener noreffer">https://docs.docker.com/storage/storagedriver/</a></p>
-<p><a href=https://docs.docker.com/storage/storagedriver/device-mapper-driver/ target=_blank rel="noopener noreffer">https://docs.docker.com/storage/storagedriver/device-mapper-driver/</a></p>
-<p><a href=https://blog.51cto.com/6226001001/1952804 target=_blank rel="noopener noreffer">Docker修改空间大小</a></p>
-<p><a href=https://segmentfault.com/a/1190000002931564 target=_blank rel="noopener noreffer">Docker 环境 Storage Pool 用完解决方案：resize-device-mapper</a></p>
-<p><a href=https://www.jianshu.com/p/018a4eb79f1d target=_blank rel="noopener noreffer">关于docker动态扩展容器空间大小</a></p>
-<p>dmsetup</p>
-</blockquote>
-<h2 id=1-storage-driver>1. Storage Driver</h2>
-<p>storage driver 可以让我们在 container 的可写层中创建数据,当删除 container后,这些数据不会保留;而且可写层的读写速度低于原生文件系统;</p>
-<h3 id=11-images--layers>1.1 images / layers</h3>
-<p>images由一系列的layer组成;</p>
-<p>images的每一层代表Dockerfile中的一条指令;</p>
-<p><img class=lazyload data-src=./assets/docker_storage_driver.assets/container-layers.jpg data-srcset="./assets/docker_storage_driver.assets/container-layers.jpg, ./assets/docker_storage_driver.assets/container-layers.jpg 1.5x, ./assets/docker_storage_driver.assets/container-layers.jpg 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/container-layers.jpg title="Layers of a container based on the Ubuntu image"></p>
-<p>对运行中的container所做的所有更改都会写入 Thin R/W layer;</p>
-<h3 id=12-container--layers>1.2 container / layers</h3>
-<p>每个container都有自己的container layer, 并且所有更改都在container layer,所以多个容器可以共享对同一基础image的访问,但有自己的数据状态;</p>
-<p><img class=lazyload data-src=./assets/docker_storage_driver.assets/sharing-layers.jpg data-srcset="./assets/docker_storage_driver.assets/sharing-layers.jpg, ./assets/docker_storage_driver.assets/sharing-layers.jpg 1.5x, ./assets/docker_storage_driver.assets/sharing-layers.jpg 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/sharing-layers.jpg title=容器共享同一图像></p>
-<p>Storage Driver 用来管理image layers 和 container layer;</p>
-<p>docker 提供了多种Storage driver, 每种Storage driver 对实现的处理方式不同,但是都使用可堆叠(stackable)的image layer和写时复制(CoW)策略;</p>
-<h3 id=13-container-size-on-disk>1.3 container size on disk</h3>
-<p>查看container size</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker ps -s
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</a><a href=javascript:void(0); class=menu-item title=选择语言>简体中文<i class="fas fa-chevron-right fa-fw"></i>
+<select class=language-select title=选择语言 onchange="location=this.value"><option value=/posts/docker_storage_driver/ selected>简体中文</option></select></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>目录</h2><div class=toc-content id=toc-content-auto><nav id=TableOfContents><ul><li><ul><li><a href=#参考>参考</a></li></ul></li><li><a href=#1-storage-driver>1. Storage Driver</a><ul><li><a href=#11-images--layers>1.1 images / layers</a></li><li><a href=#12-container--layers>1.2 container / layers</a></li><li><a href=#13-container-size-on-disk>1.3 container size on disk</a></li><li><a href=#14-选择-storage-driver>1.4 选择 storage driver</a></li></ul></li><li><a href=#2-device-mapper>2. Device Mapper</a><ul><li><a href=#21-设置storage-driver为device-mapper>2.1 设置storage driver为device mapper</a></li><li><a href=#22-设置-docker-pool-data-space>2.2 设置 docker Pool Data Space</a></li><li><a href=#23-设置-docker-device-size-container-size>2.3 设置 docker device size (container size)</a></li></ul></li></ul></nav></div></div><script>document.getElementsByTagName("main")[0].setAttribute("autoTOC","true")</script><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Docker Storage Driver</h1><div class=post-meta><div class=post-meta-line><span class=post-author><span class="author fas fa-user-circle fa-fw"></span><a href=https://github.com/sunnyh1220 title=Author target=_blank rel="noopener noreferrer author" class=author>sunnyh</a>
+</span>&nbsp;<span class=post-category>收录于 </span>&nbsp;<span class=post-category>类别 <a href=/posts/categories/cloudnative/><i class="far fa-folder fa-fw"></i>CloudNative</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2019-11-25>2019-11-25</time>&nbsp;<i class="far fa-edit fa-fw"></i>&nbsp;<time datetime=2019-11-25>2019-11-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;约 1556 字&nbsp;<i class="far fa-clock fa-fw"></i>&nbsp;预计阅读 4 分钟&nbsp;</div></div><div class="details toc" id=toc-static kept><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#参考>参考</a></li></ul></li><li><a href=#1-storage-driver>1. Storage Driver</a><ul><li><a href=#11-images--layers>1.1 images / layers</a></li><li><a href=#12-container--layers>1.2 container / layers</a></li><li><a href=#13-container-size-on-disk>1.3 container size on disk</a></li><li><a href=#14-选择-storage-driver>1.4 选择 storage driver</a></li></ul></li><li><a href=#2-device-mapper>2. Device Mapper</a><ul><li><a href=#21-设置storage-driver为device-mapper>2.1 设置storage driver为device mapper</a></li><li><a href=#22-设置-docker-pool-data-space>2.2 设置 docker Pool Data Space</a></li><li><a href=#23-设置-docker-device-size-container-size>2.3 设置 docker device size (container size)</a></li></ul></li></ul></nav></div></div><div class=content id=content><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fwwarning"></i>警告<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>本文最后更新于 <span class=timeago datetime=2019-11-25T00:00:00 title="November 25, 2019">2019-11-25</span>，文中内容可能已过时。</div></div></div><h3 id=参考 class=headerLink><a href=#%e5%8f%82%e8%80%83 class=header-mark></a>参考</h3><blockquote><p><a href=https://docs.docker.com/storage/storagedriver/ target=_blank rel="noopener noreferrer">https://docs.docker.com/storage/storagedriver/</a></p><p><a href=https://docs.docker.com/storage/storagedriver/device-mapper-driver/ target=_blank rel="noopener noreferrer">https://docs.docker.com/storage/storagedriver/device-mapper-driver/</a></p><p><a href=https://blog.51cto.com/6226001001/1952804 target=_blank rel="noopener noreferrer">Docker修改空间大小</a></p><p><a href=https://segmentfault.com/a/1190000002931564 target=_blank rel="noopener noreferrer">Docker 环境 Storage Pool 用完解决方案：resize-device-mapper</a></p><p><a href=https://www.jianshu.com/p/018a4eb79f1d target=_blank rel="noopener noreferrer">关于docker动态扩展容器空间大小</a></p><p>dmsetup</p></blockquote><h2 id=1-storage-driver class=headerLink><a href=#1-storage-driver class=header-mark></a>1. Storage Driver</h2><p>storage driver 可以让我们在 container 的可写层中创建数据,当删除 container后,这些数据不会保留;而且可写层的读写速度低于原生文件系统;</p><h3 id=11-images--layers class=headerLink><a href=#11-images--layers class=header-mark></a>1.1 images / layers</h3><p>images由一系列的layer组成;</p><p>images的每一层代表Dockerfile中的一条指令;</p><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/container-layers.jpg title="Layers of a container based on the Ubuntu image" data-thumbnail=./assets/docker_storage_driver.assets/container-layers.jpg><img loading=lazy src=./assets/docker_storage_driver.assets/container-layers.jpg srcset="./assets/docker_storage_driver.assets/container-layers.jpg, ./assets/docker_storage_driver.assets/container-layers.jpg 1.5x, ./assets/docker_storage_driver.assets/container-layers.jpg 2x" sizes=auto alt="Layers of a container based on the Ubuntu image"></a></figure></p><p>对运行中的container所做的所有更改都会写入 Thin R/W layer;</p><h3 id=12-container--layers class=headerLink><a href=#12-container--layers class=header-mark></a>1.2 container / layers</h3><p>每个container都有自己的container layer, 并且所有更改都在container layer,所以多个容器可以共享对同一基础image的访问,但有自己的数据状态;</p><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/sharing-layers.jpg title=容器共享同一图像 data-thumbnail=./assets/docker_storage_driver.assets/sharing-layers.jpg><img loading=lazy src=./assets/docker_storage_driver.assets/sharing-layers.jpg srcset="./assets/docker_storage_driver.assets/sharing-layers.jpg, ./assets/docker_storage_driver.assets/sharing-layers.jpg 1.5x, ./assets/docker_storage_driver.assets/sharing-layers.jpg 2x" sizes=auto alt=容器共享同一图像></a></figure></p><p>Storage Driver 用来管理image layers 和 container layer;</p><p>docker 提供了多种Storage driver, 每种Storage driver 对实现的处理方式不同,但是都使用可堆叠(stackable)的image layer和写时复制(CoW)策略;</p><h3 id=13-container-size-on-disk class=headerLink><a href=#13-container-size-on-disk class=header-mark></a>1.3 container size on disk</h3><p>查看container size</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker ps -s
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
 </span><span class=lnt>7
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=c1>#docker pull node:14.0.0-stretch</span>
-docker pull node:13.13.0-alpine3.11
-
-<span class=c1>#docker run -it -d --name node node:14.0.0-stretch</span>
-docker run -it -d --name node node:13.13.0-alpine3.11
-
-docker run -it -d --name node_v -v /home/deepbay/deepops/:/deepops node:14.0.0-stretch
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1>#docker pull node:14.0.0-stretch</span>
+</span></span><span class=line><span class=cl>docker pull node:13.13.0-alpine3.11
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>#docker run -it -d --name node node:14.0.0-stretch</span>
+</span></span><span class=line><span class=cl>docker run -it -d --name node node:13.13.0-alpine3.11
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker run -it -d --name node_v -v /home/deepbay/deepops/:/deepops node:14.0.0-stretch
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -210,61 +53,30 @@ docker run -it -d --name node_v -v /home/deepbay/deepops/:/deepops node:14.0.0-s
 </span><span class=lnt>21
 </span><span class=lnt>22
 </span><span class=lnt>23
-</span><span class=lnt>24
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>deep@test3:~$ docker ps -s
-CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES               SIZE
-4b7d70e701f1        node:14.0.0-stretch   <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   <span class=m>10</span> minutes ago      Up <span class=m>10</span> minutes                           node                0B <span class=o>(</span>virtual 941MB<span class=o>)</span>
-deep@test3:~$ docker <span class=nb>exec</span> -it node /bin/bash
-root@4b7d70e701f1:/# wget https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
---2020-04-27 06:18:24--  https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
-Resolving dl.google.com <span class=o>(</span>dl.google.com<span class=o>)</span>... 203.208.40.39, 203.208.40.34, 203.208.40.41, ...
-Connecting to dl.google.com <span class=o>(</span>dl.google.com<span class=o>)</span><span class=p>|</span>203.208.40.39<span class=p>|</span>:443... connected.
-HTTP request sent, awaiting response... <span class=m>200</span> OK
-Length: <span class=m>123658438</span> <span class=o>(</span>118M<span class=o>)</span> <span class=o>[</span>application/octet-stream<span class=o>]</span>
-Saving to: <span class=s1>&#39;go1.14.2.linux-amd64.tar.gz&#39;</span>
-
-go1.14.2.linux-amd64.tar.gz               100%<span class=o>[====================================================================================</span>&gt;<span class=o>]</span> 117.93M  10.2MB/s    in 11s     
-
-2020-04-27 06:18:35 <span class=o>(</span>10.7 MB/s<span class=o>)</span> - <span class=s1>&#39;go1.14.2.linux-amd64.tar.gz&#39;</span> saved <span class=o>[</span>123658438/123658438<span class=o>]</span>
-
-root@4b7d70e701f1:/# ls -alh <span class=p>|</span> grep go
--rw-r--r--   <span class=m>1</span> root root 118M Apr  <span class=m>8</span> 22:12 go1.14.2.linux-amd64.tar.gz
-root@4b7d70e701f1:/# <span class=nb>exit</span>
-<span class=nb>exit</span>
-deep@test3:~$ docker ps -s
-CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES               SIZE
-4b7d70e701f1        node:14.0.0-stretch   <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   <span class=m>14</span> minutes ago      Up <span class=m>14</span> minutes                           node                124MB <span class=o>(</span>virtual 1.07GB<span class=o>)</span>
-
-</code></pre></td></tr></table>
-</div>
-</div><p>在容器内下载golang安装包,docker container size 增加;</p>
-<p><img class=lazyload data-src=./assets/docker_storage_driver.assets/image-20200427143242271.png data-srcset="./assets/docker_storage_driver.assets/image-20200427143242271.png, ./assets/docker_storage_driver.assets/image-20200427143242271.png 1.5x, ./assets/docker_storage_driver.assets/image-20200427143242271.png 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/image-20200427143242271.png title=image-20200427143242271></p>
-<ul>
-<li><code>size</code>: container layer 的数据量</li>
-<li><code>virtual size</code>: image layers加上 container layer的数据量</li>
-</ul>
-<h3 id=14-选择-storage-driver>1.4 选择 storage driver</h3>
-<blockquote>
-<p><a href=https://docs.docker.com/storage/storagedriver/select-storage-driver/ target=_blank rel="noopener noreffer">https://docs.docker.com/storage/storagedriver/select-storage-driver/</a></p>
-</blockquote>
-<ul>
-<li>overlay2</li>
-<li>aufs</li>
-<li>devicemapper</li>
-<li>btrfs</li>
-<li>zfs</li>
-<li>vfs</li>
-</ul>
-<h2 id=2-device-mapper>2. Device Mapper</h2>
-<h3 id=21-设置storage-driver为device-mapper>2.1 设置storage driver为device mapper</h3>
-<blockquote>
-<p>centos 7</p>
-</blockquote>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>deep@test3:~$ docker ps -s
+</span></span><span class=line><span class=cl>CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES               SIZE
+</span></span><span class=line><span class=cl>4b7d70e701f1        node:14.0.0-stretch   <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   <span class=m>10</span> minutes ago      Up <span class=m>10</span> minutes                           node                0B <span class=o>(</span>virtual 941MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>deep@test3:~$ docker <span class=nb>exec</span> -it node /bin/bash
+</span></span><span class=line><span class=cl>root@4b7d70e701f1:/# wget https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
+</span></span><span class=line><span class=cl>--2020-04-27 06:18:24--  https://dl.google.com/go/go1.14.2.linux-amd64.tar.gz
+</span></span><span class=line><span class=cl>Resolving dl.google.com <span class=o>(</span>dl.google.com<span class=o>)</span>... 203.208.40.39, 203.208.40.34, 203.208.40.41, ...
+</span></span><span class=line><span class=cl>Connecting to dl.google.com <span class=o>(</span>dl.google.com<span class=o>)</span><span class=p>|</span>203.208.40.39<span class=p>|</span>:443... connected.
+</span></span><span class=line><span class=cl>HTTP request sent, awaiting response... <span class=m>200</span> OK
+</span></span><span class=line><span class=cl>Length: <span class=m>123658438</span> <span class=o>(</span>118M<span class=o>)</span> <span class=o>[</span>application/octet-stream<span class=o>]</span>
+</span></span><span class=line><span class=cl>Saving to: <span class=s1>&#39;go1.14.2.linux-amd64.tar.gz&#39;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>go1.14.2.linux-amd64.tar.gz               100%<span class=o>[====================================================================================</span>&gt;<span class=o>]</span> 117.93M  10.2MB/s    in 11s     
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>2020-04-27 06:18:35 <span class=o>(</span>10.7 MB/s<span class=o>)</span> - <span class=s1>&#39;go1.14.2.linux-amd64.tar.gz&#39;</span> saved <span class=o>[</span>123658438/123658438<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>root@4b7d70e701f1:/# ls -alh <span class=p>|</span> grep go
+</span></span><span class=line><span class=cl>-rw-r--r--   <span class=m>1</span> root root 118M Apr  <span class=m>8</span> 22:12 go1.14.2.linux-amd64.tar.gz
+</span></span><span class=line><span class=cl>root@4b7d70e701f1:/# <span class=nb>exit</span>
+</span></span><span class=line><span class=cl><span class=nb>exit</span>
+</span></span><span class=line><span class=cl>deep@test3:~$ docker ps -s
+</span></span><span class=line><span class=cl>CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS               NAMES               SIZE
+</span></span><span class=line><span class=cl>4b7d70e701f1        node:14.0.0-stretch   <span class=s2>&#34;docker-entrypoint.s…&#34;</span>   <span class=m>14</span> minutes ago      Up <span class=m>14</span> minutes                           node                124MB <span class=o>(</span>virtual 1.07GB<span class=o>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>在容器内下载golang安装包,docker container size 增加;</p><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/image-20200427143242271.png title=image-20200427143242271 data-thumbnail=./assets/docker_storage_driver.assets/image-20200427143242271.png><img loading=lazy src=./assets/docker_storage_driver.assets/image-20200427143242271.png srcset="./assets/docker_storage_driver.assets/image-20200427143242271.png, ./assets/docker_storage_driver.assets/image-20200427143242271.png 1.5x, ./assets/docker_storage_driver.assets/image-20200427143242271.png 2x" sizes=auto alt=image-20200427143242271></a></figure></p><ul><li><code>size</code>: container layer 的数据量</li><li><code>virtual size</code>: image layers加上 container layer的数据量</li></ul><h3 id=14-选择-storage-driver class=headerLink><a href=#14-%e9%80%89%e6%8b%a9-storage-driver class=header-mark></a>1.4 选择 storage driver</h3><blockquote><p><a href=https://docs.docker.com/storage/storagedriver/select-storage-driver/ target=_blank rel="noopener noreferrer">https://docs.docker.com/storage/storagedriver/select-storage-driver/</a></p></blockquote><ul><li>overlay2</li><li>aufs</li><li>devicemapper</li><li>btrfs</li><li>zfs</li><li>vfs</li></ul><h2 id=2-device-mapper class=headerLink><a href=#2-device-mapper class=header-mark></a>2. Device Mapper</h2><h3 id=21-设置storage-driver为device-mapper class=headerLink><a href=#21-%e8%ae%be%e7%bd%aestorage-driver%e4%b8%badevice-mapper class=header-mark></a>2.1 设置storage driver为device mapper</h3><blockquote><p>centos 7</p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -286,231 +98,95 @@ CONTAINER ID        IMAGE                 COMMAND                  CREATED      
 </span><span class=lnt>20
 </span><span class=lnt>21
 </span><span class=lnt>22
-</span><span class=lnt>23
-</span><span class=lnt>24
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>sudo yum install -y yum-utils
-
-sudo yum-config-manager <span class=se>\
-</span><span class=se></span>    --add-repo <span class=se>\
-</span><span class=se></span>    https://download.docker.com/linux/centos/docker-ce.repo
-    
-yum list docker-ce --showduplicates <span class=p>|</span> sort -r
-
-sudo yum install docker-ce-18.03.1.ce docker-ce-cli-18.03.1.ce containerd.io
-
-sudo tee /etc/docker/daemon.json <span class=s>&lt;&lt;-&#39;EOF&#39;
-</span><span class=s>{
-</span><span class=s>	&#34;registry-mirrors&#34;: [&#34;https://registry.docker-cn.com&#34;],
-</span><span class=s>	&#34;storage-driver&#34;: &#34;devicemapper&#34;
-</span><span class=s>}y
-</span><span class=s>EOF</span>
-
-sudo systemctl daemon-reload
-sudo systemctl restart docker
-
-<span class=c1># start up automatically on boot up</span>
-sudo systemctl <span class=nb>enable</span> docker <span class=o>&amp;&amp;</span> sudo systemctl start docker
-
-
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/docker_storage_driver.assets/image-20200428181640525.png data-srcset="./assets/docker_storage_driver.assets/image-20200428181640525.png, ./assets/docker_storage_driver.assets/image-20200428181640525.png 1.5x, ./assets/docker_storage_driver.assets/image-20200428181640525.png 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/image-20200428181640525.png title=image-20200428181640525></p>
-<p><img class=lazyload data-src=./assets/docker_storage_driver.assets/image-20200428181837674.png data-srcset="./assets/docker_storage_driver.assets/image-20200428181837674.png, ./assets/docker_storage_driver.assets/image-20200428181837674.png 1.5x, ./assets/docker_storage_driver.assets/image-20200428181837674.png 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/image-20200428181837674.png title=image-20200428181837674></p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>sudo yum install -y yum-utils
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo yum-config-manager <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    --add-repo <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span>    https://download.docker.com/linux/centos/docker-ce.repo
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>yum list docker-ce --showduplicates <span class=p>|</span> sort -r
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo yum install docker-ce-18.03.1.ce docker-ce-cli-18.03.1.ce containerd.io
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo tee /etc/docker/daemon.json <span class=s>&lt;&lt;-&#39;EOF&#39;
+</span></span></span><span class=line><span class=cl><span class=s>{
+</span></span></span><span class=line><span class=cl><span class=s>	&#34;registry-mirrors&#34;: [&#34;https://registry.docker-cn.com&#34;],
+</span></span></span><span class=line><span class=cl><span class=s>	&#34;storage-driver&#34;: &#34;devicemapper&#34;
+</span></span></span><span class=line><span class=cl><span class=s>}y
+</span></span></span><span class=line><span class=cl><span class=s>EOF</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo systemctl daemon-reload
+</span></span><span class=line><span class=cl>sudo systemctl restart docker
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># start up automatically on boot up</span>
+</span></span><span class=line><span class=cl>sudo systemctl <span class=nb>enable</span> docker <span class=o>&amp;&amp;</span> sudo systemctl start docker
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/image-20200428181640525.png title=image-20200428181640525 data-thumbnail=./assets/docker_storage_driver.assets/image-20200428181640525.png><img loading=lazy src=./assets/docker_storage_driver.assets/image-20200428181640525.png srcset="./assets/docker_storage_driver.assets/image-20200428181640525.png, ./assets/docker_storage_driver.assets/image-20200428181640525.png 1.5x, ./assets/docker_storage_driver.assets/image-20200428181640525.png 2x" sizes=auto alt=image-20200428181640525></a></figure></p><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/image-20200428181837674.png title=image-20200428181837674 data-thumbnail=./assets/docker_storage_driver.assets/image-20200428181837674.png><img loading=lazy src=./assets/docker_storage_driver.assets/image-20200428181837674.png srcset="./assets/docker_storage_driver.assets/image-20200428181837674.png, ./assets/docker_storage_driver.assets/image-20200428181837674.png 1.5x, ./assets/docker_storage_driver.assets/image-20200428181837674.png 2x" sizes=auto alt=image-20200428181837674></a></figure></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>sudo groupadd docker
-sudo gpasswd -a sunyh docker
-sudo service docker restart
-
-reboot
-</code></pre></td></tr></table>
-</div>
-</div><h3 id=22-设置-docker-pool-data-space>2.2 设置 docker Pool Data Space</h3>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>sudo groupadd docker
+</span></span><span class=line><span class=cl>sudo gpasswd -a sunyh docker
+</span></span><span class=line><span class=cl>sudo service docker restart
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>reboot
+</span></span></code></pre></td></tr></table></div></div><h3 id=22-设置-docker-pool-data-space class=headerLink><a href=#22-%e8%ae%be%e7%bd%ae-docker-pool-data-space class=header-mark></a>2.2 设置 docker Pool Data Space</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=nv>DATA_SIZE</span><span class=o>=</span><span class=m>1000</span>
+</span></span><span class=line><span class=cl><span class=nv>METADATA_SIZE</span><span class=o>=</span><span class=m>10</span>
+</span></span><span class=line><span class=cl>sudo systemctl stop docker
+</span></span><span class=line><span class=cl>dd <span class=k>if</span><span class=o>=</span>/dev/zero <span class=nv>of</span><span class=o>=</span>/var/lib/docker/devicemapper/devicemapper/data <span class=nv>bs</span><span class=o>=</span>1G <span class=nv>count</span><span class=o>=</span><span class=m>0</span> <span class=nv>seek</span><span class=o>=</span><span class=nv>$DATA_SIZE</span>
+</span></span><span class=line><span class=cl>dd <span class=k>if</span><span class=o>=</span>/dev/zero <span class=nv>of</span><span class=o>=</span>/var/lib/docker/devicemapper/devicemapper/metadata <span class=nv>bs</span><span class=o>=</span>1G <span class=nv>count</span><span class=o>=</span><span class=m>0</span> <span class=nv>seek</span><span class=o>=</span><span class=nv>$METADATA_SIZE</span>
+</span></span><span class=line><span class=cl>sudo systemctl start docker
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/image-20200430154554095.png title=image-20200430154554095 data-thumbnail=./assets/docker_storage_driver.assets/image-20200430154554095.png><img loading=lazy src=./assets/docker_storage_driver.assets/image-20200430154554095.png srcset="./assets/docker_storage_driver.assets/image-20200430154554095.png, ./assets/docker_storage_driver.assets/image-20200430154554095.png 1.5x, ./assets/docker_storage_driver.assets/image-20200430154554095.png 2x" sizes=auto alt=image-20200430154554095></a></figure></p><h3 id=23-设置-docker-device-size-container-size class=headerLink><a href=#23-%e8%ae%be%e7%bd%ae-docker-device-size-container-size class=header-mark></a>2.3 设置 docker device size (container size)</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>docker pull node:13.13.0-alpine3.11
+</span></span><span class=line><span class=cl>docker run -it -d --name node node:13.13.0-alpine3.11
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker ps -s
+</span></span><span class=line><span class=cl>dmsetup table
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/image-20200430101937171.png title=image-20200430101937171 data-thumbnail=./assets/docker_storage_driver.assets/image-20200430101937171.png><img loading=lazy src=./assets/docker_storage_driver.assets/image-20200430101937171.png srcset="./assets/docker_storage_driver.assets/image-20200430101937171.png, ./assets/docker_storage_driver.assets/image-20200430101937171.png 1.5x, ./assets/docker_storage_driver.assets/image-20200430101937171.png 2x" sizes=auto alt=image-20200430101937171></a></figure></p><p>resize container</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
 </span><span class=lnt>4
 </span><span class=lnt>5
 </span><span class=lnt>6
 </span><span class=lnt>7
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=nv>DATA_SIZE</span><span class=o>=</span><span class=m>1000</span>
-<span class=nv>METADATA_SIZE</span><span class=o>=</span><span class=m>10</span>
-sudo systemctl stop docker
-dd <span class=k>if</span><span class=o>=</span>/dev/zero <span class=nv>of</span><span class=o>=</span>/var/lib/docker/devicemapper/devicemapper/data <span class=nv>bs</span><span class=o>=</span>1G <span class=nv>count</span><span class=o>=</span><span class=m>0</span> <span class=nv>seek</span><span class=o>=</span><span class=nv>$DATA_SIZE</span>
-dd <span class=k>if</span><span class=o>=</span>/dev/zero <span class=nv>of</span><span class=o>=</span>/var/lib/docker/devicemapper/devicemapper/metadata <span class=nv>bs</span><span class=o>=</span>1G <span class=nv>count</span><span class=o>=</span><span class=m>0</span> <span class=nv>seek</span><span class=o>=</span><span class=nv>$METADATA_SIZE</span>
-sudo systemctl start docker
-
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/docker_storage_driver.assets/image-20200430154554095.png data-srcset="./assets/docker_storage_driver.assets/image-20200430154554095.png, ./assets/docker_storage_driver.assets/image-20200430154554095.png 1.5x, ./assets/docker_storage_driver.assets/image-20200430154554095.png 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/image-20200430154554095.png title=image-20200430154554095></p>
-<h3 id=23-设置-docker-device-size-container-size>2.3 设置 docker device size (container size)</h3>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>docker pull node:13.13.0-alpine3.11
-docker run -it -d --name node node:13.13.0-alpine3.11
-</code></pre></td></tr></table>
-</div>
-</div><div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>docker ps -s
-dmsetup table
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/docker_storage_driver.assets/image-20200430101937171.png data-srcset="./assets/docker_storage_driver.assets/image-20200430101937171.png, ./assets/docker_storage_driver.assets/image-20200430101937171.png 1.5x, ./assets/docker_storage_driver.assets/image-20200430101937171.png 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/image-20200430101937171.png title=image-20200430101937171></p>
-<p>resize container</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>echo</span> <span class=k>$((</span><span class=m>30</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>/</span><span class=m>512</span><span class=k>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=m>0</span> <span class=m>41943040</span> thin 253:0 <span class=m>7</span> <span class=p>|</span> sudo dmsetup load docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo dmsetup resume docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>sudo xfs_growfs -d /dev/mapper/docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
+</span></span></code></pre></td></tr></table></div></div><p><figure><a class=lightgallery href=./assets/docker_storage_driver.assets/image-20200430102726332.png title=image-20200430102726332 data-thumbnail=./assets/docker_storage_driver.assets/image-20200430102726332.png><img loading=lazy src=./assets/docker_storage_driver.assets/image-20200430102726332.png srcset="./assets/docker_storage_driver.assets/image-20200430102726332.png, ./assets/docker_storage_driver.assets/image-20200430102726332.png 1.5x, ./assets/docker_storage_driver.assets/image-20200430102726332.png 2x" sizes=auto alt=image-20200430102726332></a></figure></p><p>脚本简化以上流程:</p><ol><li><p>获取deviceName</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span><span class=lnt>4
-</span><span class=lnt>5
-</span><span class=lnt>6
-</span><span class=lnt>7
-</span><span class=lnt>8
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>echo</span> <span class=k>$((</span><span class=m>30</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>/</span><span class=m>512</span><span class=k>))</span>
-
-<span class=nb>echo</span> <span class=m>0</span> <span class=m>41943040</span> thin 253:0 <span class=m>7</span> <span class=p>|</span> sudo dmsetup load docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
-
-sudo dmsetup resume docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
-
-sudo xfs_growfs -d /dev/mapper/docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
-
-</code></pre></td></tr></table>
-</div>
-</div><p><img class=lazyload data-src=./assets/docker_storage_driver.assets/image-20200430102726332.png data-srcset="./assets/docker_storage_driver.assets/image-20200430102726332.png, ./assets/docker_storage_driver.assets/image-20200430102726332.png 1.5x, ./assets/docker_storage_driver.assets/image-20200430102726332.png 2x" data-sizes=auto alt=./assets/docker_storage_driver.assets/image-20200430102726332.png title=image-20200430102726332></p>
-<p>脚本简化以上流程:</p>
-<ol>
-<li>
-<p>获取deviceName</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># docker inspect -f &#39;{{ .GraphDriver.Data.DeviceName }}&#39; [container id]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>docker inspect -f <span class=s1>&#39;{{ .GraphDriver.Data.DeviceName }}&#39;</span> 2d9ddb14b348
+</span></span></code></pre></td></tr></table></div></div></li><li><p>使用<code>dmsetup table</code> 命令显示出device mapper的具体信息</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># docker inspect -f &#39;{{ .GraphDriver.Data.DeviceName }}&#39; [container id]</span>
-
-docker inspect -f <span class=s1>&#39;{{ .GraphDriver.Data.DeviceName }}&#39;</span> 2d9ddb14b348
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>使用<code>dmsetup table</code> 命令显示出device mapper的具体信息</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># dmsetup table [device name]</span>
+</span></span><span class=line><span class=cl>sudo dmsetup table docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
+</span></span></code></pre></td></tr></table></div></div><blockquote><p>当容器在stop状态时以上操作得不到device mapper信息，虽然由于空
+间不足不能启动成功，但需要先docker start <container id>才能查找到对应
+device mapper信息。</p></blockquote></li><li><p>算出想要扩容的扇区数</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=c1># dmsetup table [device name]</span>
-sudo dmsetup table docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
-</code></pre></td></tr></table>
-</div>
-</div><blockquote>
-<p>当容器在stop状态时以上操作得不到device mapper信息，虽然由于空
-间不足不能启动成功，但需要先docker start <container id> 才能查找到对应
-device mapper信息。</p>
-</blockquote>
-</li>
-<li>
-<p>算出想要扩容的扇区数</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nv>SIZE</span><span class=o>=</span><span class=m>15</span>
-<span class=nb>echo</span> <span class=k>$((</span><span class=nv>$SIZE</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>/</span><span class=m>512</span><span class=k>))</span>
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>load一个新的设备信息表(新表与旧表相比只修改扇区数量)</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=nb>echo</span> <span class=m>0</span> <span class=m>31457280</span> thin 253:0 <span class=m>7</span> <span class=p>|</span> sudo dmsetup load docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
-
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>通过<code>dmsetup resume</code>激活新的设备信息表</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>sudo dmsetup resume docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
-
-</code></pre></td></tr></table>
-</div>
-</div></li>
-<li>
-<p>调整文件系统大小(只能增,不能减)</p>
-<table>
-<thead>
-<tr>
-<th>File Type</th>
-<th>Resize CLI</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>xfs</td>
-<td>xfs_growfs</td>
-</tr>
-<tr>
-<td>ex2,ex3,ex4</td>
-<td>resize2fs</td>
-</tr>
-</tbody>
-</table>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span><span class=lnt>2
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-sh data-lang=sh>sudo xfs_growfs -d /dev/mapper/docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
-
-</code></pre></td></tr></table>
-</div>
-</div></li>
-</ol>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nv>SIZE</span><span class=o>=</span><span class=m>15</span>
+</span></span><span class=line><span class=cl><span class=nb>echo</span> <span class=k>$((</span><span class=nv>$SIZE</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>*</span><span class=m>1024</span><span class=o>/</span><span class=m>512</span><span class=k>))</span>
+</span></span></code></pre></td></tr></table></div></div></li><li><p>load一个新的设备信息表(新表与旧表相比只修改扇区数量)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=nb>echo</span> <span class=m>0</span> <span class=m>31457280</span> thin 253:0 <span class=m>7</span> <span class=p>|</span> sudo dmsetup load docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
+</span></span></code></pre></td></tr></table></div></div></li><li><p>通过<code>dmsetup resume</code>激活新的设备信息表</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>sudo dmsetup resume docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
+</span></span></code></pre></td></tr></table></div></div></li><li><p>调整文件系统大小(只能增,不能减)</p><table><thead><tr><th>File Type</th><th>Resize CLI</th></tr></thead><tbody><tr><td>xfs</td><td>xfs_growfs</td></tr><tr><td>ex2,ex3,ex4</td><td>resize2fs</td></tr></tbody></table><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>sudo xfs_growfs -d /dev/mapper/docker-8:2-101407194-f69fd6ac662db4fd50e56ad2d4d45987bf31ade7b0b17a2e9d29b333df98c76a
+</span></span></code></pre></td></tr></table></div></div></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -560,104 +236,57 @@ device mapper信息。</p>
 </span><span class=lnt>48
 </span><span class=lnt>49
 </span><span class=lnt>50
-</span><span class=lnt>51
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=kn>import</span> <span class=nn>paramiko</span>
-
-<span class=n>hostname</span> <span class=o>=</span> <span class=s1>&#39;192.168.232.133&#39;</span>
-<span class=n>username</span> <span class=o>=</span> <span class=s1>&#39;sunyh&#39;</span>
-<span class=n>password</span> <span class=o>=</span> <span class=s1>&#39;hisunyh&#39;</span>
-<span class=n>container_id</span> <span class=o>=</span> <span class=s2>&#34;3afd866418592636fc27754bfebdf29576daa5c22118e323a912320571dcabc0&#34;</span>
-<span class=n>device_size</span> <span class=o>=</span> <span class=mi>16</span>
-<span class=n>paramiko</span><span class=o>.</span><span class=n>util</span><span class=o>.</span><span class=n>log_to_file</span><span class=p>(</span><span class=s1>&#39;syslogin.log&#39;</span><span class=p>)</span>  <span class=c1># 发送paramiko日志到syslogin.log文件</span>
-
-
-<span class=k>def</span> <span class=nf>resize_container</span><span class=p>():</span>
-    <span class=n>ssh</span> <span class=o>=</span> <span class=n>paramiko</span><span class=o>.</span><span class=n>SSHClient</span><span class=p>()</span>
-    <span class=c1># 获取客户端host_keys,默认~/.ssh/known_hosts,非默认路径需指定ssh.load_system_host_keys(/xxx/xxx)</span>
-    <span class=n>ssh</span><span class=o>.</span><span class=n>load_system_host_keys</span><span class=p>()</span>
-    <span class=n>ssh</span><span class=o>.</span><span class=n>connect</span><span class=p>(</span><span class=n>hostname</span><span class=o>=</span><span class=n>hostname</span><span class=p>,</span> <span class=n>username</span><span class=o>=</span><span class=n>username</span><span class=p>,</span> <span class=n>password</span><span class=o>=</span><span class=n>password</span><span class=p>)</span>
-    <span class=c1># echo &#34;yourpasswd&#34; |sudo -S yourcommand</span>
-    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s2>&#34;docker inspect -f &#39;{{ .GraphDriver.Data.DeviceName }}&#39; </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span> <span class=n>container_id</span><span class=p>)</span>
-    <span class=c1># print(stdout.read().decode(&#39;utf-8&#39;))</span>
-    <span class=n>device_name</span> <span class=o>=</span> <span class=n>stdout</span><span class=o>.</span><span class=n>readlines</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span>
-    <span class=k>if</span> <span class=n>device_name</span><span class=o>.</span><span class=n>find</span><span class=p>(</span><span class=s1>&#39;docker&#39;</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;get device name failed&#39;</span><span class=p>)</span>
-        <span class=k>return</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;device name: </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_name</span><span class=p>)</span>
-
-    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s2>&#34;echo </span><span class=si>%s</span><span class=s2> | sudo -S dmsetup table </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span> <span class=p>(</span><span class=n>password</span><span class=p>,</span> <span class=n>device_name</span><span class=p>))</span>
-    <span class=n>device_mapper</span> <span class=o>=</span> <span class=n>stdout</span><span class=o>.</span><span class=n>readlines</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span>
-    <span class=k>if</span> <span class=n>device_mapper</span><span class=o>.</span><span class=n>find</span><span class=p>(</span><span class=s1>&#39;thin&#39;</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>:</span>
-        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;get device mapper info failed&#39;</span><span class=p>)</span>
-        <span class=k>return</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;device mapper info: </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_mapper</span><span class=p>)</span>
-
-    <span class=n>device_sector</span> <span class=o>=</span> <span class=n>device_mapper</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;thin&#39;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;device sector: </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_sector</span><span class=p>)</span>
-
-    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s1>&#39;echo 0 </span><span class=si>%s</span><span class=s1> thin</span><span class=si>%s</span><span class=s1> | sudo dmsetup load </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=p>(</span><span class=n>device_size</span> <span class=o>*</span> <span class=mi>1024</span> <span class=o>*</span> <span class=mi>1024</span> <span class=o>*</span> <span class=mi>1024</span> <span class=o>/</span> <span class=mi>512</span><span class=p>,</span> <span class=n>device_sector</span><span class=p>,</span> <span class=n>device_name</span><span class=p>))</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;dmsetup load finish&#39;</span><span class=p>)</span>
-
-    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s1>&#39;sudo dmsetup resume </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_name</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;dmsetup resume finish&#39;</span><span class=p>)</span>
-
-    <span class=n>fs_line</span> <span class=o>=</span> <span class=s1>&#39;sudo xfs_growfs -d /dev/mapper/</span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_name</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>fs_line</span><span class=p>)</span>
-    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=n>fs_line</span><span class=p>)</span>
-    <span class=nb>print</span><span class=p>(</span><span class=n>stdout</span><span class=o>.</span><span class=n>readlines</span><span class=p>())</span>
-    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;file system modify finish&#39;</span><span class=p>)</span>
-    <span class=n>ssh</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
-    <span class=k>pass</span>
-
-<span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
-    <span class=n>resize_container</span><span class=p>()</span>
-
-</code></pre></td></tr></table>
-</div>
-</div></div>
-<div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>更新于 2019-11-25</span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=/posts/docker_storage_driver/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
-</span>|&nbsp;<span><a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/运维&测试/Docker/docker_storage_driver/index.zh-cn.md target=_blank rel="noopener noreferrer">编辑此页</a>
-</span></div>
-<div class=post-info-share>
-<span></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/docker/>Docker</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span>
-</section>
-</div>
-<div class=post-nav><a href=/posts/docker_basics/ class=prev rel=prev title=Docker基础><i class="fas fa-angle-left fa-fw"></i>Docker基础</a>
-<a href=/posts/kubernetes_install/ class=next rel=next title=Kubernetes安装>Kubernetes安装<i class="fas fa-angle-right fa-fw"></i></a></div>
-</div>
-<div id=comments><div id=gitalk class=comment></div><noscript>
-Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.
-</noscript></div></article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.89.4">Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreffer" title="DoIt 0.2.13"><i class="far fa-edit fa-fw"></i> DoIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div><script>'serviceWorker'in navigator&&(navigator.serviceWorker.register('/sw.min.js',{scope:'/'}).then(function(a){}),navigator.serviceWorker.ready.then(function(a){}))</script></footer></div>
-<div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部>
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title=查看评论>
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><div class=assets><script type=text/javascript src=/posts/lib/autocomplete/autocomplete.min.js></script><script type=text/javascript src=/posts/lib/fuse/fuse.min.js></script><script type=text/javascript src=/posts/lib/lazysizes/lazysizes.min.js></script><script type=text/javascript src=/posts/lib/topbar/topbar.min.js></script><script type=text/javascript src=/posts/lib/pjax/pjax.min.js></script><script type=text/javascript src=/posts/js/theme.min.js></script></div>
-<div class=pjax-assets><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-25T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"Docker Storage Driver"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.1,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><link rel=preload as=style onload="this.onload=null,this.rel='stylesheet'" href=/posts/lib/gitalk/gitalk.min.css>
-<noscript><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css></noscript></div>
-</body>
-</html>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>paramiko</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>hostname</span> <span class=o>=</span> <span class=s1>&#39;192.168.232.133&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>username</span> <span class=o>=</span> <span class=s1>&#39;sunyh&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>password</span> <span class=o>=</span> <span class=s1>&#39;hisunyh&#39;</span>
+</span></span><span class=line><span class=cl><span class=n>container_id</span> <span class=o>=</span> <span class=s2>&#34;3afd866418592636fc27754bfebdf29576daa5c22118e323a912320571dcabc0&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>device_size</span> <span class=o>=</span> <span class=mi>16</span>
+</span></span><span class=line><span class=cl><span class=n>paramiko</span><span class=o>.</span><span class=n>util</span><span class=o>.</span><span class=n>log_to_file</span><span class=p>(</span><span class=s1>&#39;syslogin.log&#39;</span><span class=p>)</span>  <span class=c1># 发送paramiko日志到syslogin.log文件</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>resize_container</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=n>ssh</span> <span class=o>=</span> <span class=n>paramiko</span><span class=o>.</span><span class=n>SSHClient</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=c1># 获取客户端host_keys,默认~/.ssh/known_hosts,非默认路径需指定ssh.load_system_host_keys(/xxx/xxx)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ssh</span><span class=o>.</span><span class=n>load_system_host_keys</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>ssh</span><span class=o>.</span><span class=n>connect</span><span class=p>(</span><span class=n>hostname</span><span class=o>=</span><span class=n>hostname</span><span class=p>,</span> <span class=n>username</span><span class=o>=</span><span class=n>username</span><span class=p>,</span> <span class=n>password</span><span class=o>=</span><span class=n>password</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># echo &#34;yourpasswd&#34; |sudo -S yourcommand</span>
+</span></span><span class=line><span class=cl>    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s2>&#34;docker inspect -f &#39;{{ .GraphDriver.Data.DeviceName }}&#39; </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span> <span class=n>container_id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=c1># print(stdout.read().decode(&#39;utf-8&#39;))</span>
+</span></span><span class=line><span class=cl>    <span class=n>device_name</span> <span class=o>=</span> <span class=n>stdout</span><span class=o>.</span><span class=n>readlines</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>device_name</span><span class=o>.</span><span class=n>find</span><span class=p>(</span><span class=s1>&#39;docker&#39;</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;get device name failed&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;device name: </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_name</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s2>&#34;echo </span><span class=si>%s</span><span class=s2> | sudo -S dmsetup table </span><span class=si>%s</span><span class=s2>&#34;</span> <span class=o>%</span> <span class=p>(</span><span class=n>password</span><span class=p>,</span> <span class=n>device_name</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=n>device_mapper</span> <span class=o>=</span> <span class=n>stdout</span><span class=o>.</span><span class=n>readlines</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>device_mapper</span><span class=o>.</span><span class=n>find</span><span class=p>(</span><span class=s1>&#39;thin&#39;</span><span class=p>)</span> <span class=o>==</span> <span class=o>-</span><span class=mi>1</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;get device mapper info failed&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;device mapper info: </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_mapper</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>device_sector</span> <span class=o>=</span> <span class=n>device_mapper</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>,</span> <span class=s1>&#39;&#39;</span><span class=p>)</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;thin&#39;</span><span class=p>)[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;device sector: </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_sector</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s1>&#39;echo 0 </span><span class=si>%s</span><span class=s1> thin</span><span class=si>%s</span><span class=s1> | sudo dmsetup load </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=p>(</span><span class=n>device_size</span> <span class=o>*</span> <span class=mi>1024</span> <span class=o>*</span> <span class=mi>1024</span> <span class=o>*</span> <span class=mi>1024</span> <span class=o>/</span> <span class=mi>512</span><span class=p>,</span> <span class=n>device_sector</span><span class=p>,</span> <span class=n>device_name</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;dmsetup load finish&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=s1>&#39;sudo dmsetup resume </span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_name</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;dmsetup resume finish&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>fs_line</span> <span class=o>=</span> <span class=s1>&#39;sudo xfs_growfs -d /dev/mapper/</span><span class=si>%s</span><span class=s1>&#39;</span> <span class=o>%</span> <span class=n>device_name</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>fs_line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>stdin</span><span class=p>,</span> <span class=n>stdout</span><span class=p>,</span> <span class=n>stderr</span> <span class=o>=</span> <span class=n>ssh</span><span class=o>.</span><span class=n>exec_command</span><span class=p>(</span><span class=n>fs_line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=n>stdout</span><span class=o>.</span><span class=n>readlines</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s1>&#39;file system modify finish&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ssh</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=k>pass</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>resize_container</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div></div><h2>相关内容</h2><div class=related-container><div class=related-item-container><h2 class=related-title><a href=/posts/docker_examples/>Docker常用应用示例</a></h2></div><div class=related-item-container><div class=related-image><a href=/posts/docker_basics/><img loading=lazy src=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png srcset="https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png, https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png 1.5x, https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png 2x" sizes=auto alt=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png title=https://www.docker.com/sites/default/files/d8/2021-12/900x600%20logo.png height=200 width=400></a></div><h2 class=related-title><a href=/posts/docker_basics/>Docker基础</a></h2></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>更新于 2019-11-25</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-mardown href=/posts/docker_storage_driver/index.md target=_blank rel="noopener noreferrer">阅读原始文档</a>
+</span><span>|&nbsp;<a class=link-to-edit href=https://github.com/sunnyh1220/docsgo/edit/main/content/posts/运维&测试/Docker/docker_storage_driver/index.zh-cn.md target=_blank rel="noopener noreferrer">编辑此页</a></span></div><div class=post-info-share></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/posts/tags/docker/>Docker</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/posts/>主页</a></span></section></div><div class=post-nav><a href=/posts/docker_examples/ class=prev rel=prev title=Docker常用应用示例><i class="fas fa-angle-left fa-fw"></i>Docker常用应用示例</a>
+<a href=/posts/kubernetes_install/ class=next rel=next title=Kubernetes安装>Kubernetes安装<i class="fas fa-angle-right fa-fw"></i></a></div></div><div id=comments><div id=gitalk class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://github.com/gitalk/gitalk></a>Gitalk</a>.</noscript></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>由 <a href=https://gohugo.io/ target=_blank rel="noopener noreferrer" title="Hugo 0.117.0">Hugo</a> 强力驱动&nbsp;|&nbsp;主题 - <a href=https://github.com/HEIGE-PCloud/DoIt target=_blank rel="noopener noreferrer" title="DoIt 0.4.0"><i class="far fa-edit fa-fw"></i> DoIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://github.com/sunnyh1220 target=_blank rel="noopener noreferrer">sunnyh</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div><div class=footer-line></div><div class=footer-line></div></div><script>"serviceWorker"in navigator&&(navigator.serviceWorker.register("/sw.min.js",{scope:"/"}).then(function(){}),navigator.serviceWorker.ready.then(function(){}))</script></footer></div><div id=fixed-buttons><a href=#back-to-top id=back-to-top-button class=fixed-button title=回到顶部><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title=查看评论><i class="fas fa-comment fa-fw"></i></a></div><div class=assets><link rel=stylesheet href=/posts/lib/gitalk/gitalk.min.css><script type=text/javascript>window.config={code:{copyTitle:"复制到剪贴板",maxShownLines:24},comment:{gitalk:{admin:["sunnyh1220"],clientID:"caa543970235b93e6e95",clientSecret:"21b9ea15cc302811133c4dcae660e8d5ac7fa543",id:"2019-11-25T00:00:00Z",owner:"sunnyh1220",repo:"posts-comment",title:"Docker Storage Driver"}},data:{"desktop-header-typeit":"Sunnyh's Blog","mobile-header-typeit":"Sunnyh's Blog"},search:{distance:100,findAllMatches:!1,fuseIndexURL:"/posts/index.json",highlightTag:"em",ignoreFieldNorm:!1,ignoreLocation:!0,isCaseSensitive:!1,location:0,maxResultLength:10,minMatchCharLength:2,noResultsFound:"没有找到结果",snippetLength:50,threshold:.3,type:"fuse",useExtendedSearch:!1},typeit:{cursorChar:"|",cursorSpeed:1e3,data:{"desktop-header-typeit":["desktop-header-typeit"],"mobile-header-typeit":["mobile-header-typeit"]},duration:-1,speed:100}}</script><script type=text/javascript src=/posts/lib/clipboard/clipboard.min.js></script><script type=text/javascript src=/posts/lib/typeit/typeit.min.js></script><script type=text/javascript src=/posts/js/theme.min.js defer></script><script type=text/javascript src=/posts/lib/gitalk/gitalk.min.js></script><script type=text/javascript src=/posts/js/gitalk.min.js defer></script></div></body></html>
